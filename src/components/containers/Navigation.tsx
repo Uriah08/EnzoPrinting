@@ -4,7 +4,6 @@ import { Popover, PopoverClose } from '@radix-ui/react-popover'
 import Image from 'next/image'
 import React from 'react'
 import { PopoverContent, PopoverTrigger } from '../ui/popover'
-import { User } from 'lucide-react'
 import Link from 'next/link'
 
 const Navigation = () => {
@@ -14,18 +13,18 @@ const Navigation = () => {
     <div className='absolute top-0 p-5 left-1/2 transform -translate-x-1/2 w-full max-w-[1400px] flex justify-between items-center'>
         <Image src={"/logo.svg"} width={150} height={150} alt='logo'/>
         <div className='lg:flex gap-10 font-light hidden '>
-            <a href='#home' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</a>
-            <a href='#about' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
-            <a href='#service' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
-            <a href='#product' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
-            <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
+            <a href='#home' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</a>
+            <a href='#about' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
+            <a href='#service' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
+            <a href='#product' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
+            <a href='#contact' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
         </div>
         <div className='lg:flex gap-3 items-center hidden'>
-        <Link href={'/signin'} className='cursor-pointer'>
-        <User size={30} className='text-zinc-600'/></Link>
+        <Link href={'/auth/sign-in'} className='cursor-pointer'>
         <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
-            REQUEST A QUOTE
+            LOGIN
         </button>
+        </Link>
         </div>
         <Popover>
             <PopoverTrigger asChild>
@@ -53,9 +52,9 @@ const Navigation = () => {
                     <a href='#product' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
                     <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
                     </PopoverClose>
-                    <Link href={'/signin'} className='mt-10'>ADMIN</Link>
+                    <Link href={'/auth/sign-in'} className='mt-10'>ADMIN</Link>
                     <button className='py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
-                        REQUEST A QUOTE
+                        LOGIN
                     </button>
                 </div>
             </PopoverContent>

@@ -3,13 +3,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'url'
+        baseUrl: process.env.NEXT_PUBLIC_URL
     }),
     tagTypes: [],
     endpoints: (build) => ({
-        createFeedback: build.mutation({
+        createUser: build.mutation({
             query: (userData) => ({
-                url: "/auth/register",
+                url: "/api/users",
                 method: "POST",
                 body: userData,
                 headers: {
@@ -21,5 +21,5 @@ export const api = createApi({
 })
 
 export const {
-    useCreateFeedbackMutation
+    useCreateUserMutation
 } = api
