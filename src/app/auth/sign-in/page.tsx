@@ -21,8 +21,17 @@ import Link from 'next/link'
 import { loginSchema } from '@/schema'
 
 import { useLoginUserMutation } from '@/store/api'
+import { useToast } from '@/hooks/use-toast'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { useRouter } from 'next/navigation'
 
+interface ErrorData {
+  message: string;
+}
 const SignInPage = () => {
+
+  const router = useRouter()
+  const { toast } = useToast()
 
   const [loginUser, { isLoading }] = useLoginUserMutation();
 
@@ -37,9 +46,28 @@ const SignInPage = () => {
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
       const response = await loginUser(values)
-      console.log(response)
-    } catch (error) {
-      console.log(error);
+      
+      if(response.error){
+        const error = response.error as FetchBaseQueryError;
+
+      if (error.data && (error.data as ErrorData).message) {
+        throw new Error((error.data as ErrorData).message);
+      } else {
+        toast({
+          title: 'Login Successfully',
+          description: 'Redirecting to your home page...',
+        })
+        router.push('/admin')
+      }
+      }
+
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+      toast({
+        title: 'Login Failed',
+        description: error.message,
+      })
     }
   }
 

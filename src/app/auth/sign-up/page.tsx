@@ -21,8 +21,20 @@ import Link from 'next/link'
 import { registerSchema } from '@/schema'
 
 import { useCreateUserMutation } from '@/store/api'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { useToast } from '@/hooks/use-toast'
+
+import { useRouter } from 'next/navigation'
+
+interface ErrorData {
+  message: string;
+}
 
 const SignUpPage = () => {
+
+  const router = useRouter()
+
+  const { toast } = useToast()
 
   const [createUser, { isLoading }] = useCreateUserMutation();
 
@@ -38,9 +50,28 @@ const SignUpPage = () => {
   async function onSubmit(values: z.infer<typeof registerSchema>) {
     try {
       const response = await createUser(values)
-      console.log(response)
-    } catch (error) {
-      console.log(error);
+      
+      if(response.error){
+        const error = response.error as FetchBaseQueryError;
+
+      if (error.data && (error.data as ErrorData).message) {
+        throw new Error((error.data as ErrorData).message);
+      } else {
+        throw new Error('An unknown error occurred.');
+      }
+      }else {
+        router.push('/auth/sign-in')
+        toast({
+          title: 'Account created!',
+          description: 'You have successfully registered!',
+        })
+      }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+      toast({
+        title: 'Register Failed',
+        description: error.message,
+      })
     }
   }
 

@@ -13,7 +13,7 @@ export async function POST(req: Request){
     
         if (!validatedFields.success) {
           return NextResponse.json(
-            { error: 'Validation failed', success: false, issues: validatedFields.error.issues },
+            { message: 'Validation failed', success: false, issues: validatedFields.error.issues },
             { status: 400 }
           );
         }
@@ -26,7 +26,7 @@ export async function POST(req: Request){
         if(existingEmail) {
           return NextResponse.json(
             {
-              error: 'Email already exist', success: false,
+              message: 'Email already exist', success: false,
             },{status: 400})
         }
 
@@ -43,6 +43,6 @@ export async function POST(req: Request){
         return NextResponse.json({ message: 'User created successfully', success: true}, { status: 201 });
       } catch (error) {
         console.error('Error in route handler:', error);
-        return NextResponse.json({ error: 'Internal Server Error', success: false}, { status: 500 });
+        return NextResponse.json({ message: 'Internal Server Error', success: false}, { status: 500 });
       }
 }

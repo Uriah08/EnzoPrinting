@@ -1,3 +1,4 @@
+import { prisma } from '@/lib/db'
 import { z } from 'zod'
 
 export const loginSchema = z.object({
@@ -22,3 +23,13 @@ export const registerSchema = z.object({
       message: "Password must be at most 20 characters long",
     }),
   })
+
+  export const findUserById = async (id: string) => {
+    const user = prisma.user.findUnique({
+      where: {
+        id
+      }
+    })
+
+    return user
+  }
