@@ -11,30 +11,38 @@ import { NextResponse } from "next/server";
 
 export default auth((req) => {
     const { nextUrl } = req;
-    const isLoggedIn = !!req.auth
+    const isLoggedIn = !!req.auth;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
-    console.log("hit")
-
-    if(isApiAuthRoute) {
-        return NextResponse.next()
+    if (isApiAuthRoute) {
+        return NextResponse.next();
     }
-    if(isAuthRoute) {
+
+    if (isAuthRoute) {
         if (isLoggedIn) {
-            return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+            if (nextUrl.pathname === DEFAULT_LOGIN_REDIRECT) {
+                return NextResponse.next(); // Prevent redirect loop
+            }
+            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }
-        return NextResponse.next()
+        return NextResponse.next();
     }
 
-    if(!isLoggedIn && !isPublicRoute) {
-        return Response.redirect(new URL("/auth/login", nextUrl))
+    if (!isLoggedIn && !isPublicRoute) {
+        if (nextUrl.pathname === "/auth/sign-in") {
+            return NextResponse.next(); // Prevent redirect loop
+        } else if (nextUrl.pathname === "/auth/sign-up") {
+            return NextResponse.next(); // Prevent redirect loop
+        } else
+        return NextResponse.redirect(new URL("/auth/sign-in", nextUrl));
     }
 
-    return NextResponse.next()
-})
+    return NextResponse.next();
+});
+
 
 export const config = {
     matcher: [

@@ -13,7 +13,7 @@ export async function POST(req: Request){
     
         if (!validatedFields.success) {
           return NextResponse.json(
-            { error: 'Validation failed', issues: validatedFields.error.issues },
+            { error: 'Validation failed', success: false, issues: validatedFields.error.issues },
             { status: 400 }
           );
         }
@@ -25,8 +25,9 @@ export async function POST(req: Request){
 
         if(existingEmail) {
           return NextResponse.json(
-            {error: 'Email already exist'
-          },{status: 400})
+            {
+              error: 'Email already exist', success: false,
+            },{status: 400})
         }
 
         const hashedPassword = await bcryptjs.hash(password, 10);

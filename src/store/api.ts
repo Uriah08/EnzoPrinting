@@ -16,10 +16,21 @@ export const api = createApi({
                     "Content-Type": "application/json"
                 }
             })
+        }),
+        loginUser: build.mutation({
+            query: (userData) => ({
+                url: "/api/login",
+                method: "POST",
+                body: userData,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
         })
     })
 })
 
 export const {
-    useCreateUserMutation
+    useCreateUserMutation,
+    useLoginUserMutation
 } = api

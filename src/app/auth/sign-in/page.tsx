@@ -20,7 +20,11 @@ import Link from 'next/link'
 
 import { loginSchema } from '@/schema'
 
+import { useLoginUserMutation } from '@/store/api'
+
 const SignInPage = () => {
+
+  const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -30,8 +34,13 @@ const SignInPage = () => {
     }
   })
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+      const response = await loginUser(values)
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -64,7 +73,7 @@ const SignInPage = () => {
           )}
         />
         <div className='w-full flex flex-col'>
-        <Button className='w-full mt-2 bg-main hover:bg-main2' type="submit">Submit</Button>
+        <Button disabled={isLoading} className='w-full mt-2 bg-main hover:bg-main2' type="submit">{isLoading ? 'Loading...': 'Sign In'}</Button>
         <h1 className='text-center mt-1 text-xs text-zinc-500'>
           Don&apos;t have an account? <Link href='/auth/sign-up' className='hover:underline'>Sign Up</Link>
         </h1>
