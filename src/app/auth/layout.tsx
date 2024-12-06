@@ -13,13 +13,13 @@ const AuthLayout = ({ children }: Props) => {
                 <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
             </div>
             {children}
-            <div className='mt-3 w-full relative flex justify-center'>
+            <div className='mt-5 w-full relative flex justify-center'>
                 <div>
                 <h1 className='text-zinc-500 text-center z-20 relative px-3 bg-[#f5f5f5]'>OR CONTINUE WITH</h1>
                 </div>
                 <div className='w-full h-[1px] bg-zinc-500 z-10 absolute top-1/2 left-0 -translate-y-1/2'/>
             </div>
-            <button className='w-full mt-3 bg-main hover:bg-main2 duration-200 transition-all flex items-center gap-3 p-1'>
+            <button className='w-full mt-5 bg-main hover:bg-main2 duration-200 transition-all flex items-center gap-3 p-1'>
                 <div className='bg-[#f5f5f5] p-1 min-w-[48px]'>
                 <Image src={'/google.png'} width={500} height={500} alt='google' className='size-[40px]'/>
                 </div>
