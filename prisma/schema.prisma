@@ -35,6 +35,16 @@ model Account {
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
+
+model Feedback {
+  id           String  @id @default(cuid())
+  feedback     String
+  userId       String  @map("user_id")
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("feedbacks")
+}
  
 model User {
   id            String    @id @default(cuid())
@@ -45,6 +55,7 @@ model User {
   password      String?
   role          String? @default("user")
   accounts      Account[]
+  feedbacks     Feedback[]
  
   @@map("users")
 }

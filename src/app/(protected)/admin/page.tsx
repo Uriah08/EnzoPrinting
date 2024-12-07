@@ -3,7 +3,23 @@
 import React from 'react'
 import { signOut } from 'next-auth/react'
 
-const page = () => {
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import LoadingSpinner from '@/components/ui/loading'
+
+const AdminPage = () => {
+
+  const { data: session, status} = useSession()
+
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!session || session?.user?.role !== 'admin') {
+      router.push('/')
+    }
+  }, [session, router])
+
+  if (status === 'loading') return <LoadingSpinner/>
 
   return (
     <div>
@@ -12,4 +28,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AdminPage

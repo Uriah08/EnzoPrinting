@@ -29,7 +29,7 @@ const Navigation = ({session}:{session?: Session | null}) => {
             </Link>
         ):(
             <Link href={'/auth/sign-in'} className='cursor-pointer'>
-            <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
+            <button className='tracking-widest py-2 px-10 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
                 LOGIN
             </button>
             </Link>
@@ -70,8 +70,8 @@ const Navigation = ({session}:{session?: Session | null}) => {
                             </div>
                         </Link>
                     ):(
-                        <Link href={'/auth/sign-in'} className='cursor-pointer'>
-                        <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
+                        <Link href={'/auth/sign-in'} className='cursor-pointer mt-3'>
+                        <button className='tracking-widest w-full py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
                             LOGIN
                         </button>
                         </Link>

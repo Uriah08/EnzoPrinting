@@ -24,6 +24,10 @@ export const registerSchema = z.object({
     }),
   })
 
+  export const feedbackSchema = z.object({
+    feedback: z.string().nonempty("Feedback is required")
+  })
+
   export const findUserById = async (id: string) => {
     const user = prisma.user.findUnique({
       where: {

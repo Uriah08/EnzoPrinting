@@ -23,7 +23,7 @@ export default function Home() {
           <About />
           <Service />
           <Product />
-          <Contact />
+          <Contact session={session}/>
           <Footer />
         </>
       )}

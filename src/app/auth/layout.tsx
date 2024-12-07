@@ -3,7 +3,10 @@
 import Image from 'next/image'
 import React from 'react'
 
+import { ChevronLeft } from 'lucide-react'
+
 import { signIn } from 'next-auth/react'
+import Link from 'next/link'
 
 interface Props {
     children: React.ReactNode
@@ -12,7 +15,10 @@ interface Props {
 const AuthLayout = ({ children }: Props) => {
   return (
     <div className='h-dvh w-dvw flex items-center justify-center'>
-        <div className='border-[1px] shadow-lg border-zinc-300 p-5 sm:rounded-xl sm:max-w-[400px] w-full'>
+        <div className='border-[1px] shadow-lg border-zinc-300 p-5 sm:rounded-xl sm:max-w-[400px] w-full relative overflow-hidden'>
+            <Link href={'/'} className='bg-main duration-200 transition-all hover:bg-main2 px-3 py-2 absolute left-0 top-0 rounded-br-lg'>
+                <ChevronLeft size={20} className='text-white'/>
+            </Link>
             <div className='w-full flex justify-center py-3 mb-5'>
                 <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
             </div>

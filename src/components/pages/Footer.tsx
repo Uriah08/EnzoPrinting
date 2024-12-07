@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className='p-20 h-full w-full flex flex-col items-center justify-center'>
         <div className='max-w-[1200px] w-full h-full flex md:flex-row gap-5 flex-col justify-between items-center'>
-            <h1 className='text-zinc-600'>&copy; ENZO Printing 2024. All rights reserved</h1>
+            <h1 className='text-zinc-600 text-center'>&copy; ENZO Printing 2024. All rights reserved</h1>
             <div className='flex gap-3'>
             <a target='_blank' href='#' className='cursor-pointer w-10 h-10 group rounded-full border border-main duration-200 transition-all hover:bg-main flex justify-center items-center'>
               <svg width="13" height="24" viewBox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">

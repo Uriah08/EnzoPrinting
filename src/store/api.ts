@@ -26,11 +26,22 @@ export const api = createApi({
                     "Content-Type": "application/json"
                 }
             })
+        }),
+        createFeedback: build.mutation({
+            query: (feedback) => ({
+                url: '/api/feedback',
+                method: "POST",
+                body: feedback,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
         })
     })
 })
 
 export const {
     useCreateUserMutation,
-    useLoginUserMutation
+    useLoginUserMutation,
+    useCreateFeedbackMutation
 } = api

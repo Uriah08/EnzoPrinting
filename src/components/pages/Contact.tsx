@@ -17,28 +17,66 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { useToast } from "@/hooks/use-toast"
- 
-const FormSchema = z.object({
-  feedback: z.string().nonempty("Feedback is required")
-})
 
-const Contact = () => {
+import { feedbackSchema } from '@/schema'
+import { Session } from 'next-auth'
+
+import { useCreateFeedbackMutation } from '@/store/api'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+
+interface ErrorData {
+    message: string;
+  }
+const Contact = ({ session }: { session?:Session | null}) => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { toast } = useToast()
+    const { toast } = useToast()   
 
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const [createFeedback, {isLoading}] = useCreateFeedbackMutation()
+
+    const form = useForm<z.infer<typeof feedbackSchema>>({
+        resolver: zodResolver(feedbackSchema),
         defaultValues: {
-          feedback: "",
+          feedback: ""
         },
       })
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { handleSubmit, reset, formState: { isSubmitting } } = form;
+      const { handleSubmit, reset } = form;
 
-      const onSubmit = async (values : z.infer<typeof FormSchema>) => {
-        console.log(values);
+      const onSubmit = async (values : z.infer<typeof feedbackSchema>) => {
+        try {
+            if(!session?.user.id) {
+              throw new Error('You must be logged in to submit feedback.')
+            }
+            const feedback = {
+                ...values,
+                userId: session?.user.id,
+            };
+            
+            const response = await createFeedback(feedback)
+            if(response.error){
+                const error = response.error as FetchBaseQueryError;
+        
+              if (error.data && (error.data as ErrorData).message) {
+                throw new Error((error.data as ErrorData).message);
+              } else {
+                throw new Error('An unknown error occurred.');
+              }
+              }else {
+                reset();
+                toast({
+                  title: 'Feedback Sent!',
+                  description: 'Thanks for your feedback.',
+                })
+            }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error:any) {
+            toast({
+                title: 'Sending Feedback Failed!',
+                description: error.message,
+              })
+        }
       }
 
   return (
@@ -55,12 +93,12 @@ const Contact = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="Feedback" {...field} className='rounded-none'/>
+                                <Input disabled={status === 'loading'} placeholder="Feedback" {...field} className='rounded-none'/>
                             </FormControl>
                             </FormItem>
                         )}
                         />
-                        <button disabled={isSubmitting} className='bg-main text-sm px-3 text-[#f3f3f3]'>{isSubmitting ? 'Loading':'Submit'}</button>
+                        <button disabled={isLoading} className='bg-main text-sm px-3 text-[#f3f3f3]'>{isLoading ? 'Loading':'Submit'}</button>
                     </form>
                 </Form>
             </div>
