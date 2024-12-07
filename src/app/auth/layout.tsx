@@ -1,5 +1,9 @@
+"use client"
+
 import Image from 'next/image'
 import React from 'react'
+
+import { signIn } from 'next-auth/react'
 
 interface Props {
     children: React.ReactNode
@@ -19,7 +23,11 @@ const AuthLayout = ({ children }: Props) => {
                 </div>
                 <div className='w-full h-[1px] bg-zinc-500 z-10 absolute top-1/2 left-0 -translate-y-1/2'/>
             </div>
-            <button className='w-full mt-5 bg-main hover:bg-main2 duration-200 transition-all flex items-center gap-3 p-1'>
+            <button onClick={() => {
+                signIn('google', {
+                    callbackUrl: '/admin'
+                })
+            }} className='w-full mt-5 bg-main hover:bg-main2 duration-200 transition-all flex items-center gap-3 p-1'>
                 <div className='bg-[#f5f5f5] p-1 min-w-[48px]'>
                 <Image src={'/google.png'} width={500} height={500} alt='google' className='size-[40px]'/>
                 </div>

@@ -1,5 +1,5 @@
 import NextAuth from "next-auth"
-// import Google from 'next-auth/providers/google'
+import Google from 'next-auth/providers/google'
 import Credentials from 'next-auth/providers/credentials'
 import { prisma } from "@/lib/db"
 import { PrismaAdapter } from "@auth/prisma-adapter"
@@ -39,6 +39,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PrismaAdapter(prisma),
     session: { strategy: "jwt"},
     providers: [
+        Google({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
         Credentials({
             async authorize(credentials) {
                 const validatedFields = loginSchema.safeParse(credentials)

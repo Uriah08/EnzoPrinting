@@ -5,10 +5,12 @@ import Image from 'next/image'
 import React from 'react'
 import { PopoverContent, PopoverTrigger } from '../ui/popover'
 import Link from 'next/link'
+import { Session } from 'next-auth'
 
-const Navigation = () => {
+const Navigation = ({session}:{session?: Session | null}) => {
 
     const [selected, setSelected] = React.useState('home')
+
   return (
     <div className='absolute top-0 p-5 left-1/2 transform -translate-x-1/2 w-full max-w-[1400px] flex justify-between items-center'>
         <Image src={"/logo.svg"} width={150} height={150} alt='logo'/>
@@ -18,13 +20,20 @@ const Navigation = () => {
             <a href='#service' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
             <a href='#product' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
             <a href='#contact' onClick={() => setSelected("home")} className={`hover:text-main duration-200 transition-all cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
+            {session?.user.role === 'admin' ? <Link href='/admin' className={`hover:text-main duration-200 transition-all cursor-pointer`}>ADMIN</Link> : null}
         </div>
         <div className='lg:flex gap-3 items-center hidden'>
-        <Link href={'/auth/sign-in'} className='cursor-pointer'>
-        <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
-            LOGIN
-        </button>
-        </Link>
+        {session ? (
+            <Link href='/profile' className='cursor-pointer'>
+                <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
+            </Link>
+        ):(
+            <Link href={'/auth/sign-in'} className='cursor-pointer'>
+            <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
+                LOGIN
+            </button>
+            </Link>
+        )}
         </div>
         <Popover>
             <PopoverTrigger asChild>
@@ -52,10 +61,21 @@ const Navigation = () => {
                     <a href='#product' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
                     <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
                     </PopoverClose>
-                    <Link href={'/auth/sign-in'} className='mt-10'>ADMIN</Link>
-                    <button className='py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
-                        LOGIN
-                    </button>
+                    {session ? (
+                        <Link href='/profile' className='cursor-pointer flex items-center gap-3 mt-3'>
+                            <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
+                            <div className='flex flex-col'>
+                                <p className='text-base font-medium text-zinc-800'>{session.user.name}</p>
+                                <p className='text-sm font-medium text-zinc-600'>{session.user.email}</p>
+                            </div>
+                        </Link>
+                    ):(
+                        <Link href={'/auth/sign-in'} className='cursor-pointer'>
+                        <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
+                            LOGIN
+                        </button>
+                        </Link>
+                    )}
                 </div>
             </PopoverContent>
         </Popover>
