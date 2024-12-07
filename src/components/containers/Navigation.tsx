@@ -7,6 +7,8 @@ import { PopoverContent, PopoverTrigger } from '../ui/popover'
 import Link from 'next/link'
 import { Session } from 'next-auth'
 
+import { ShoppingCart } from 'lucide-react'
+
 const Navigation = ({session}:{session?: Session | null}) => {
 
     const [selected, setSelected] = React.useState('home')
@@ -24,9 +26,15 @@ const Navigation = ({session}:{session?: Session | null}) => {
         </div>
         <div className='lg:flex gap-3 items-center hidden'>
         {session ? (
-            <Link href='/profile' className='cursor-pointer'>
-                <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
-            </Link>
+            <div className='cursor-pointer ml-16 flex gap-3 items-center'>
+                <Link href={'/cart'} className='relative'>   
+                    <ShoppingCart size={35} className='text-zinc-500'/>
+                    <h1 className='bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs'>2</h1>
+                </Link>
+                <Link href={'/profile'}>
+                    <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
+                </Link>
+            </div>
         ):(
             <Link href={'/auth/sign-in'} className='cursor-pointer'>
             <button className='tracking-widest py-2 px-10 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
