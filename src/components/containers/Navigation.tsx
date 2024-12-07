@@ -26,7 +26,7 @@ const Navigation = ({session}:{session?: Session | null}) => {
         </div>
         <div className='lg:flex gap-3 items-center hidden'>
         {session ? (
-            <div className='cursor-pointer ml-16 flex gap-3 items-center'>
+            <div className='cursor-pointer ml-14 flex gap-5 items-center'>
                 <Link href={'/cart'} className='relative'>   
                     <ShoppingCart size={35} className='text-zinc-500'/>
                     <h1 className='bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs'>2</h1>
