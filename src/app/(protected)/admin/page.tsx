@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import LoadingSpinner from '@/components/ui/loading'
 import Image from 'next/image'
 
-import { ArrowLeftRight, Gauge, MessageSquareDot, Shirt, ShoppingBag } from 'lucide-react'
+import { ArrowLeftRight, ChevronLeft, Gauge, MessageSquareDot, Shirt, ShoppingBag, Users } from 'lucide-react'
 import Dashboard from '@/components/containers/AdminContainers/Dashboard'
 import Orders from '@/components/containers/AdminContainers/Orders'
 import Products from '@/components/containers/AdminContainers/Products'
@@ -18,7 +18,13 @@ const AdminPage = () => {
   const { data: session, status} = useSession()
   const router = useRouter();
 
-  const [ active, setActive ] = useState('Dashboard');
+  const [openSidebar, setOpenSidebar] = useState(true)
+
+  const handleSidebar = () => {
+    setOpenSidebar(!openSidebar)
+  }
+
+  const [ active, setActive ] = useState('Feedbacks');
   React.useEffect(() => {
     if (!session || session?.user?.role !== 'admin') {
       router.push('/')
@@ -49,18 +55,35 @@ const AdminPage = () => {
     }
   ]
 
+  const handleNav = (set: string) => {
+    setActive(set)
+    setOpenSidebar(false)
+  }
+
   return (
     <div className='h-dvh w-screen flex'>
-      <div className='max-w-[300px] w-full h-full flex flex-col items-center p-10'>
-        <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
-        <div className='flex flex-col gap-5 w-full mt-10'>
-          {adminNav.map((item, index) => (
-              <SideBar key={index} icon={item.icon} label={item.label} active={active === item.label} 
-              onClick={() => setActive(item.label)} />
-            ))}
+      
+      <div className={`flex flex-col justify-between ${openSidebar ? 'left-0':'-left-[295px]'} transition-all duration-500 ease-in-out top-0 absolute p-10 bg-[#f5f5f5] h-full`}>
+        <div className='h-full flex flex-col items-center'>
+          <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
+          <div className='flex flex-col gap-5 w-full mt-10'>
+            {adminNav.map((item, index) => (
+                <SideBar key={index} icon={item.icon} label={item.label} active={active === item.label} 
+                onClick={() => handleNav(item.label)} />
+              ))}
+          </div>
+        </div>
+        <div className='bg-main p-3 w-full flex flex-col rounded-lg relative'>
+          <button onClick={handleSidebar} className='absolute -right-[72px] cursor-pointer'>
+            <ChevronLeft size={32} className='bg-main px-[6px] text-[#f5f5f5] rounded-e-lg'/>
+          </button>
+          <Users size={32} className='p-[6px] text-main bg-[#f5f5f5] rounded-sm'/>
+          <h1 className='text-[#f5f5f5] font-medium mt-3'>Need Help?</h1>
+          <h1 className='text-sm text-[#f5f5f5]'>lorenz08.flores@gmail.com</h1>
+          <button className='text-main bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm'>Contact Me</button>
         </div>
       </div>
-      <div className='bg-[#dde0e9] w-full h-full'>
+      <div className={`bg-[#dde0e9] w-full h-full p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Dashboard' && <Dashboard/>}
         {active === 'Orders' && <Orders/>}
         {active === 'Products' && <Products/>}

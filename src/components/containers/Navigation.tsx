@@ -26,7 +26,7 @@ const Navigation = ({session}:{session?: Session | null}) => {
         </div>
         <div className='lg:flex gap-3 items-center hidden'>
         {session ? (
-            <div className='cursor-pointer ml-14 flex gap-5 items-center'>
+            <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
                 <Link href={'/cart'} className='relative'>   
                     <ShoppingCart size={35} className='text-zinc-500'/>
                     <h1 className='bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs'>2</h1>
@@ -68,9 +68,10 @@ const Navigation = ({session}:{session?: Session | null}) => {
                     <a href='#service' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
                     <a href='#product' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
                     <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
+                    {session?.user.role === 'admin' ? <Link href='/admin' className={`hover:text-main duration-200 mt-3 transition-all cursor-pointer`}>ADMIN</Link> : null}
                     </PopoverClose>
                     {session ? (
-                        <Link href='/profile' className='cursor-pointer flex items-center gap-3 mt-3'>
+                        <Link href='/profile' className='cursor-pointer flex items-center gap-3'>
                             <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
                             <div className='flex flex-col'>
                                 <p className='text-base font-medium text-zinc-800'>{session.user.name}</p>
