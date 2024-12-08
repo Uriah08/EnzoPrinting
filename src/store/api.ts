@@ -1,11 +1,26 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+type Feedback = {
+    id: string;
+    feedback: string;
+    userId: string;
+    createdAt: Date;
+    user: {
+      name: string;
+      email: string;
+      image: string | null;
+    };
+  };
+  
+  type FeedbacksResponse = {
+    feedback: Feedback[];
+  };
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_URL
     }),
-    tagTypes: [],
+    tagTypes: ['Feedback'],
     endpoints: (build) => ({
         createUser: build.mutation({
             query: (userData) => ({
@@ -34,8 +49,22 @@ export const api = createApi({
                 body: feedback,
                 headers: {
                     "Content-Type": "application/json"
-                }
-            })
+                },
+            }),
+            invalidatesTags: ['Feedback']
+        }),
+        getFeedback: build.query<FeedbacksResponse, void>({
+            query: () => ({
+                url: '/api/feedback',
+                method: 'GET'
+            }),
+            providesTags: ['Feedback'],
+        }),
+        deleteFeedback: build.mutation<void, string>({
+            query: (id) => ({
+              url: `feedbacks/${id}`,
+              method: 'DELETE',
+            }),
         })
     })
 })
@@ -43,5 +72,7 @@ export const api = createApi({
 export const {
     useCreateUserMutation,
     useLoginUserMutation,
-    useCreateFeedbackMutation
+    useCreateFeedbackMutation,
+    useGetFeedbackQuery,
+    useDeleteFeedbackMutation
 } = api
