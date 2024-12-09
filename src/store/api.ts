@@ -60,11 +60,12 @@ export const api = createApi({
             }),
             providesTags: ['Feedback'],
         }),
-        deleteFeedback: build.mutation<void, string>({
+        deleteFeedback: build.mutation<{ success: boolean; error?: string }, string>({
             query: (id) => ({
-              url: `feedbacks/${id}`,
+              url: `/api/feedback/${id}`,
               method: 'DELETE',
             }),
+            invalidatesTags: ['Feedback']
         })
     })
 })

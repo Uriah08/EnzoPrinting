@@ -8,21 +8,43 @@ import { Input } from '@/components/ui/input'
 import { Filter, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-import { useGetFeedbackQuery, useDeleteFeedbackMutation } from '@/store/api'
+import { useGetFeedbackQuery, useDeleteFeedbackMutation, api } from '@/store/api'
 
 import { Skeleton } from '@/components/ui/skeleton'
+import { useToast } from '@/hooks/use-toast'
 
 const Feedbacks = ({ session }: {session?: Session | null}) => {
 
+  const  { toast } = useToast()
+
   const { data, isLoading } = useGetFeedbackQuery();
-  const [deleteFeedback] = useDeleteFeedbackMutation();
+  const [deleteFeedback, { isLoading: deleteLoading }] = useDeleteFeedbackMutation();
   const feedbacks = data?.feedback || [];
 
   const handleDelete = async (feedbackId: string) => {
     try {
-     console.log(feedbackId)
-    } catch (error) {
-      console.error('Failed to delete feedback:', error);
+     const response = await deleteFeedback(feedbackId).unwrap()
+
+     if(!response.success){
+       throw new Error(response.error|| 'Failed to delete feedback')
+     }
+
+     api.util.updateQueryData('getFeedback', undefined, (draft) => {
+      draft.feedback = draft.feedback.filter(
+        (feedback) => feedback.id !== feedbackId
+      );
+    });
+
+    toast({
+      title: 'Feedback Deleted!',
+      description: 'Feedback has been deleted successfully',
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast({
+        title: 'Sending Feedback Failed!',
+        description: error.message,
+      })
     }
   };
 
@@ -42,16 +64,16 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
           <Link href={'/profile'} className='flex gap-3'>
           <div className='flex flex-col text-end'>
-                                <p className='text-base font-medium text-zinc-800'>{session.user.name}</p>
-                                <p className='text-sm font-medium text-zinc-600'>{session.user.email}</p>
+                                <p className='text-base font-medium text-zinc-800 sm:block hidden'>{session.user.name}</p>
+                                <p className='text-sm font-medium text-zinc-600 sm:block hidden'>{session.user.email}</p>
                             </div>
               <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
           </Link>
           </div>
         }
       </div>
-      <div className='w-full h-full flex gap-5 overflow-y-hidden'>
-          <div className='w-2/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
+      <div className='w-full h-full flex flex-col lg:flex-row gap-5 overflow-y-hidden'>
+          <div className='lg:w-2/3 w-full max-h-[70vh] lg:max-h-[100vh] lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
           <div className='w-full flex justify-between items-center'>
           <div className='w-fit flex items-center relative'>
             <Search size={20} className='absolute left-2 text-zinc-500'/>
@@ -60,7 +82,7 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
             <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
           </div>
           <div className='flex flex-col gap-3 mt-5 overflow-y-auto'>
-            {isLoading && 
+            {isLoading ? (
             <>
             <div className='flex flex-col p-4 shadow-lg rounded-lg'>
               <div className='flex gap-3'>
@@ -102,35 +124,34 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
               </div>
               <Skeleton className='h-[60px] w-full mt-3'/>
             </div>
-            </>
+            </>):(
+              Array.isArray(feedbacks) && feedbacks.length > 0 ? (
+                feedbacks?.map((feedback) => (
+                  <div key={feedback.id} className='flex flex-col p-4 shadow-lg rounded-lg'>
+                  <div className='flex justify-between'>
+                  <div className='flex gap-3'>
+                  <Image src={feedback.user.image ? feedback.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[35px] lg:size-[45px] rounded-full'/>
+                  <div className='flex flex-col'>
+                    <p className='text-sm lg:text-base font-medium text-zinc-800'>{feedback.user.name}</p>
+                    <p className='text-xs lg:text-sm font-medium text-zinc-600'>{feedback.user.email}</p>
+                  </div>
+                  </div>
+                  <p className='text-xs text-zinc-500 mt-3 text-end'>January 2, 2022</p>
+                  </div>
+                  <h1 className='text-sm mt-3 text-zinc-600'>{feedback.feedback}
+                  </h1>
+                  <div className='flex gap-5 mt-3'>
+                    <Button disabled={deleteLoading} onClick={() => handleDelete(feedback.id)} className='bg-red-500 hover:bg-red-600 duration-200 transition-all'>{deleteLoading ? 'Deleting...':'Delete'}</Button>
+                  </div>
+                </div>
+                ))) : (
+                    <h1 className='text-center font-bold text-2xl text-zinc-400'>No Feedback Found</h1>
+                )
+            )
             }
-
-            {Array.isArray(feedbacks) && feedbacks.length > 0 ? (
-            feedbacks?.map((feedback) => (
-              <div key={feedback.id} className='flex flex-col p-4 shadow-lg rounded-lg'>
-              <div className='flex justify-between'>
-              <div className='flex gap-3'>
-              <Image src={feedback.user.image ? feedback.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
-              <div className='flex flex-col'>
-                <p className='text-base font-medium text-zinc-800'>{feedback.user.name}</p>
-                <p className='text-sm font-medium text-zinc-600'>{feedback.user.email}</p>
-              </div>
-              </div>
-              <p className='text-xs text-zinc-500 mt-3 text-end'>January 2, 2022</p>
-              </div>
-              <h1 className='text-sm mt-3 text-zinc-600'>{feedback.feedback}
-              </h1>
-              <div className='flex gap-5 mt-3'>
-                <Button onClick={() => handleDelete(feedback.id)} className='bg-red-500 hover:bg-red-600 duration-200 transition-all'>Delete</Button>
-              </div>
-            </div>
-            ))) : (
-              <p>No feedback available</p> // Optional: You can show a fallback message if there are no feedbacks
-            )}
-
           </div>
           </div>
-          <div className='w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg'></div>
+          <div className='lg:w-1/3 h-full lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg'></div>
       </div>
     </div>
   )

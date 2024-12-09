@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from '../ui/button'
 
 const products = [
     {
@@ -88,7 +89,7 @@ const Product = () => {
         <div className='max-w-[1200px] w-full h-full p-5 sm:p-10'>
             <Image src={"/logo.svg"} width={200} height={200} alt='logo' className='place-self-center'/>
             <div className='flex w-full justify-center mt-5'>
-                <Link href={'/product'} className='bg-main duration-200 transition-all hover:bg-main2 text-white px-5 py-2 rounded-lg'>View All</Link>
+                <Link href={'/'} className='bg-main duration-200 transition-all hover:bg-main2 text-white px-5 py-2 rounded-lg'>View All</Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 rounded-sm overflow-hidden'>
                 {products.map((product, i) => (
@@ -104,9 +105,9 @@ const Product = () => {
                         {product.tag}
                         </h2>
                         <p className='text-sm text-zinc-600 font-light text-justify mt-5'>{product.description}</p>
-                        <button className='justify-self-end place-self-end bottom-0 bg-white border py-1 px-2 rounded-xl mt-5 font-light duration-200 transition-all hover:bg-main'>
+                        <Button className='bg-main rounded-xl mt-5 font-light duration-200 transition-all hover:bg-main2'>
                             Inquire
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 ))}

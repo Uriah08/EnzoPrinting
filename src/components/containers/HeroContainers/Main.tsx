@@ -8,7 +8,7 @@ const Main = () => {
         <div className='flex flex-col items-center h-full z-50'>
             <h1 className='text-xl sm:text-3xl'>You’re printing bro!</h1>
             <SvgPattern/>
-            <h1 className='text-xl sm:text-3xl -mt-1 sm:mt-0'>Your One-Stop Printing Solution!</h1>
+            <h1 className='text-xl sm:text-3xl -mt-1 sm:mt-0 text-center'>Your One-Stop Printing Solution!</h1>
             <p className='font-light mt-5 sm:mt-10 max-w-[350px] text-sm sm:text-base text-center'>
                 Welcome to ENZO your one stop solution
                 for all your printing needs.

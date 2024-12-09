@@ -26,10 +26,10 @@ const AdminPage = () => {
 
   const [ active, setActive ] = useState('Feedbacks');
   React.useEffect(() => {
-    if (!session || session?.user?.role !== 'admin') {
-      router.push('/')
+    if (status === 'authenticated' && session?.user?.role !== 'admin') {
+      router.push('/');
     }
-  }, [session, router])
+  }, [status, session, router]);
   if (status === 'loading') return <LoadingSpinner/>
 
   const adminNav = [
