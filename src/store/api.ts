@@ -66,6 +66,16 @@ export const api = createApi({
               method: 'DELETE',
             }),
             invalidatesTags: ['Feedback']
+        }),
+        createProduct: build.mutation({
+            query: (product) => ({
+                url: '/api/product',
+                method: 'POST',
+                body: product,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
         })
     })
 })
@@ -75,5 +85,6 @@ export const {
     useLoginUserMutation,
     useCreateFeedbackMutation,
     useGetFeedbackQuery,
-    useDeleteFeedbackMutation
+    useDeleteFeedbackMutation,
+    useCreateProductMutation
 } = api

@@ -33,6 +33,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Textarea } from '@/components/ui/textarea'
 import { Check, ChevronsUpDown } from 'lucide-react';
 
+import { UploadButton } from "@/utils/uploadthing";
+import Image from 'next/image'
+import { useCreateProductMutation } from '@/store/api'
+import { useToast } from '@/hooks/use-toast'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
+
 const categories = [
     { label: "Paper", value: "paper" },
     { label: "Book", value: "book" },
@@ -41,10 +47,21 @@ const categories = [
     { label: "Keychain", value: "keychain" },
     { label: "Sticker", value: "sticker" },
     { label: "ID", value: "id" },
+    { label: "Bundle", value: "bundle"},
     { label: "Other", value: "other" }
   ] as const
 
+  interface ErrorData {
+    message: string;
+  }
 const ProductForm = () => {
+
+  const { toast } = useToast()
+
+  const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string | null>(null);
+  const [isUploadDisabled, setIsUploadDisabled] = React.useState<boolean>(false);
+
+  const [createProduct, {isLoading}] = useCreateProductMutation();
 
     const form = useForm<z.infer<typeof productSchema>>({
         resolver: zodResolver(productSchema),
@@ -52,13 +69,41 @@ const ProductForm = () => {
             name: '',
             description: '',
             price: '',
-            category: '',
-            image: '',
+            category: ''
         }
     })
 
-    function onSubmit(values: z.infer<typeof productSchema>){
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof productSchema>){
+        const product = {
+          ...values,
+          image: uploadedFileUrl
+        }
+        try {
+          const response = await createProduct(product)
+          if(response.error){
+            const error = response.error as FetchBaseQueryError;
+    
+          if (error.data && (error.data as ErrorData).message) {
+            throw new Error((error.data as ErrorData).message);
+          } else {
+            throw new Error('An unknown error occurred.');
+          }
+          }else {
+            form.reset()
+            setUploadedFileUrl(null)
+            setIsUploadDisabled(false);
+            toast({
+              title: 'Product Created',
+              description: 'Product saved in the database.',
+            })
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          toast({
+            title: 'Creating Product Failed',
+            description: error.message,
+          })
+        }
     } 
 
   return (
@@ -168,20 +213,25 @@ const ProductForm = () => {
         )}
         />
         </div>
-        <FormField
-        control={form.control}
-        name="image"
-        render={({ field }) => (
-            <FormItem>
-                <FormLabel>Product Name</FormLabel>
-                <FormControl>
-                <Input id="picture" type="file" {...field} accept='image/jpeg, image/png, image/gif, image/jpg'/>
-                </FormControl>
-                <FormMessage />
-            </FormItem>
-        )}
-        />
-        <Button type='submit' className='w-full bg-main hover:bg-main2'>Create Product</Button>
+        {!uploadedFileUrl ? (
+              <UploadButton
+              endpoint="imageUploader"
+              className={`${(isUploadDisabled) ? 'hidden':''} bg-zinc-300`}
+              onClientUploadComplete={(res) => {
+                if (res.length > 0) {
+                  const fileUrl = res[0].url;
+                  setUploadedFileUrl(fileUrl);
+                  setIsUploadDisabled(true);
+                }
+              }}
+              onUploadError={(error: Error) => {
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+            ):(
+              <Image src={uploadedFileUrl} width={100} height={100} alt="image"/>
+            )}
+        <Button disabled={isLoading} type='submit' className='w-full bg-main hover:bg-main2'>{isLoading ? 'Creating...':'Create Product'}</Button>
         </form>
     </Form>
   )

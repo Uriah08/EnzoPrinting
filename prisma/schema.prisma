@@ -59,3 +59,17 @@ model User {
  
   @@map("users")
 }
+
+model Product {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  price       String
+  image       String
+  category    String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+ 
+  @@map("products")
+}

@@ -45,7 +45,6 @@ export const registerSchema = z.object({
   export const productSchema = z.object({
     name: z.string().min(3).max(30),
     description: z.string(),
-    image: z.string(),
     category: z.string(),
     price: z.string()
   })
