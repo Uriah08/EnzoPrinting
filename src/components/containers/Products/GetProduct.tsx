@@ -69,7 +69,7 @@ const GetProduct = () => {
                                         <DialogTrigger asChild>
                                         <Button className='bg-main hover:bg-main2'>Edit</Button>
                                         </DialogTrigger>
-                                        <DialogContent>
+                                        <DialogContent aria-describedby={undefined}>
                                             <DialogTitle>Edit Product</DialogTitle>
                                             <UpdateProductForm product={product}/>
                                         </DialogContent>

@@ -96,6 +96,17 @@ export const api = createApi({
                 method: 'DELETE'
             }),
             invalidatesTags: ['Product']
+        }),
+        updateProduct: build.mutation({
+            query: (product) => ({
+                url: '/api/product/update',
+                method: 'POST',
+                body: product,
+                headers: {
+                    "Content-Type" : "application/json"
+                }
+            }),
+            invalidatesTags: ['Product']
         })
     })
 })
@@ -108,5 +119,6 @@ export const {
     useDeleteFeedbackMutation,
     useCreateProductMutation,
     useGetProductQuery,
-    useDeleteProductMutation
+    useDeleteProductMutation,
+    useUpdateProductMutation
 } = api

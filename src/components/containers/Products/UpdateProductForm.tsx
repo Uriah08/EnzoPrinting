@@ -33,7 +33,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Textarea } from '@/components/ui/textarea'
 import { Check, ChevronsUpDown } from 'lucide-react';
 
-// import { useCreateProductMutation } from '@/store/api'
+import { useUpdateProductMutation } from '@/store/api'
 import { useToast } from '@/hooks/use-toast'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 
@@ -53,12 +53,23 @@ const categories = [
     message: string;
   }
 
-  type ProductProps = {
-    product: z.infer<typeof productSchema>,
+  type Product = {
+    name:string
+    description: string
+    price: string
+    category: string
+    id: string
   }
+
+  type ProductProps = {
+    product: Product,
+  }
+
 const UpdateProductForm = ({product}: ProductProps) => {
 
   const { toast } = useToast()
+
+  const [updateProduct, { isLoading }] = useUpdateProductMutation()
 
     const form = useForm<z.infer<typeof productSchema>>({
         resolver: zodResolver(productSchema),
@@ -71,30 +82,35 @@ const UpdateProductForm = ({product}: ProductProps) => {
     })
 
     async function onSubmit(values: z.infer<typeof productSchema>){
-        console.log(values);
-        // try {
-        //   const response = await createProduct(product)
-        //   if(response.error){
-        //     const error = response.error as FetchBaseQueryError;
+
+      const updatedProduct = {
+        ...values,
+        id: product.id
+      }
+
+        try {
+          const response = await updateProduct(updatedProduct)
+          if(response.error){
+            const error = response.error as FetchBaseQueryError;
     
-        //   if (error.data && (error.data as ErrorData).message) {
-        //     throw new Error((error.data as ErrorData).message);
-        //   } else {
-        //     throw new Error('An unknown error occurred.');
-        //   }
-        //   }else {
-        //     toast({
-        //       title: 'Product Created',
-        //       description: 'Product saved in the database.',
-        //     })
-        // }
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // } catch (error: any) {
-        //   toast({
-        //     title: 'Creating Product Failed',
-        //     description: error.message,
-        //   })
-        // }
+          if (error.data && (error.data as ErrorData).message) {
+            throw new Error((error.data as ErrorData).message);
+          } else {
+            throw new Error('An unknown error occurred.');
+          }
+          }else {
+            toast({
+              title: 'Product Updated',
+              description: 'Product is updated',
+            })
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          toast({
+            title: 'Updating Product Failed',
+            description: error.message,
+          })
+        }
     } 
 
   return (
@@ -204,7 +220,7 @@ const UpdateProductForm = ({product}: ProductProps) => {
         )}
         />
         </div>
-        <Button type='submit' className='w-full bg-main hover:bg-main2'>Update Product</Button>
+        <Button disabled={isLoading} type='submit' className='w-full bg-main hover:bg-main2'>{isLoading ? 'Updating...':'Update Product'}</Button>
         </form>
     </Form>
   )
