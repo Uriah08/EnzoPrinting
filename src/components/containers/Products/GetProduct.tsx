@@ -8,6 +8,7 @@ import { useDeleteProductMutation, useGetProductQuery } from '@/store/api'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { useToast } from '@/hooks/use-toast'
+import UpdateProductForm from './UpdateProductForm'
 
 const GetProduct = () => {
     const { data, isLoading } = useGetProductQuery();
@@ -64,10 +65,18 @@ const GetProduct = () => {
                             <div className='flex justify-between items-center font-semibold mt-2'>
                                 <h1 className='text-xs md:text-sm text-zinc-800'>Price: {product.price}</h1>
                                 <div className='flex gap-3'>
-                                    <Button className='bg-main hover:bg-main2'>Edit</Button>
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                        <Button className='bg-red-500 hover:bg-red-600'>Delete</Button>
+                                        <Button className='bg-main hover:bg-main2'>Edit</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogTitle>Edit Product</DialogTitle>
+                                            <UpdateProductForm product={product}/>
+                                        </DialogContent>
+                                    </Dialog>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                        <Button disabled={productLoading} className='bg-red-500 hover:bg-red-600'>Delete</Button>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogTitle>Delete Product</DialogTitle>
