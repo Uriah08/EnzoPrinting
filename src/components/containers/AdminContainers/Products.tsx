@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import ProductForm from '../Products/ProductForm'
 import GetProduct from '../Products/GetProduct'
+import { Search, Filter } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
 const Products = ({ session }: {session?: Session | null}) => {
   return (
@@ -32,8 +34,16 @@ const Products = ({ session }: {session?: Session | null}) => {
         }
       </div>
       <div className='w-full h-full flex flex-col-reverse xl:flex-row gap-5 overflow-y-hidden'>
+        
         <div className='xl:w-2/3 w-full max-h-[70vh] xl:max-h-[100vh] lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
         <h1 className='text-base font-semibold text-zinc-700'>Your Products</h1>
+        <div className='w-full flex justify-between items-center'>
+          <div className='w-fit flex items-center relative'>
+            <Search size={20} className='absolute left-2 text-zinc-500'/>
+            <Input className='pl-8 rounded-full' placeholder='Search...'/>
+            </div>
+            <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
+          </div>
         <GetProduct/>
         </div>
         <div className='xl:w-1/3 h-full xl:h-full p-5 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col'>

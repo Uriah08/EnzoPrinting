@@ -1,4 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Product } from '@prisma/client';
+
+type ProductResponse = {
+    product: Product[];
+}
 
 type Feedback = {
     id: string;
@@ -20,7 +25,7 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_URL
     }),
-    tagTypes: ['Feedback'],
+    tagTypes: ['Feedback','Product'],
     endpoints: (build) => ({
         createUser: build.mutation({
             query: (userData) => ({
@@ -75,7 +80,22 @@ export const api = createApi({
                 headers: {
                     "Content-Type": "application/json"
                 }
-            })
+            }),
+            invalidatesTags: ['Product']
+        }),
+        getProduct: build.query<ProductResponse, void>({
+            query: () => ({
+                url: '/api/product',
+                method: 'GET'
+            }),
+            providesTags: ['Product']
+        }),
+        deleteProduct: build.mutation({
+            query: (id) => ({
+                url: `/api/product/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Product']
         })
     })
 })
@@ -86,5 +106,7 @@ export const {
     useCreateFeedbackMutation,
     useGetFeedbackQuery,
     useDeleteFeedbackMutation,
-    useCreateProductMutation
+    useCreateProductMutation,
+    useGetProductQuery,
+    useDeleteProductMutation
 } = api
