@@ -56,8 +56,23 @@ model User {
   role          String? @default("user")
   accounts      Account[]
   feedbacks     Feedback[]
+  cart          Cart[]
  
   @@map("users")
+}
+
+model Cart {
+  id          String @id @default(cuid())
+  facebook    String?
+  description String?
+  productId   String
+  total       String
+  quantity    String
+  userId      String @map("user_id")
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("carts")
 }
 
 model Product {
@@ -67,6 +82,7 @@ model Product {
   price       String
   image       String
   category    String
+  status      String @default("open")
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

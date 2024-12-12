@@ -49,6 +49,12 @@ const categories = [
     { label: "Other", value: "other" }
   ] as const
 
+  const status = [
+    { label: "Open", value: "open" },
+    { label: "Out of Stock", value: "out of stock" },
+    { label: "Maintenance", value: "maintenance" }
+  ] as const
+
   interface ErrorData {
     message: string;
   }
@@ -59,6 +65,7 @@ const categories = [
     price: string
     category: string
     id: string
+    status?: string
   }
 
   type ProductProps = {
@@ -77,7 +84,8 @@ const UpdateProductForm = ({product}: ProductProps) => {
             name: product.name,
             description: product.description,
             price: product.price,
-            category: product.category
+            category: product.category,
+            status: product.status
         }
     })
 
@@ -220,6 +228,69 @@ const UpdateProductForm = ({product}: ProductProps) => {
         )}
         />
         </div>
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem className="flex flex-col w-full">
+              <FormLabel className='pb-[5px] mt-[5px]'>Status</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "justify-between w-full",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? status.find(
+                            (category) => category.value === field.value
+                          )?.label
+                        : "Select category"}
+                      <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput
+                      placeholder="Search framework..."
+                      className="h-9"
+                    />
+                    <CommandList>
+                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandGroup>
+                        {status.map((category) => (
+                          <CommandItem
+                            value={category.label}
+                            key={category.value}
+                            onSelect={() => {
+                              form.setValue("status", category.value)
+                            }}
+                          >
+                            {category.label}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                category.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button disabled={isLoading} type='submit' className='w-full bg-main hover:bg-main2'>{isLoading ? 'Updating...':'Update Product'}</Button>
         </form>
     </Form>

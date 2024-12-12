@@ -97,3 +97,9 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #147cd1;
 }
+
+.custom-input {
+  -moz-appearance: textfield;  /* Firefox */
+  -webkit-appearance: none;   /* Safari & Chrome */
+  appearance: none;           /* Modern Browsers */
+}
