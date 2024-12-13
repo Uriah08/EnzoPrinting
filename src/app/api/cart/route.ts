@@ -4,14 +4,13 @@ import { prisma } from "@/lib/db";
 export async function POST(req: Request) {
     const body = await req.json()
     try {
-        const { facebook, description, productId, total, quantity, userId } = body
+        const { facebook, description, productId, quantity, userId } = body
 
         await prisma.cart.create({
             data: {
                 productId,
                 userId,
                 quantity,
-                total,
                 description,
                 facebook
             },

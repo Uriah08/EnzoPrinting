@@ -19,7 +19,7 @@ export default function Home() {
         <LoadingSpinner/>
       ) : (
         <>
-          <Hero session={session} />
+          <Hero session={session} status={status}/>
           <About />
           <Service />
           <Product />

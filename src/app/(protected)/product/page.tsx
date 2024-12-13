@@ -62,7 +62,7 @@ const ProductPage = () => {
 
     const [createCart, { isLoading : cartLoading }] = useCreateCartMutation()
 
-    async function onSubmit(values: z.infer<typeof productDescription>, productId: string, totalPrice: number, quantity: number) {
+    async function onSubmit(values: z.infer<typeof productDescription>, productId: string, quantity: number) {
 
         if(!session) {
             toast({
@@ -74,7 +74,6 @@ const ProductPage = () => {
         const product = {
             ...values,
             productId,
-            total: totalPrice.toString(),
             quantity: quantity.toString(),
             userId: session.user.id
         }
@@ -109,7 +108,7 @@ const ProductPage = () => {
             <h1 className='text-xl sm:text-2xl font-bold text-zinc-800'>Product Page</h1>
 
             {!session ? (
-                <Link href={'/auth/sign-in'} className='cursor-pointer'>
+                <Link href={'/auth/sign-in'} className='cursor-pointer mt-5'>
                 <button className='tracking-widest py-2 px-10 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
                     LOGIN
                 </button>
@@ -125,13 +124,13 @@ const ProductPage = () => {
             </Link>
             <Link href={'/cart'} className='relative'>   
                     <ShoppingCart size={35} className='text-zinc-500'/>
-                    <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${cartData?.cart?.length === 0 && yourCartLoading ? 'hidden' : ''}`}>{cartData?.cart?.length || 0}</h1>
+                    <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${!cartData?.cart?.length && yourCartLoading ? 'hidden' : ''}`}>{cartData?.cart?.length || 0}</h1>
                 </Link>
             </div>
             )}
         </div>
         <div className='lg:w-2/3 w-full flex flex-col gap-5'>
-        <Image src={'/store-cover.png'} width={1200} height={1200} alt='cover' className='rounded-lg shadow-lg w-full object-cover'/>
+        <Image src={'/store-cover.png'} width={2500} height={2500} alt='cover' className='rounded-lg shadow-lg w-full object-cover'/>
         <div className='w-full bg-[#f5f5f5] p-5 shadow-lg rounded-lg relative min-h-[40vh]'>
             <h1 className='text-xl font-semibold text-zinc-600'>Products</h1>
             <div className='flex gap-x-2 gap-y-1 sm:gap-x-3 mt-5 flex-wrap'>
@@ -168,7 +167,7 @@ const ProductPage = () => {
                                     <DialogContent aria-describedby={undefined}>
                                         <DialogTitle className='text-center'>Product Information</DialogTitle>
                                         <Form {...form}>
-                                        <form onSubmit={form.handleSubmit((values) => onSubmit(values, product.id, quantity * Number(product.price), quantity))}>
+                                        <form onSubmit={form.handleSubmit((values) => onSubmit(values, product.id, quantity))}>
                                         <div className='flex flex-col gap-3 mt-5'>
                                             <div className='flex gap-3'>
                                             <Image src={product.image} width={500} height={500} alt='product image' className='size-36 object-cover'/>
