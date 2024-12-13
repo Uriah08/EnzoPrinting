@@ -7,9 +7,9 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { ShoppingCart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useGetProductQuery, useCreateCartMutation } from '@/store/api'
+import { useGetProductQuery, useCreateCartMutation, useGetCartQuery } from '@/store/api'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
 import {
   Form,
@@ -38,8 +38,6 @@ const ProductPage = () => {
     const [active, setActive] = useState('All')
     const [quantity, setQuantity] = useState(1);
 
-    const [createCart, { isLoading : cartLoading }] = useCreateCartMutation() 
-
     const form = useForm<z.infer<typeof productDescription>>({
     resolver: zodResolver(productDescription),
     defaultValues: {
@@ -51,12 +49,18 @@ const ProductPage = () => {
     const productNav = [
         {label: 'All'},{label: 'Paper'},{label: 'Book'},{label: 'Mug'},{label: 'Shirt'},{label: 'ID'},{label: 'Keychain'},{label: 'Sticker'},{label: 'Other'}
     ]
-
-    const { data, isLoading } = useGetProductQuery();
-    
-    const products = data?.product || []
     
     const { data: session, status} = useSession()
+
+    const { data: cartData, isLoading: yourCartLoading } = useGetCartQuery(session?.user?.id, {
+        skip: status !== "authenticated" || !session?.user?.id,
+      });
+    
+    const { data, isLoading } = useGetProductQuery();
+
+    const products = data?.product || []
+
+    const [createCart, { isLoading : cartLoading }] = useCreateCartMutation()
 
     async function onSubmit(values: z.infer<typeof productDescription>, productId: string, totalPrice: number, quantity: number) {
 
@@ -84,6 +88,7 @@ const ProductPage = () => {
                 title: 'Successfull',
                 description: 'Item added to your cart!'
             })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error:any) {
             toast({
                 title: 'Sending Feedback Failed!',
@@ -120,7 +125,7 @@ const ProductPage = () => {
             </Link>
             <Link href={'/cart'} className='relative'>   
                     <ShoppingCart size={35} className='text-zinc-500'/>
-                    <h1 className='bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs'>2</h1>
+                    <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${cartData?.cart?.length === 0 && yourCartLoading ? 'hidden' : ''}`}>{cartData?.cart?.length || 0}</h1>
                 </Link>
             </div>
             )}
@@ -156,7 +161,9 @@ const ProductPage = () => {
                                 </div>
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                    <Button onClick={handleReset} className='bg-main hover:bg-main2'>Inquire</Button>
+                                    <Button disabled={product.status === 'out of stock' || product.status === 'maintenance'} onClick={handleReset} className='bg-main hover:bg-main2'>
+                                        {product.status === 'out of stock' ? 'Out of Stock' : product.status === 'maintenance' ? 'Not Available' : 'Inquire'}
+                                    </Button>
                                     </DialogTrigger>
                                     <DialogContent aria-describedby={undefined}>
                                         <DialogTitle className='text-center'>Product Information</DialogTitle>
@@ -221,8 +228,12 @@ const ProductPage = () => {
                                             </Link>
                                         ) : (
                                             <div className='flex w-full justify-end gap-3 mt-5'>
+                                                <DialogClose asChild>
                                                 <Button type="button" className='bg-[#f5f5f5] hover:bg-[#dddcdc] text-black'>Check Out</Button>
-                                                <Button type='submit' className='text-[#f5f5f5] bg-main hover:bg-main2'>Add To Cart</Button>
+                                                </DialogClose>
+                                                <DialogClose asChild>
+                                                <Button type='submit' disabled={cartLoading} className='text-[#f5f5f5] bg-main hover:bg-main2'>{cartLoading ? 'Loading...':'Add to Cart'}</Button>
+                                                </DialogClose>
                                             </div>
                                         )}
                                         </form>

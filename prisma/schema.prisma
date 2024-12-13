@@ -65,13 +65,14 @@ model Cart {
   id          String @id @default(cuid())
   facebook    String?
   description String?
-  productId   String
+  productId   String?
   total       String
   quantity    String
   userId      String @map("user_id")
   createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product  Product?  @relation(fields: [productId], references: [id])
   @@map("carts")
 }
 
@@ -83,6 +84,8 @@ model Product {
   image       String
   category    String
   status      String @default("open")
+
+  carts       Cart[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

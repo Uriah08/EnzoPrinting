@@ -25,7 +25,7 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_URL
     }),
-    tagTypes: ['Feedback','Product'],
+    tagTypes: ['Feedback','Product', 'Cart'],
     endpoints: (build) => ({
         createUser: build.mutation({
             query: (userData) => ({
@@ -116,7 +116,15 @@ export const api = createApi({
                 headers: {
                     "Content-Type" : "application/json"
                 }
-            })
+            }),
+            invalidatesTags: ['Cart']
+        }),
+        getCart: build.query({
+            query: (id) => ({
+                url: `/api/cart/${id}`,
+                method: 'GET'
+            }),
+            providesTags: ['Cart']
         })
     })
 })
@@ -131,5 +139,6 @@ export const {
     useGetProductQuery,
     useDeleteProductMutation,
     useUpdateProductMutation,
-    useCreateCartMutation
+    useCreateCartMutation,
+    useGetCartQuery
 } = api
