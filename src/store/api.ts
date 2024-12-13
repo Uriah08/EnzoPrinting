@@ -20,6 +20,27 @@ type Feedback = {
   type FeedbacksResponse = {
     feedback: Feedback[];
   };
+
+type Cart = {
+    id: string;
+    description: string
+    facebook: string
+    productId: string
+    quantity: string
+    userId: string
+    createdAt: Date
+    product: {
+        id: string
+        name: string
+        category: string
+        image: string
+        price: string
+    }
+}
+
+type CartResponse = {
+    cart: Cart[]
+}
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
@@ -119,12 +140,19 @@ export const api = createApi({
             }),
             invalidatesTags: ['Cart']
         }),
-        getCart: build.query({
+        getCart: build.query<CartResponse, string>({
             query: (id) => ({
                 url: `/api/cart/${id}`,
                 method: 'GET'
             }),
             providesTags: ['Cart']
+        }),
+        deleteCart: build.mutation({
+            query: (id) => ({
+                url: `/api/cart/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Cart']
         })
     })
 })
@@ -140,5 +168,6 @@ export const {
     useDeleteProductMutation,
     useUpdateProductMutation,
     useCreateCartMutation,
-    useGetCartQuery
+    useGetCartQuery,
+    useDeleteCartMutation
 } = api

@@ -52,7 +52,7 @@ const ProductPage = () => {
     
     const { data: session, status} = useSession()
 
-    const { data: cartData, isLoading: yourCartLoading } = useGetCartQuery(session?.user?.id, {
+    const { data: cartData, isLoading: yourCartLoading } = useGetCartQuery(session?.user?.id ?? '', {
         skip: status !== "authenticated" || !session?.user?.id,
       });
     
