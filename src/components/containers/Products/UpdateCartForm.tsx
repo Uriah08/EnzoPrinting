@@ -7,11 +7,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { productDescription } from '@/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { DialogClose } from '@/components/ui/dialog'
+import { useToast } from '@/hooks/use-toast'
+import { useUpdateCartMutation } from '@/store/api'
 
 type CartProps = {
     cart: {
@@ -33,6 +35,12 @@ type CartProps = {
 }
 
 const UpdateCartForm = ({cart}: CartProps) => {
+
+    const { toast } = useToast()
+
+    const [updateCart, {isLoading}] = useUpdateCartMutation()
+
+    const [quantity, setQuantity] = useState(Number(cart.quantity));
     
     const form = useForm<z.infer<typeof productDescription>>({
         resolver: zodResolver(productDescription),
@@ -42,9 +50,33 @@ const UpdateCartForm = ({cart}: CartProps) => {
         },
       })
       
+      const onSubmit = async (values: z.infer<typeof productDescription>, quantity: number, id: string) => {
+        const updatedCart = {
+            ...values,
+            quantity: quantity.toString(),
+            id
+        }
+        try {
+            const response = await updateCart(updatedCart).unwrap()
+
+            if(!response.success){
+                throw new Error(response.message || 'Unknown Error Occured')
+            }
+            toast({
+                title: 'Update Successful!',
+                description: 'Cart updated successfully'
+            })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast({
+                title: 'Update Failed!',
+                description: error.message
+            })
+        }
+      }
   return (
     <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit((values) => onSubmit(values,quantity,cart.id))}>
         <div className='flex flex-col gap-3 mt-5'>
             <div className='flex gap-3'>
             <Image src={cart.product.image} width={500} height={500} alt='product image' className='size-36 object-cover'/>
@@ -89,16 +121,16 @@ const UpdateCartForm = ({cart}: CartProps) => {
                         <div className='flex flex-col'>
                             <h1 className='text-sm'>Product Quantity:</h1>
                             <div className='flex gap-3 items-center mt-2'>
-                            <button type="button" className='size-6 flex items-center justify-center text-[#f5f5f5] rounded-sm bg-main hover:bg-main2'>+</button>
-                            <h1 className='w-[30px] text-center'>{cart.quantity}</h1>
-                            <button type="button" className='size-6 flex items-center justify-center text-[#f5f5f5] rounded-sm bg-main hover:bg-main2'>-</button>
+                            <button type="button" onClick={() => setQuantity((prev) => (prev + 1))} className='size-6 flex items-center justify-center text-[#f5f5f5] rounded-sm bg-main hover:bg-main2'>+</button>
+                            <h1 className='w-[30px] text-center'>{quantity}</h1>
+                            <button type="button" onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))} className='size-6 flex items-center justify-center text-[#f5f5f5] rounded-sm bg-main hover:bg-main2'>-</button>
                         </div>
                         </div>
-                        <h1 className='self-end'><span className='text-lg font-semibold'>Total:</span> ₱ {Number(cart.product.price || 0) * cart.quantity}.00</h1>
+                        <h1 className='self-end'><span className='text-lg font-semibold'>Total:</span> ₱ {Number(cart.product.price || 0) * Number(cart.quantity)}.00</h1>
                     </div>
             </div>
             <DialogClose asChild>
-            <Button type='submit'className='text-[#f5f5f5] bg-main hover:bg-main2 mt-5 w-full'>Update</Button>
+            <Button disabled={isLoading} type='submit' className='text-[#f5f5f5] bg-main hover:bg-main2 mt-5 w-full'>Update</Button>
             </DialogClose>
 
         </form>

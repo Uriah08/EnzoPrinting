@@ -153,6 +153,24 @@ export const api = createApi({
                 method: 'DELETE'
             }),
             invalidatesTags: ['Cart']
+        }),
+        updateCart: build.mutation({
+            query: (cartData) => ({
+                url: '/api/cart/many',
+                method: 'POST',
+                body: cartData,
+                headers: {
+                    "Content-Type" : "application/json"
+                }
+            }),
+            invalidatesTags: ['Cart']
+        }),
+        deleteAllCart: build.mutation({
+            query: (id) => ({
+                url: `/api/cart/many/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Cart']
         })
     })
 })
@@ -169,5 +187,7 @@ export const {
     useUpdateProductMutation,
     useCreateCartMutation,
     useGetCartQuery,
-    useDeleteCartMutation
+    useDeleteCartMutation,
+    useUpdateCartMutation,
+    useDeleteAllCartMutation
 } = api

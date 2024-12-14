@@ -1,6 +1,6 @@
 "use client"
 
-import { useGetCartQuery, useDeleteCartMutation } from '@/store/api';
+import { useGetCartQuery, useDeleteCartMutation, useDeleteAllCartMutation } from '@/store/api';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
@@ -25,6 +25,8 @@ const CartPage = () => {
 
     const [deleteCart, {isLoading: deleteCartLoading}] = useDeleteCartMutation()
 
+    const [deleteAllCart, {isLoading: deletingAllCartsLoading}] = useDeleteAllCartMutation()
+
     const handleDeleteCart = async (id: string) => {
         try {
             const response = await deleteCart(id).unwrap()
@@ -42,6 +44,27 @@ const CartPage = () => {
             toast({
                 title: 'Cart Delete Failed!',
                 description: error.message,
+            })
+        }
+    }
+
+    const handleDeleteAllCart = async () => {
+        try {
+            if(!session){
+                throw new Error('User is not authenticated')
+            }
+            const response = await deleteAllCart(session?.user.id).unwrap()
+
+            if(!response.success){
+                throw new Error(response.message|| 'Failed to delete all cart')
+            }
+             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error);
+            
+            toast({
+                title: 'Cart Purchase Failed!',
+                description: error.data.message,
             })
         }
     }
@@ -102,7 +125,7 @@ const CartPage = () => {
                 ) : (
                     data?.cart.map((cart) => (
                         <div key={cart.id} className='flex gap-3 rounded-lg shadow-lg overflow-hidden relative w-full'>
-                        <Image src={'/products/mugsample1.jpg'} width={500} height={500} alt='cart image' className='w-32 object-cover'/>
+                        <Image src={cart.product.image} width={500} height={500} alt='cart image' className='w-32 object-cover'/>
                         <div className='flex xl:flex-row flex-col gap-3 w-full'>
                             <div className='flex w-full xl:w-1/2 flex-col py-3'>
                             <div className='flex gap-3 items-center'>
@@ -133,7 +156,7 @@ const CartPage = () => {
                                         <DialogTrigger asChild>
                                         <Button className=' lg:text-sm text-xs'>Edit</Button>
                                         </DialogTrigger>
-                                        <DialogContent>
+                                        <DialogContent aria-describedby={undefined}>
                                             <DialogTitle>Edit Cart</DialogTitle>
                                             <UpdateCartForm cart={cart}/>
                                         </DialogContent>
@@ -171,9 +194,9 @@ const CartPage = () => {
                         <h1 className={`text-[#f5f5f5] text-sm sm:text-xl`}>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product.price),0) || 0)}.00</h1>
                         <Dialog>
                             <DialogTrigger asChild>
-                            <Button className='px-4 py-1 text-sm sm:text-base sm:px-5 sm:py-2 rounded-full bg-[#f5f5f5] shadow-none hover:bg-[#e2e2e2] font-semibold text-main'>Check Out All</Button>
+                            <Button disabled={deletingAllCartsLoading && !session && yourCartLoading} className='px-4 py-1 text-sm sm:text-base sm:px-5 sm:py-2 rounded-full bg-[#f5f5f5] shadow-none hover:bg-[#e2e2e2] font-semibold text-main'>Check Out All</Button>
                             </DialogTrigger>
-                            <DialogContent>
+                            <DialogContent aria-describedby={undefined}>
                                 <DialogTitle>Check Out All</DialogTitle>
                                 <Image src={'/logo.svg'} width={150} height={150} alt='logo' className='mx-auto'/>
                                 <div className='flex flex-col gap-2 max-h-[500px] mt-3'>
@@ -188,7 +211,7 @@ const CartPage = () => {
                                 <h1 className='text-base text-zinc-600 font-semibold'>Total:</h1>
                                 <h1 className='text-base text-zinc-600 font-semibold'>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product.price),0) || 0)}.00</h1>
                                 </div>
-                                <Button className='bg-main hover:bg-main2 w-full'>Check Out</Button>
+                                <Button disabled={!session?.user.id} onClick={() => handleDeleteAllCart()} className='bg-main hover:bg-main2 w-full'>Check Out</Button>
                             </DialogContent>
                         </Dialog>
                     </div>
