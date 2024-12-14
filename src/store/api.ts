@@ -171,6 +171,16 @@ export const api = createApi({
                 method: 'DELETE'
             }),
             invalidatesTags: ['Cart']
+        }),
+        purchase: build.mutation({
+            query: (purchaseData) => ({
+                url: '/api/purchase',
+                method: 'POST',
+                body: purchaseData,
+                headers: {
+                    "Content-Type" : "application/json"
+                }
+            })
         })
     })
 })
@@ -189,5 +199,6 @@ export const {
     useGetCartQuery,
     useDeleteCartMutation,
     useUpdateCartMutation,
-    useDeleteAllCartMutation
+    useDeleteAllCartMutation,
+    usePurchaseMutation
 } = api

@@ -1,6 +1,6 @@
 "use client"
 
-import { useGetCartQuery, useDeleteCartMutation, useDeleteAllCartMutation } from '@/store/api';
+import { useGetCartQuery, useDeleteCartMutation, useDeleteAllCartMutation, usePurchaseMutation } from '@/store/api';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react'
@@ -27,7 +27,9 @@ const CartPage = () => {
 
     const [deleteAllCart, {isLoading: deletingAllCartsLoading}] = useDeleteAllCartMutation()
 
-    const handleDeleteCart = async (id: string) => {
+    const [purchase,{isLoading: purchaseLoading}] = usePurchaseMutation()
+
+    const handleDeleteCart = async (id: string,letToast?: boolean) => {
         try {
             const response = await deleteCart(id).unwrap()
 
@@ -35,10 +37,12 @@ const CartPage = () => {
                 throw new Error(response.error|| 'Failed to delete feedback')
             }
 
-            toast({
-                title: 'Cart Deleted!',
-                description: 'Cart has been deleted successfully',
-              })
+            if(letToast) {
+                toast({
+                    title: 'Cart Deleted!',
+                    description: 'Cart has been deleted successfully',
+                  })
+            }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast({
@@ -48,7 +52,7 @@ const CartPage = () => {
         }
     }
 
-    const handleDeleteAllCart = async () => {
+    const handleDeleteAllCart = async (letToast?: boolean) => {
         try {
             if(!session){
                 throw new Error('User is not authenticated')
@@ -57,6 +61,13 @@ const CartPage = () => {
 
             if(!response.success){
                 throw new Error(response.message|| 'Failed to delete all cart')
+            }
+
+            if(letToast) {
+                toast({
+                    title: 'Carts Deleted!',
+                    description: 'All carts have been deleted successfully',
+                })
             }
              // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -68,6 +79,83 @@ const CartPage = () => {
             })
         }
     }
+
+    const checkout = async (type: string, id?: string) => {
+        try {
+            if (!data?.cart || data.cart.length === 0) {
+                throw new Error('Cart is empty, please add products to proceed.');
+            }else if(!session){
+                throw new Error('User is not authenticated')
+            }
+
+            if (type === "double") {
+                const cartDetails = data.cart.map((cart) => ({
+                    name: cart.product.name,
+                    image: cart.product.image,
+                    quantity: Number(cart.quantity).toString(),
+                    price: (Number(cart.quantity) * Number(cart.product.price)).toString(),
+                }));
+        
+                const cartTotal = cartDetails.reduce((acc, item) => acc + Number(item.price), 0).toString();
+    
+                const cart = {
+                    cartDetails,
+                    userId: session.user.id,
+                    cartTotal
+                }
+    
+                const response = await purchase(cart).unwrap()
+
+                if(!response.success) {
+                    throw new Error(response.error || 'Failed to purchase cart')
+                }
+            } else {
+                if (!id) {
+                    throw new Error("No product ID provided")
+                }
+        
+                const cartDetails = data.cart
+                    .filter((cart) => cart.id === id)
+                    .map((cart) => ({
+                        name: cart.product.name,
+                        image: cart.product.image,
+                        quantity: Number(cart.quantity).toString(),
+                        price: (Number(cart.quantity) * Number(cart.product.price)).toString(),
+                    }));
+        
+                if (cartDetails.length === 0) {
+                    console.log("Product not found in the cart.");
+                    return;
+                }
+        
+                const cartTotal = cartDetails[0].price.toString();
+        
+                const cart = {
+                    cartDetails,
+                    userId: session.user.id,
+                    cartTotal
+                }
+    
+                const response = await purchase(cart).unwrap()
+
+                if(!response.success) {
+                    throw new Error(response.error || 'Failed to purchase cart')
+                }
+            }
+            toast({
+                title: 'Cart Purchased!',
+                description: 'Cart has been purchased successfully',
+            })
+            
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast({
+                title: 'Purchase Failed!',
+                description: error.data.message,
+            })
+        }
+    };
+    
 
     if(status === "loading") {
         return <LoadingSpinner/>
@@ -151,7 +239,23 @@ const CartPage = () => {
                                 </div>
                                 </div>
                                 <div className='flex w-full gap-3 justify-end lg:mt-0 mt-3 items-center flex-wrap-reverse'>
-                                    <Button className='bg-main hover:bg-main2 text-[#f5f5f5] lg:text-base text-xs'>Check Out</Button>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                        <Button disabled={purchaseLoading} className='bg-main hover:bg-main2 text-[#f5f5f5] lg:text-base text-xs'>Check Out</Button>
+                                        </DialogTrigger>
+                                        <DialogContent aria-describedby={undefined}>
+                                            <DialogTitle>Purchase</DialogTitle>
+                                            <DialogDescription>Are you sure you want to puchase {cart.product.name}?</DialogDescription>
+                                            <div className='flex w-full justify-end gap-3'>
+                                                <DialogClose asChild>
+                                                    <Button>Cancel</Button>
+                                                </DialogClose>
+                                                <DialogClose asChild>
+                                                    <Button onClick={() => checkout("single", cart.id)} className='bg-main text-[#f5f5f5] hover:bg-main2'>Purchase</Button>
+                                                </DialogClose>
+                                            </div>
+                                        </DialogContent>
+                                    </Dialog>
                                     <Dialog>
                                         <DialogTrigger asChild>
                                         <Button className=' lg:text-sm text-xs'>Edit</Button>
@@ -194,7 +298,7 @@ const CartPage = () => {
                         <h1 className={`text-[#f5f5f5] text-sm sm:text-xl`}>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product.price),0) || 0)}.00</h1>
                         <Dialog>
                             <DialogTrigger asChild>
-                            <Button disabled={deletingAllCartsLoading && !session && yourCartLoading} className='px-4 py-1 text-sm sm:text-base sm:px-5 sm:py-2 rounded-full bg-[#f5f5f5] shadow-none hover:bg-[#e2e2e2] font-semibold text-main'>Check Out All</Button>
+                            <Button disabled={deletingAllCartsLoading && !session && yourCartLoading} className={`px-4 py-1 text-sm sm:text-base sm:px-5 sm:py-2 rounded-full bg-[#f5f5f5] shadow-none hover:bg-[#e2e2e2] font-semibold text-main ${data?.cart.length === 0 ? 'hidden':''}`}>Check Out All</Button>
                             </DialogTrigger>
                             <DialogContent aria-describedby={undefined}>
                                 <DialogTitle>Check Out All</DialogTitle>
@@ -211,7 +315,9 @@ const CartPage = () => {
                                 <h1 className='text-base text-zinc-600 font-semibold'>Total:</h1>
                                 <h1 className='text-base text-zinc-600 font-semibold'>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product.price),0) || 0)}.00</h1>
                                 </div>
-                                <Button disabled={!session?.user.id} onClick={() => handleDeleteAllCart()} className='bg-main hover:bg-main2 w-full'>Check Out</Button>
+                                <DialogClose asChild>
+                                <Button disabled={!session?.user.id && deletingAllCartsLoading} onClick={() => checkout("double")} className='bg-main hover:bg-main2 w-full'>Check Out</Button>
+                                </DialogClose>
                             </DialogContent>
                         </Dialog>
                     </div>
@@ -223,4 +329,4 @@ const CartPage = () => {
   )
 }
 
-export default CartPage
+export default CartPage;

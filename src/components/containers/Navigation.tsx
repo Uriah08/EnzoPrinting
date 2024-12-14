@@ -14,9 +14,9 @@ const Navigation = ({session, status}:{session?: Session | null, status?: "authe
 
     const [selected, setSelected] = React.useState('home')
 
-    const { data: cartData, isLoading } = useGetCartQuery(session?.user?.id, {
+    const { data: cartData, isLoading } = useGetCartQuery(session?.user?.id ?? '', {
             skip: status !== "authenticated" || !session?.user?.id,
-          });   
+          });  
 
   return (
     <div className='absolute top-0 p-5 left-1/2 transform -translate-x-1/2 w-full max-w-[1400px] flex justify-between items-center'>
@@ -34,7 +34,7 @@ const Navigation = ({session, status}:{session?: Session | null, status?: "authe
             <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
                 <Link href={'/cart'} className='relative'>   
                     <ShoppingCart size={35} className='text-zinc-500'/>
-                    <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${!cartData?.cart?.length && isLoading ? 'hidden':''}`}>{cartData?.cart?.length || 0}</h1>
+                    <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${!cartData?.cart || isLoading || cartData?.cart.length === 0 ? 'hidden':''}`}>{cartData?.cart.length || 0}</h1>
                 </Link>
                 <Link href={'/profile'}>
                     <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
