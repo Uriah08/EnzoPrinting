@@ -54,3 +54,11 @@ export const registerSchema = z.object({
     facebook: z.string(),
     description: z.string().optional()
   })
+
+  export const quoteSchema = z.object({
+    name: z.string().min(5).max(50),
+    phone: z.string(),
+    email: z.string().email(),
+    type: z.string(),
+    message: z.string()
+  })
