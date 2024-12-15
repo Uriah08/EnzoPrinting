@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import { DemoCardsDrag } from './DragImages';
+import QuoteModal from './QuoteModal';
 
 const Main = () => {
   return (
@@ -13,17 +14,7 @@ const Main = () => {
                 Welcome to ENZO your one stop solution
                 for all your printing needs.
             </p>
-            <button className='mt-3 sm:mt-5 py-2 px-4 bg-main duration-200 transition-all hover:bg-main2 rounded-full font-medium text-[#f3f3f3] sm:text-base text-sm'>
-            REQUEST A QUOTE
-            </button>
-            {/* <div className='lg:hidden relative h-full w-full mt-20'>
-        <Image src={"/papermax.svg"} width={160} height={300} alt='product' className='clip-shadow lg:w-[120px] xl:w-[160px] absolute left-0 w-[100px]'/>
-            <Image src={"/mug.svg"} width={330} height={300} alt='product' className='clip-shadow lg:w-[200px] xl:w-[330px] absolute -right-[50px] w-[200px]'/>
-            <Image src={"/box.svg"} width={100} height={300} alt='product' className='clip-shadow lg:w-[50px] xl:w-[100px] absolute left-[50px] md:left-[100px] mt-40 transform -rotate-12'/>
-            <Image src={"/keychain.svg"} width={200} height={300} alt='product' className='clip-shadow lg:w-[100px] xl:w-[200px] absolute mt-40 right-[50px]'/>
-            <Image src={"/shirt.svg"} width={300} height={300} alt='product' className='clip-shadow lg:w-[200px] xl:w-[300px] absolute mt-72 left-[50px] md:mt-40 md:-left-[100px] w-[200px] transform -rotate-45'/>
-            <Image src={"/box2max.svg"} width={180} height={300} alt='product' className='clip-shadow lg:w-[150px] xl:w-[180px] absolute mt-40 md:mt-40 w-[100px] right-0 transform rotate-45'/>
-        </div> */}
+            <QuoteModal/>
           <DemoCardsDrag/>
         </div>
         <div className='z-40 hidden absolute w-full lg:flex justify-between items-end mt-48'>

@@ -106,6 +106,8 @@ const CartPage = () => {
     
                 const response = await purchase(cart).unwrap()
 
+                await handleDeleteAllCart(false)
+
                 if(!response.success) {
                     throw new Error(response.error || 'Failed to purchase cart')
                 }
@@ -137,6 +139,8 @@ const CartPage = () => {
                 }
     
                 const response = await purchase(cart).unwrap()
+
+                await handleDeleteCart(id,false)
 
                 if(!response.success) {
                     throw new Error(response.error || 'Failed to purchase cart')
