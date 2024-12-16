@@ -74,8 +74,8 @@ const AdminPage = () => {
           </div>
         </div>
         <div className='bg-main p-3 w-full flex flex-col rounded-lg relative'>
-          <button onClick={handleSidebar} className='absolute -right-[72px] cursor-pointer'>
-            <ChevronLeft size={32} className='bg-main px-[6px] text-[#f5f5f5] rounded-e-lg'/>
+          <button onClick={handleSidebar} className='absolute -right-[72px] cursor-pointer bg-main rounded-e-lg'>
+            <ChevronLeft size={32} className={`px-[6px] text-[#f5f5f5] duration-200 transition-all rounded-e-lg ${!openSidebar ? 'rotate-180': 'rotate-0'}`}/>
           </button>
           <Users size={32} className='p-[6px] text-main bg-[#f5f5f5] rounded-sm'/>
           <h1 className='text-[#f5f5f5] font-medium mt-3'>Need Help?</h1>

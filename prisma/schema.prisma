@@ -110,3 +110,13 @@ model CartItem {
   purchaseId String   
   purchase   Purchase    @relation(fields: [purchaseId], references: [id])
 }
+
+model Quote {
+  id         String  @id @default(cuid())
+  name       String
+  email      String
+  type       String
+  phone      String
+  message    String
+  createdAt  DateTime @default(now())
+}

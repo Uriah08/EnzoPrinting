@@ -37,6 +37,9 @@ import { Input } from "@/components/ui/input"
 import { quoteSchema } from "@/schema";
 import { Textarea } from '@/components/ui/textarea';
 
+import { useToast } from '@/hooks/use-toast'
+import { useCreateQuoteMutation } from '@/store/api';
+
 const images = [
   "/products/mugsample1.jpg",
   "/products/mugsample1.jpg",
@@ -59,6 +62,10 @@ const categories = [
 
 const QuoteModal = () => {
 
+  const { toast } = useToast()
+
+  const [createQuote, {isLoading} ] = useCreateQuoteMutation()
+
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
     defaultValues: {
@@ -70,8 +77,28 @@ const QuoteModal = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof quoteSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof quoteSchema>) {
+    try {
+
+      const response = await createQuote(values).unwrap()
+
+      if(!response.success){
+        throw new Error(response.message || 'Failed to send a quote')
+      }
+
+      form.reset()
+
+      toast({
+        title: 'Quote Sent',
+        description: 'Your quote has been sent successfully. We will get back to you soon!'
+      })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch(error: any) {
+      toast({
+        title: 'Quote Failed to Send',
+        description: error.data.message
+      })
+    }
   }
 
   return (
@@ -277,7 +304,7 @@ const QuoteModal = () => {
                 )}
               />
               </div>
-              <Button type='submit' className='mt-3 w-full bg-main hover:bg-main2'>Request</Button>
+              <Button disabled={isLoading} type='submit' className='mt-3 w-full bg-main hover:bg-main2'>{isLoading ? 'Requesting...':'Request'}</Button>
               </form>
             </Form>
       </DialogContent>

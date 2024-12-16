@@ -181,6 +181,16 @@ export const api = createApi({
                     "Content-Type" : "application/json"
                 }
             })
+        }),
+        createQuote: build.mutation({
+            query: (quoteData) => ({
+                url: '/api/quote',
+                method: 'POST',
+                body: quoteData,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
         })
     })
 })
@@ -200,5 +210,6 @@ export const {
     useDeleteCartMutation,
     useUpdateCartMutation,
     useDeleteAllCartMutation,
-    usePurchaseMutation
+    usePurchaseMutation,
+    useCreateQuoteMutation
 } = api
