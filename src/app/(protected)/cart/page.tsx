@@ -217,14 +217,14 @@ const CartPage = () => {
                 ) : (
                     data?.cart.map((cart) => (
                         <div key={cart.id} className='flex gap-3 rounded-lg shadow-lg overflow-hidden relative w-full'>
-                        <Image src={cart.product.image} width={500} height={500} alt='cart image' className='w-32 object-cover'/>
+                        <Image src={cart.product?.image || '/noimg.png'} width={500} height={500} alt='cart image' className='w-32 object-cover'/>
                         <div className='flex xl:flex-row flex-col gap-3 w-full'>
                             <div className='flex w-full xl:w-1/2 flex-col py-3'>
                             <div className='flex gap-3 items-center'>
-                            <h1 className='text-xs bg-main rounded-full w-fit px-3 py-1 text-[#f5f5f5]'>{cart.product.category}</h1>
+                            <h1 className='text-xs bg-main rounded-full w-fit px-3 py-1 text-[#f5f5f5]'>{cart.product?.category || 'removed'}</h1>
                             <h1 className='text-xs text-zinc-400 w-full'>{format(new Date(cart.createdAt), 'MMM d, yyyy')}</h1>
                             </div>
-                                <h1 className='text-base lg:text-lg font-medium text-zinc-600 mt-1'>{cart.product.name}</h1>
+                                <h1 className='text-base lg:text-lg font-medium text-zinc-600 mt-1'>{cart.product?.name || 'Product Deleted By Admin'}</h1>
                                 <p className='text-xs lg:text-sm text-zinc-500 mt-2'>{cart.description}</p>
                             </div>
                             <div className='flex flex-col lg:flex-row xl:flex-col w-full xl:w-1/2 p-3 justify-between'>
@@ -235,11 +235,11 @@ const CartPage = () => {
                                 </div>
                                 <div className='flex flex-col items-center'>
                                     <h1 className='text-sm lg:text-md font-medium text-zinc-600'>Price</h1>
-                                    <h1 className='text-xs lg:text-sm font-light text-zinc-500'>₱ {cart.product.price}.00</h1>
+                                    <h1 className='text-xs lg:text-sm font-light text-zinc-500'>₱ {cart.product?.price || 0}.00</h1>
                                 </div>
                                 <div className='flex flex-col items-center'>
                                     <h1 className='text-sm lg:text-md font-medium text-zinc-600'>Total Price</h1>
-                                    <h1 className='text-xs lg:text-sm font-light text-zinc-500'>₱ {Number(cart.quantity) * Number(cart.product.price)}.00</h1>
+                                    <h1 className='text-xs lg:text-sm font-light text-zinc-500'>₱ {Number(cart.quantity) * Number(cart.product?.price || 0)}.00</h1>
                                 </div>
                                 </div>
                                 <div className='flex w-full gap-3 justify-end lg:mt-0 mt-3 items-center flex-wrap-reverse'>
@@ -249,20 +249,20 @@ const CartPage = () => {
                                         </DialogTrigger>
                                         <DialogContent aria-describedby={undefined}>
                                             <DialogTitle>Purchase</DialogTitle>
-                                            <DialogDescription>Are you sure you want to puchase {cart.product.name}?</DialogDescription>
+                                            <DialogDescription>{cart.product?.name ? `Are you sure you want to puchase ${cart.product?.name}?` : 'Item does not exists anymore!'}</DialogDescription>
                                             <div className='flex w-full justify-end gap-3'>
                                                 <DialogClose asChild>
                                                     <Button>Cancel</Button>
                                                 </DialogClose>
                                                 <DialogClose asChild>
-                                                    <Button onClick={() => checkout("single", cart.id)} className='bg-main text-[#f5f5f5] hover:bg-main2'>Purchase</Button>
+                                                    <Button disabled={!cart.product?.name} onClick={() => checkout("single", cart.id)} className='bg-main text-[#f5f5f5] hover:bg-main2'>Purchase</Button>
                                                 </DialogClose>
                                             </div>
                                         </DialogContent>
                                     </Dialog>
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                        <Button className=' lg:text-sm text-xs'>Edit</Button>
+                                        <Button disabled={!cart.product?.name} className=' lg:text-sm text-xs'>Edit</Button>
                                         </DialogTrigger>
                                         <DialogContent aria-describedby={undefined}>
                                             <DialogTitle>Edit Cart</DialogTitle>
@@ -299,7 +299,7 @@ const CartPage = () => {
                 <div className='bg-main p-5 rounded-lg shadow-lg justify-between items-center flex'>
                     <h1 className='text-xl font-semibold text-[#f5f5f5]'>Cart Total</h1>
                     <div className='flex gap-5 items-center'>
-                        <h1 className={`text-[#f5f5f5] text-sm sm:text-xl`}>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product.price),0) || 0)}.00</h1>
+                        <h1 className={`text-[#f5f5f5] text-sm sm:text-xl`}>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product?.price || 0),0) || 0)}.00</h1>
                         <Dialog>
                             <DialogTrigger asChild>
                             <Button disabled={deletingAllCartsLoading && !session && yourCartLoading} className={`px-4 py-1 text-sm sm:text-base sm:px-5 sm:py-2 rounded-full bg-[#f5f5f5] shadow-none hover:bg-[#e2e2e2] font-semibold text-main ${data?.cart.length === 0 ? 'hidden':''}`}>Check Out All</Button>
@@ -310,17 +310,17 @@ const CartPage = () => {
                                 <div className='flex flex-col gap-2 max-h-[500px] mt-3'>
                                 {data?.cart.map((cart) => (
                                     <div key={cart.id} className='flex gap-3 items-center w-full justify-between'>
-                                        <h1 className='text-base text-zinc-600 font-semibold'>{cart.product.name}</h1>
+                                        <h1 className='text-base text-zinc-600 font-semibold'>{cart.product?.name || 'Remove this item'}</h1>
                                         <h1 className='text-sm text-zinc-500 font-light'>{cart.quantity}x</h1>
-                                        <h1 className='text-sm text-zinc-500 font-light'>₱ {Number(cart.quantity) * Number(cart.product.price)}.00</h1>
+                                        <h1 className='text-sm text-zinc-500 font-light'>₱ {Number(cart.quantity) * Number(cart.product?.price || 0)}.00</h1>
                                     </div>
                                 ))}
                             </div><div className='flex justify-between mt-3'>
                                 <h1 className='text-base text-zinc-600 font-semibold'>Total:</h1>
-                                <h1 className='text-base text-zinc-600 font-semibold'>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product.price),0) || 0)}.00</h1>
+                                <h1 className='text-base text-zinc-600 font-semibold'>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product?.price || 0),0) || 0)}.00</h1>
                                 </div>
                                 <DialogClose asChild>
-                                <Button disabled={!session?.user.id && deletingAllCartsLoading} onClick={() => checkout("double")} className='bg-main hover:bg-main2 w-full'>Check Out</Button>
+                                <Button disabled={!session?.user.id || deletingAllCartsLoading || data?.cart.some(cart => !cart.product?.name)} onClick={() => checkout("double")} className='bg-main hover:bg-main2 w-full'>Check Out</Button>
                                 </DialogClose>
                             </DialogContent>
                         </Dialog>

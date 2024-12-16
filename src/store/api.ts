@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Product } from '@prisma/client';
+import { Product, Purchase } from '@prisma/client';
 
 type ProductResponse = {
     product: Product[];
@@ -191,6 +191,12 @@ export const api = createApi({
                     "Content-Type": "application/json"
                 }
             })
+        }),
+        getItemsPurchase: build.query<Purchase[], void>({
+            query: () => ({
+                url: '/api/purchase',
+                method: 'GET'
+            })
         })
     })
 })
@@ -211,5 +217,6 @@ export const {
     useUpdateCartMutation,
     useDeleteAllCartMutation,
     usePurchaseMutation,
-    useCreateQuoteMutation
+    useCreateQuoteMutation,
+    useGetItemsPurchaseQuery
 } = api

@@ -98,6 +98,8 @@ model Purchase {
   userId     String      
   user       User        @relation(fields: [userId], references: [id])
   createdAt  DateTime    @default(now())
+  status     String      @default("To Do")
+  new        Boolean     @default(true)
   items      CartItem[] 
 }
 

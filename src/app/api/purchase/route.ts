@@ -38,3 +38,23 @@ export async function POST(req:Request){
         return NextResponse.json({ message: 'Internal Server Error', success: false}, { status: 500 });
     }
 }
+
+export async function GET(){
+    try{
+        const items = await prisma.purchase.findMany({
+            include: {
+                user: {
+                    select: {
+                        image: true,
+                        email: true
+                    }
+                }
+            },
+        })
+
+        return NextResponse.json({ items, message: 'Getting Purchase Successful', success: true}, { status: 200 });
+    } catch(error) {
+        console.error('Error in route handler:', error);
+        return NextResponse.json({ message: 'Internal Server Error', success: false}, { status: 500 });
+    }
+}
