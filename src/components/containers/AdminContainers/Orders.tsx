@@ -4,24 +4,9 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend'
-import { useGetItemsPurchaseQuery } from '@/store/api'
-
-const itemStatus = ['To Do', 'In Progress', 'Finished', 'Cancelled'];
+import ItemsDnd from '../Products/ItemsDnd'
 
 const Orders = ({ session }: {session?: Session | null}) => {
-
-  const isMobileDevice = () => {
-    return /Mobi|Android/i.test(navigator.userAgent);
-  };
-
-  const backend = isMobileDevice() ? TouchBackend : HTML5Backend;
-  
-  const { data: items = [], isLoading} = useGetItemsPurchaseQuery()
-
-  console.log(items);
 
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
@@ -46,7 +31,7 @@ const Orders = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='w-full flex md:flex-row flex-col'></div>
+      <ItemsDnd/>
     </div>
   )
 }
