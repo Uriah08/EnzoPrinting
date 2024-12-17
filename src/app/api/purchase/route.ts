@@ -5,6 +5,8 @@ type itemProps = {
     name: string;
     image: string
     quantity: string
+    description?: string
+    facebook?: string
     price: string
 }
 
@@ -26,11 +28,13 @@ export async function POST(req:Request){
                         name: item.name,
                         image: item.image,
                         quantity: item.quantity,
+                        description: item.description,
+                        facebook: item.facebook,
                         price: item.price,
                     })),
                 }
             }
-        })
+        });
         
         return NextResponse.json({ message: 'Purchase Successful', success: true}, { status: 200 });
     } catch (error) {
@@ -64,7 +68,14 @@ export async function PATCH(req: Request) {
     try {
         const { id, status } = body;
 
-        console.log(id, status)
+        await prisma.purchase.update({
+            where: {
+                id
+            },
+            data: {
+                status
+            }
+        })
         return NextResponse.json({ message: 'Update Item Successful', success: true}, { status: 200 });
     } catch (error) {
         console.error('Error in route handler:', error);

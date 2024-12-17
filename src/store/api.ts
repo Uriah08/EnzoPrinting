@@ -9,7 +9,7 @@ type Purchase = {
     status: string;
     new: boolean;
     user: {
-        image: string
+        image?: string
         email: string
     }
 }
@@ -223,6 +223,12 @@ export const api = createApi({
                 body: { id, status },
             }),
             invalidatesTags: ['Item']
+        }),
+        getOrder: build.query({
+            query: (id) => ({
+                url: `/api/purchase/${id}`,
+                method: 'GET'
+            })
         })
     })
 })
@@ -245,5 +251,6 @@ export const {
     usePurchaseMutation,
     useCreateQuoteMutation,
     useGetItemsPurchaseQuery,
-    useUpdateItemStatusMutation
+    useUpdateItemStatusMutation,
+    useLazyGetOrderQuery
 } = api

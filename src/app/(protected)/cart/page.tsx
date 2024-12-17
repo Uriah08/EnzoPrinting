@@ -92,6 +92,8 @@ const CartPage = () => {
                 const cartDetails = data.cart.map((cart) => ({
                     name: cart.product.name,
                     image: cart.product.image,
+                    description: cart.description,
+                    facebook: cart.facebook,
                     quantity: Number(cart.quantity).toString(),
                     price: (Number(cart.quantity) * Number(cart.product.price)).toString(),
                 }));
@@ -121,6 +123,8 @@ const CartPage = () => {
                     .map((cart) => ({
                         name: cart.product.name,
                         image: cart.product.image,
+                        description: cart.description,
+                        facebook: cart.facebook,
                         quantity: Number(cart.quantity).toString(),
                         price: (Number(cart.quantity) * Number(cart.product.price)).toString(),
                     }));

@@ -104,13 +104,15 @@ model Purchase {
 }
 
 model CartItem {
-  id         String   @id @default(cuid())
-  name       String
-  image      String
-  quantity   String
-  price      String
-  purchaseId String   
-  purchase   Purchase    @relation(fields: [purchaseId], references: [id])
+  id          String   @id @default(cuid())
+  name        String
+  image       String
+  quantity    String
+  description String?
+  facebook    String?
+  price       String
+  purchaseId  String   
+  purchase    Purchase    @relation(fields: [purchaseId], references: [id])
 }
 
 model Quote {
