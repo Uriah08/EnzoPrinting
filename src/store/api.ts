@@ -1,5 +1,22 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Product, Purchase } from '@prisma/client';
+import { Product } from '@prisma/client';
+
+type Purchase = {
+    id: string;
+    cartTotal: string;
+    userId: string;
+    createdAt: Date;
+    status: string;
+    new: boolean;
+    user: {
+        image: string
+        email: string
+    }
+}
+
+type PurchaseResponse = {
+    items: Purchase[];
+}
 
 type ProductResponse = {
     product: Product[];
@@ -46,7 +63,7 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_URL
     }),
-    tagTypes: ['Feedback','Product', 'Cart'],
+    tagTypes: ['Feedback','Product', 'Cart','Item'],
     endpoints: (build) => ({
         createUser: build.mutation({
             query: (userData) => ({
@@ -192,11 +209,20 @@ export const api = createApi({
                 }
             })
         }),
-        getItemsPurchase: build.query<Purchase[], void>({
+        getItemsPurchase: build.query<PurchaseResponse, void>({
             query: () => ({
                 url: '/api/purchase',
                 method: 'GET'
-            })
+            }),
+            providesTags: ['Item']
+        }),
+        updateItemStatus: build.mutation({
+            query: ({ id, status }) => ({
+                url: `/api/purchase`,
+                method: 'PATCH',
+                body: { id, status },
+            }),
+            invalidatesTags: ['Item']
         })
     })
 })
@@ -218,5 +244,6 @@ export const {
     useDeleteAllCartMutation,
     usePurchaseMutation,
     useCreateQuoteMutation,
-    useGetItemsPurchaseQuery
+    useGetItemsPurchaseQuery,
+    useUpdateItemStatusMutation
 } = api
