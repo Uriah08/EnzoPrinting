@@ -46,6 +46,9 @@ export async function POST(req:Request){
 export async function GET(){
     try{
         const items = await prisma.purchase.findMany({
+            where:{
+                transaction: 'pending'
+            },
             include: {
                 user: {
                     select: {

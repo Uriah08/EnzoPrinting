@@ -8,6 +8,7 @@ type Purchase = {
     createdAt: Date;
     status: string;
     new: boolean;
+    transaction: string
     user: {
         image?: string
         email: string
@@ -229,6 +230,14 @@ export const api = createApi({
                 url: `/api/purchase/${id}`,
                 method: 'GET'
             })
+        }),
+        updatePurchaseTransaction: build.mutation({
+            query: ({id,transaction}) => ({
+                url: `/api/purchase/transaction`,
+                method: 'PATCH',
+                body: {id, transaction}
+            }),
+            invalidatesTags: ['Item']
         })
     })
 })
@@ -252,5 +261,6 @@ export const {
     useCreateQuoteMutation,
     useGetItemsPurchaseQuery,
     useUpdateItemStatusMutation,
-    useLazyGetOrderQuery
+    useLazyGetOrderQuery,
+    useUpdatePurchaseTransactionMutation
 } = api

@@ -24,7 +24,7 @@ const AdminPage = () => {
     setOpenSidebar(!openSidebar)
   }
 
-  const [ active, setActive ] = useState('Orders');
+  const [ active, setActive ] = useState('Transactions');
   React.useEffect(() => {
     if (status === 'authenticated' && session?.user?.role !== 'admin') {
       router.push('/');

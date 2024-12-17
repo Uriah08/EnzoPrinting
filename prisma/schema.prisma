@@ -93,14 +93,15 @@ model Product {
 }
 
 model Purchase {
-  id         String      @id @default(cuid())
-  cartTotal  String
-  userId     String      
-  user       User        @relation(fields: [userId], references: [id])
-  createdAt  DateTime    @default(now())
-  status     String      @default("To Do")
-  new        Boolean     @default(true)
-  items      CartItem[] 
+  id          String      @id @default(cuid())
+  cartTotal   String
+  userId      String      
+  user        User        @relation(fields: [userId], references: [id])
+  createdAt   DateTime    @default(now())
+  status      String      @default("To Do")
+  new         Boolean     @default(true)
+  transaction String     @default("pending")
+  items       CartItem[] 
 }
 
 model CartItem {
@@ -124,3 +125,4 @@ model Quote {
   message    String
   createdAt  DateTime @default(now())
 }
+
