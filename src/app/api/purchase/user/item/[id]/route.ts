@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function POST(req:Request, {params}: {params: {id: string}}) {
-    const { id } = await params
+export async function POST(req:Request) {
+    const url = new URL(req.url)
+    const id = url.pathname.split("/").pop();
     try {
         await prisma.purchase.update({
             where: {
@@ -20,8 +21,9 @@ export async function POST(req:Request, {params}: {params: {id: string}}) {
     }
 }
 
-export async function GET(req:Request, {params}: {params: {id: string}}) {
-    const { id } = await params
+export async function GET(req:Request) {
+    const url = new URL(req.url)
+    const id = url.pathname.split("/").pop();
     try {
         const items = await prisma.purchase.findMany({
             where: {

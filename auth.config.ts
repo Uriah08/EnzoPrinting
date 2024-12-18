@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from 'next-auth'
 
 export default {
-    providers: []
+    providers: [],
+    secret: process.env.AUTH_SECRET,
 } satisfies NextAuthConfig

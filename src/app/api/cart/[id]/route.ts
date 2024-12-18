@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET(req: Request, { params } : { params : { id: string }}) {
-    const { id } = await params
+export async function GET(req: Request) {
+  const url = new URL(req.url)
+  const id = url.pathname.split("/").pop();
     try {
-        
         const cart = await prisma.cart.findMany({
             where: {
                 userId: id
@@ -29,8 +29,9 @@ export async function GET(req: Request, { params } : { params : { id: string }})
     }
 }
 
-export async function DELETE(req: Request,{params} : {params: {id: string}}) {
-  const { id } = await params
+export async function DELETE(req: Request) {
+  const url = new URL(req.url)
+    const id = url.pathname.split("/").pop();
   try {
     await prisma.cart.delete({
       where: {

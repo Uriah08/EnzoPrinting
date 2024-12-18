@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET(req: Request, { params }: { params: { transaction: string}}){
-    const { transaction } = await params
+export async function GET(req: Request){
+    const url = new URL(req.url)
+    const transaction = url.pathname.split("/").pop();
     try{
         
         const items = await prisma.purchase.findMany({

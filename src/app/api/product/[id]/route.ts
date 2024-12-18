@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function DELETE(req: Request, { params }: { params: { id: string }}) {
-    const { id } = await params
-
+export async function DELETE(req: Request) {
+    const url = new URL(req.url)
+    const id = url.pathname.split("/").pop();
     try {
         if(!id) {
             return NextResponse.json({ message: 'Invalid request', success: false }, { status: 400 });
