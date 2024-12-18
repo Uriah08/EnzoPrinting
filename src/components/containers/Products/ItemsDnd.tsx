@@ -27,7 +27,7 @@ const ItemsDnd = () => {
     
       const backend = isMobileDevice() ? TouchBackend : HTML5Backend;
       
-      const { data, isLoading } = useGetItemsPurchaseQuery()
+      const { data, isLoading } = useGetItemsPurchaseQuery("pending")
 
       const [updateItemStatus] = useUpdateItemStatusMutation()
 

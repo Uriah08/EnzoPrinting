@@ -210,10 +210,10 @@ export const api = createApi({
                 }
             })
         }),
-        getItemsPurchase: build.query<PurchaseResponse, void>({
-            query: () => ({
-                url: '/api/purchase',
-                method: 'GET'
+        getItemsPurchase: build.query<PurchaseResponse, string>({
+            query: (transaction) => ({
+                url: `/api/purchase/transaction/${transaction}`,
+                method: 'GET',
             }),
             providesTags: ['Item']
         }),

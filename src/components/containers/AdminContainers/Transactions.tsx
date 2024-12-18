@@ -1,16 +1,49 @@
+"use client"
+
 import { Session } from 'next-auth'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { DataTable } from './Table/data-table'
-import { columns, Payment } from './Table/columns'
+import { columns } from './Table/columns'
+import { useGetItemsPurchaseQuery } from '@/store/api'
+import LoadingSpinner from '@/components/ui/loading'
 
-const data: Payment[] = [
-  { id: "1", amount: 100, status: "success", email: "test@example.com" },
-  { id: "2", amount: 200, status: "pending", email: "test2@example.com" },
-]
+type Purchase = {
+  id: string;
+  cartTotal: string;
+  userId: string;
+  createdAt: Date;
+  status: string;
+  new: boolean;
+  transaction: string
+  user: {
+      image?: string
+      email: string
+  }
+}
 
 const Transactions = ({ session }: {session?: Session | null}) => {
+
+  const { data: finishedData = { items: [] }, isLoading: finishedLoading } = useGetItemsPurchaseQuery("history")
+  const { data: cancelledData = { items: [] }, isLoading: cancelledLoading } = useGetItemsPurchaseQuery("cancelled")
+  
+  const [data, setData] = useState<Purchase[]>([])
+  const [active, setActive] = useState('history')
+  useEffect(() => {
+    if (!finishedLoading && active === 'history') {
+      setData(finishedData.items);
+    }
+  }, [finishedLoading, finishedData, active]);
+  
+  useEffect(() => {
+    if (!cancelledLoading && active === 'cancelled') {
+      setData(cancelledData.items);
+    }
+  }, [cancelledLoading, cancelledData, active]);
+
+  console.log(data);
+  
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
@@ -34,7 +67,15 @@ const Transactions = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <DataTable columns={columns} data={data}/>
+      <div className='px-5 py-3 rounded-lg w-full shadow-lg bg-[#f5f5f5] flex gap-5'>
+        <h1 onClick={() => setActive('history')} className={`w-1/2 text-center text-xl p-1 cursor-pointer font-semibold ${active === 'history' ? 'text-[#f5f5f5] bg-main rounded-lg':''} `}>Finished</h1>
+        <h1 onClick={() => setActive('cancelled')} className={`w-1/2 text-center text-xl p-1 cursor-pointer font-semibold ${active === 'cancelled' ? 'text-[#f5f5f5] bg-main rounded-lg':''}`}>Cancelled</h1>
+      </div>
+      {finishedLoading || cancelledLoading ? (
+        <LoadingSpinner fit/>
+      ) : (
+        <DataTable columns={columns} data={data}/>
+      )}
     </div>
   )
 }
