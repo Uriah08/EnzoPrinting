@@ -1,5 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Product } from '@prisma/client';
+
+type Product = {
+    status: string;
+    id: string;
+    image: string;
+    name: string;
+    description: string;
+    quantity: string
+    price: string;
+    category: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
 
 type Purchase = {
     id: string;
@@ -8,7 +20,9 @@ type Purchase = {
     createdAt: Date;
     status: string;
     new: boolean;
+    received: boolean
     transaction: string
+    items: Product[]
     user: {
         image?: string
         email: string
@@ -238,6 +252,20 @@ export const api = createApi({
                 body: {id, transaction}
             }),
             invalidatesTags: ['Item']
+        }),
+        getUserOrder: build.query<PurchaseResponse, string>({
+            query: (id) => ({
+                url: `/api/purchase/user/${id}`,
+                method: 'GET'
+            }),
+            providesTags: ['Item']
+        }),
+        updateOrderReceived: build.mutation({
+            query: (id) => ({
+                url: `/api/purchase/user/item/${id}`,
+                method: 'POST'
+            }),
+            invalidatesTags: ['Item']
         })
     })
 })
@@ -262,5 +290,7 @@ export const {
     useGetItemsPurchaseQuery,
     useUpdateItemStatusMutation,
     useLazyGetOrderQuery,
-    useUpdatePurchaseTransactionMutation
+    useUpdatePurchaseTransactionMutation,
+    useGetUserOrderQuery,
+    useUpdateOrderReceivedMutation
 } = api

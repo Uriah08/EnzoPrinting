@@ -101,6 +101,7 @@ model Purchase {
   status      String      @default("To Do")
   new         Boolean     @default(true)
   transaction String     @default("pending")
+  received    Boolean    @default(false)
   items       CartItem[] 
 }
 
