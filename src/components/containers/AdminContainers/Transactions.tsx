@@ -5,17 +5,19 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { DataTable } from './Table/data-table'
-import { columns } from './Table/columns'
+import { purchaseColumns } from './Table/columns'
 import { useGetItemsPurchaseQuery } from '@/store/api'
 import LoadingSpinner from '@/components/ui/loading'
+import { format } from 'date-fns'
 
 type Purchase = {
   id: string;
   cartTotal: string;
   userId: string;
-  createdAt: Date;
+  createdAt: Date | string;
   status: string;
   new: boolean;
+  received: boolean
   transaction: string
   user: {
       image?: string
@@ -32,17 +34,23 @@ const Transactions = ({ session }: {session?: Session | null}) => {
   const [active, setActive] = useState('history')
   useEffect(() => {
     if (!finishedLoading && active === 'history') {
-      setData(finishedData.items);
+      const formattedData = finishedData.items.map(item => ({
+        ...item,
+        createdAt: format(new Date(item.createdAt), 'MMM d, yyyy'),
+      }));
+      setData(formattedData);
     }
   }, [finishedLoading, finishedData, active]);
   
   useEffect(() => {
     if (!cancelledLoading && active === 'cancelled') {
-      setData(cancelledData.items);
+      const formattedData = cancelledData.items.map(item => ({
+        ...item,
+        createdAt: format(new Date(item.createdAt), 'MMM d, yyyy'),
+      }));
+      setData(formattedData);
     }
   }, [cancelledLoading, cancelledData, active]);
-
-  console.log(data);
   
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
@@ -74,7 +82,7 @@ const Transactions = ({ session }: {session?: Session | null}) => {
       {finishedLoading || cancelledLoading ? (
         <LoadingSpinner fit/>
       ) : (
-        <DataTable columns={columns} data={data}/>
+        <DataTable columns={purchaseColumns} data={data}/>
       )}
     </div>
   )

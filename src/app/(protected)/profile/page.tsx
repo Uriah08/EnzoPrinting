@@ -73,7 +73,7 @@ const ProfilePage = () => {
       <div className={`bg-[#dde0e9] w-full h-full p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Profile' && <Profile session={session}/>}
         {active === 'Orders' && <Orders session={session} status={status}/>}
-        {active === 'History' && <History session={session}/>}
+        {active === 'History' && <History session={session} status={status}/>}
         {active === 'Settings' && <Settings session={session}/>}
       </div>
     </div>

@@ -5,8 +5,12 @@ import React from 'react'
 import { useGetUserOrderQuery, useUpdateOrderReceivedMutation } from '@/store/api'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const Orders = ({ session, status }: {session?: Session | null, status: string}) => {
+
+  const { toast } = useToast()
 
   const { data, isLoading: userOrderLoading } = useGetUserOrderQuery(session?.user?.id ?? '', {
     skip: status !== "authenticated" || !session?.user?.id,
@@ -20,8 +24,19 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
     console.log(id)
     try {
       const response = await updateOrderReceived(id).unwrap()
-    }catch (error) {
-      console.log(error)
+      if(!response.success) {
+        throw new Error(response.message || 'Unknown Error Occured')
+      }
+      toast({
+        title: 'You received the item',
+        description: 'Order marked as received'
+      })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }catch (error: any) {
+      toast({
+        title: 'Update Failed!',
+        description: error.data.message
+      })
     }
   }
   
@@ -53,35 +68,44 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
       <div className='h-full w-2/3 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col p-5 gap-5'>
       <h1 className='font-semibold text-lg text-zinc-800'>Your Orders Status</h1>
       <div className='flex flex-col gap-5 overflow-auto'>
-        {items.map((order) => (
-          <div key={order.id} className='py-3 flex flex-col shadow-md px-2'>
-            <div className='flex justify-between'>
-            <h1 className={`px-3 py-1 w-fit rounded-full text-xs text-[#f5f5f5] ${order.status === 'To Do' ? 'bg-main' : order.status === 'In Progress' ? 'bg-yellow-600' : order.status === 'Finished' ? 'bg-green-600' : 'bg-red-600'}`}>
-              {order.status}
-            </h1>
-            <h1 className='text-xs text-zinc-500'>{format(new Date(order.createdAt), "MMM d, yyyy")}</h1>
-            </div>
-            <div className='flex flex-col gap-2 mt-2'>
-            {order.items.map((item) => (
-              <div key={item.id} className='flex w-full'>
-                <Image src={item.image} height={500} width={500} alt='item image' className='object-cover size-20'/>
-                <div className='flex flex-col justify-between px-3'>
-                  <div className='flex flex-col'>
-                    <h1 className='text-md font-medium text-zinc-800'>{item.name}</h1>
-                    <h1 className='text-sm text-zinc-500'>{item.quantity}Pcs</h1>
-                  </div>
-                  <h1>P {item.price}.00</h1>
-                </div>
+        {userOrderLoading ? (
+          <>
+          <Skeleton className='w-full h-[200px]'/>
+          <Skeleton className='w-full h-[200px]'/>
+          <Skeleton className='w-full h-[200px]'/>
+          <Skeleton className='w-full h-[200px]'/>
+          </>
+        ) : (
+          items.map((order) => (
+            <div key={order.id} className='py-3 flex flex-col shadow-md px-2'>
+              <div className='flex justify-between'>
+              <h1 className={`px-3 py-1 w-fit rounded-full text-xs text-[#f5f5f5] ${order.status === 'To Do' ? 'bg-main' : order.status === 'In Progress' ? 'bg-yellow-600' : order.status === 'Finished' ? 'bg-green-600' : 'bg-red-600'}`}>
+                {order.status}
+              </h1>
+              <h1 className='text-xs text-zinc-500'>{format(new Date(order.createdAt), "MMM d, yyyy")}</h1>
               </div>
-            ))}
-            <div className='flex flex-col mt-2'>
-              <h1 className='text-lg font-semibold'>Total: <span className='text-base font-normal'>P {order.cartTotal}.00</span></h1>
-              <Button onClick={() => handleReceivedUpdate(order.id)} className={`bg-main hover:bg-main2 ${order.status === 'Finished' ? '': 'hidden'}`}>Received</Button>
-              {order.status === 'Cancelled' && <Button onClick={() => handleReceivedUpdate(order.id)} className='bg-red-500 hover:bg-red-600'>Remove</Button>}
+              <div className='flex flex-col gap-2 mt-2'>
+              {order.items.map((item) => (
+                <div key={item.id} className='flex w-full'>
+                  <Image src={item.image} height={500} width={500} alt='item image' className='object-cover size-20'/>
+                  <div className='flex flex-col justify-between px-3'>
+                    <div className='flex flex-col'>
+                      <h1 className='text-md font-medium text-zinc-800'>{item.name}</h1>
+                      <h1 className='text-sm text-zinc-500'>{item.quantity}Pcs</h1>
+                    </div>
+                    <h1>P {item.price}.00</h1>
+                  </div>
+                </div>
+              ))}
+              <div className='flex flex-col mt-2'>
+                <h1 className='text-lg font-semibold'>Total: <span className='text-base font-normal'>P {order.cartTotal}.00</span></h1>
+                <Button disabled={orderReceived} onClick={() => handleReceivedUpdate(order.id)} className={`bg-main hover:bg-main2 ${order.status === 'Finished' ? '': 'hidden'}`}>Received</Button>
+                {order.status === 'Cancelled' && <Button disabled={orderReceived} onClick={() => handleReceivedUpdate(order.id)} className='bg-red-500 hover:bg-red-600'>Remove</Button>}
+              </div>
+              </div>
             </div>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       </div>
       <div className='h-full w-1/3 bg-[#f5f5f5] rounded-lg shadow-lg'></div>

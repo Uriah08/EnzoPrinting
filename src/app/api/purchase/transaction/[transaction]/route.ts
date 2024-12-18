@@ -4,7 +4,6 @@ import { prisma } from "@/lib/db";
 export async function GET(req: Request, { params }: { params: { transaction: string}}){
     const { transaction } = await params
     try{
-        console.log(transaction);
         
         const items = await prisma.purchase.findMany({
             where:{

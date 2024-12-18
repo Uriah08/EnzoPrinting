@@ -2,8 +2,25 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
+import { useGetUserHistoryQuery } from '@/store/api'
+import { historyColumns } from '../AdminContainers/Table/columns'
+import { DataTable } from '../AdminContainers/Table/data-table'
+import LoadingSpinner from '@/components/ui/loading'
+import { format } from 'date-fns';
 
-const History = ({ session }: {session?: Session | null}) => {
+const History = ({ session, status }: {session?: Session | null, status: string}) => {
+
+  const { data, isLoading } = useGetUserHistoryQuery(session?.user.id ?? '', {
+    skip: status !== "authenticated" || !session?.user?.id,
+  })
+
+  const items = data?.items || []
+
+  const formattedItems = items.map(item => ({
+    ...item,
+    createdAt: format(new Date(item.createdAt), 'MMM d, yyyy'),
+  }));
+
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
@@ -27,6 +44,11 @@ const History = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
+      {isLoading ? (
+        <LoadingSpinner fit/>
+      ) : (
+        <DataTable columns={historyColumns} data={formattedItems}/>
+      )}
     </div>
   )
 }

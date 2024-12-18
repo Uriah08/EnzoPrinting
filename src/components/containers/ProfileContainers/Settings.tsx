@@ -2,6 +2,8 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
+import { signOut } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
 
 const Settings = ({ session }: {session?: Session | null}) => {
   return (
@@ -27,6 +29,7 @@ const Settings = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
+      <Button onClick={() => signOut()}>Sign Out</Button>
     </div>
   )
 }

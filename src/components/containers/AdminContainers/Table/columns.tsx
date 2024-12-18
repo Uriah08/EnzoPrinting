@@ -6,9 +6,10 @@ type Purchase = {
   id: string;
   cartTotal: string;
   userId: string;
-  createdAt: Date;
+  createdAt: Date | string;
   status: string;
   new: boolean;
+  received: boolean;
   transaction: string
   user: {
       image?: string
@@ -16,7 +17,7 @@ type Purchase = {
   }
 }
 
-export const columns: ColumnDef<Purchase>[] = [
+export const purchaseColumns: ColumnDef<Purchase>[] = [
   {
     accessorKey: "user.email",
     header: "Email",
@@ -24,6 +25,10 @@ export const columns: ColumnDef<Purchase>[] = [
   {
     accessorKey: "status",
     header: "Transaction",
+  },
+  {
+    accessorKey: "received",
+    header: "Received"
   },
   {
     accessorKey: "createdAt",
@@ -34,3 +39,47 @@ export const columns: ColumnDef<Purchase>[] = [
     header: "Total",
   },
 ]
+
+type UserOrder = {
+  id: string,
+    image: string,
+    name: string,
+    price: string,
+    quantity: string,
+}
+
+type UserHistory = {
+  id: string;
+  cartTotal: string;
+  userId: string;
+  createdAt: Date | string;
+  status: string;
+  new: boolean;
+  received: boolean
+  transaction: string
+  items: UserOrder[]
+}
+
+export const historyColumns: ColumnDef<UserHistory>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "status",
+    header: "Transaction",
+  },
+  {
+    accessorKey: "received",
+    header: "Received"
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date",
+  },
+  {
+    accessorKey: "cartTotal",
+    header: "Total",
+  },
+]
+

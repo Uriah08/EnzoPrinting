@@ -266,6 +266,13 @@ export const api = createApi({
                 method: 'POST'
             }),
             invalidatesTags: ['Item']
+        }),
+        getUserHistory: build.query<PurchaseResponse, string>({
+            query: (id) => ({
+                url: `/api/purchase/user/item/${id}`,
+                method: 'GET'
+            }),
+            providesTags: ['Item']
         })
     })
 })
@@ -292,5 +299,6 @@ export const {
     useLazyGetOrderQuery,
     useUpdatePurchaseTransactionMutation,
     useGetUserOrderQuery,
-    useUpdateOrderReceivedMutation
+    useUpdateOrderReceivedMutation,
+    useGetUserHistoryQuery
 } = api
