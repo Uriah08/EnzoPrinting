@@ -29,6 +29,10 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
+      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
+        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'></div>
+        <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5'></div>
+      </div>
     </div>
   )
 }

@@ -84,7 +84,7 @@ const AdminPage = () => {
         </div>
       </div>
       </div>
-      <div className={`bg-[#dde0e9] w-full lg:h-[100vh] p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
+      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Dashboard' && <Dashboard session={session}/>}
         {active === 'Orders' && <Orders session={session}/>}
         {active === 'Products' && <Products session={session}/>}

@@ -50,10 +50,10 @@ const Transactions = ({ session }: {session?: Session | null}) => {
       }));
       setData(formattedData);
     }
-  }, [cancelledLoading, cancelledData, active]);
+  }, [cancelledLoading, cancelledData, active])
   
   return (
-    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
+    <div className='flex flex-col w-full h-[100vh] gap-5 overflow-x-hidden relative'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
         <div className='flex gap-3 items-center'>
@@ -77,15 +77,19 @@ const Transactions = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='px-5 py-3 rounded-lg w-full shadow-lg bg-[#f5f5f5] flex gap-5'>
+      <div className='w-full'>
+      <div className='px-5 py-3 mb-3 rounded-lg w-full shadow-lg bg-[#f5f5f5] flex gap-5'>
         <h1 onClick={() => setActive('history')} className={`w-1/2 text-center text-xl p-1 cursor-pointer font-semibold ${active === 'history' ? 'text-[#f5f5f5] bg-main rounded-lg':''} `}>Finished</h1>
         <h1 onClick={() => setActive('cancelled')} className={`w-1/2 text-center text-xl p-1 cursor-pointer font-semibold ${active === 'cancelled' ? 'text-[#f5f5f5] bg-main rounded-lg':''}`}>Cancelled</h1>
       </div>
+      <div>
       {finishedLoading || cancelledLoading ? (
         <LoadingSpinner fit/>
       ) : (
         <DataTable columns={purchaseColumns} data={data}/>
       )}
+      </div>
+      </div>
     </div>
   )
 }
