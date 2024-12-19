@@ -44,3 +44,40 @@ export async function GET(){
         return NextResponse.json({ message: 'Internal Server Error', success: false}, { status: 500 });
     }
 }
+
+export async function PATCH(req: Request) {
+    const body = await req.json()
+    try {
+        const { id, status } = body
+        if(!id) {
+            return NextResponse.json({ message: 'Invalid request', success: false }, { status: 400 });
+        }
+        const currentProduct = await prisma.product.findUnique({
+            where: { id },
+        });
+
+        if (status && !currentProduct?.highlight) {
+            const highlightedCount = await prisma.product.count({
+                where: { highlight: true },
+            });
+
+            if (highlightedCount >= 4) {
+                return NextResponse.json(
+                    { message: "Cannot highlight more than 4 products", success: false },
+                    { status: 400 }
+                );
+            }
+        }
+        
+        await prisma.product.update({
+            where: { id },
+            data: {
+                highlight: status,
+            }
+        })
+        return NextResponse.json({ message: 'Product Highlighted', success: true });
+    } catch (error) {
+        console.error('Error in route handler:', error);
+        return NextResponse.json({ message: 'Internal Server Error', success: false}, { status: 500 });
+    }
+}

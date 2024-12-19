@@ -9,6 +9,7 @@ type Product = {
     quantity: string
     price: string;
     category: string;
+    highlight: boolean
     createdAt: Date;
     updatedAt: Date;
 }
@@ -161,6 +162,21 @@ export const api = createApi({
             }),
             invalidatesTags: ['Product']
         }),
+        highlightProduct: build.mutation({
+            query: ({id, status}) => ({
+                url: `/api/product`,
+                method: 'PATCH',
+                body: {id, status},
+            }),
+            invalidatesTags: ['Product']
+        }),
+        getHighlightProduct: build.query<ProductResponse, void>({
+            query: () => ({
+                url: `/api/product/highlight`,
+                method: 'GET',
+            }),
+            providesTags: ['Product']
+        }),
         createCart: build.mutation({
             query: (cart) => ({
                 url: '/api/cart',
@@ -287,6 +303,8 @@ export const {
     useGetProductQuery,
     useDeleteProductMutation,
     useUpdateProductMutation,
+    useHighlightProductMutation,
+    useGetHighlightProductQuery,
     useCreateCartMutation,
     useGetCartQuery,
     useDeleteCartMutation,

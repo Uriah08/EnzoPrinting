@@ -3,7 +3,8 @@ export const publicRoutes = [
     '/api/login',
     '/api/users',
     '/product',
-    '/api/product'
+    '/api/product',
+    '/api/product/highlight'
 ]
 
 export const authRoutes = [
