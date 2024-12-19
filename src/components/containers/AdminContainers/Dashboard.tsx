@@ -11,9 +11,11 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
         <div className='flex gap-3 items-center'>
           <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Feedbacks</h1>
+          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
+          <h1 className='text-zinc-500'>/</h1>
+          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Dashboard</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Feedbacks</h1>
+        <h1 className='font-semibold text-lg text-zinc-800'>Dashboard</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>

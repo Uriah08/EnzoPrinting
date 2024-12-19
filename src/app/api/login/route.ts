@@ -2,7 +2,7 @@ import { loginSchema } from '@/schema'
 import { signIn } from '../../../../auth'
 
 import { NextResponse } from 'next/server';
-import { DEFAULT_LOGIN_REDIRECT } from '../../../../routes';
+// import { DEFAULT_LOGIN_REDIRECT } from '../../../../routes';
 
 import { AuthError } from 'next-auth';
 
@@ -22,7 +22,7 @@ export async function POST(req: Request){
   try {
     await signIn("credentials", {
       email, password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT
+      redirectTo: "/"
   })
   } catch (error) {
         if(error instanceof AuthError) {

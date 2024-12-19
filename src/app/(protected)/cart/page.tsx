@@ -175,7 +175,14 @@ const CartPage = () => {
   return (
     <div className='min-h-[100dvh] w-full p-5 bg-[#dde0e9] flex flex-col gap-5 overflow-y-auto'>
       <div className='bg-[#f5f5f5] py-3 px-5 rounded-lg items-center shadow-lg flex justify-between'>
-            <h1 className='text-xl sm:text-2xl font-bold text-zinc-800'>Your Cart</h1>
+      <div className='flex-col'>
+        <div className='flex gap-3 items-center'>
+          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+          <h1 className='text-zinc-500'>/</h1>
+          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Cart</h1>
+        </div>
+        <h1 className='font-semibold text-lg text-zinc-800'>{session?.user.name ? session.user.name[0].toUpperCase() + session.user.name.slice(1).toLowerCase() : ''}&apos;s Cart</h1>
+        </div>
 
             {!session ? (
                 <Link href={'/auth/sign-in'} className='cursor-pointer'>

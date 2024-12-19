@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
-import { Filter, Search } from 'lucide-react'
+import { Filter, MessageCircle, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 import { useGetFeedbackQuery, useDeleteFeedbackMutation, api } from '@/store/api'
@@ -50,11 +50,13 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
 
   
   return (
-    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
+    <div className='flex flex-col w-full gap-5 h-full '>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
         <div className='flex gap-3 items-center'>
           <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+          <h1 className='text-zinc-500'>/</h1>
+          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
           <h1 className='text-zinc-500'>/</h1>
           <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Feedbacks</h1>
         </div>
@@ -72,8 +74,8 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='w-full h-full flex flex-col lg:flex-row gap-5 overflow-y-hidden'>
-          <div className='lg:w-2/3 w-full max-h-[70vh] lg:max-h-[100vh] lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
+      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
+          <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
           <div className='w-full flex justify-between items-center'>
           <div className='w-fit flex items-center relative'>
             <Search size={20} className='absolute left-2 text-zinc-500'/>
@@ -81,7 +83,7 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
             </div>
             <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
           </div>
-          <div className='flex flex-col gap-3 mt-5 overflow-y-auto'>
+          <div className='flex flex-col gap-3 mt-5 overflow-y-auto custom-scroll-bar'>
             {isLoading ? (
             <>
             <div className='flex flex-col p-4 shadow-lg rounded-lg'>
@@ -151,7 +153,17 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
             }
           </div>
           </div>
-          <div className='lg:w-1/3 h-full lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg'></div>
+          <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5'>
+            <div className='bg-main w-full p-5 rounded-lg flex flex-col gap-5'>
+              <div className='flex gap-3 items-center'>
+              <MessageCircle size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main'/>
+              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Total Feedback</h1>
+              </div>
+              <div className='w-full'>
+              <h1 style={{ fontSize: "50px" }} className='font-bold text-[#f5f5f5]'>{feedbacks.length}</h1>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   )

@@ -15,6 +15,8 @@ const Orders = ({ session }: {session?: Session | null}) => {
         <div className='flex gap-3 items-center'>
           <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
+          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
+          <h1 className='text-zinc-500'>/</h1>
           <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Orders</h1>
         </div>
         <h1 className='font-semibold text-lg text-zinc-800'>Orders</h1>

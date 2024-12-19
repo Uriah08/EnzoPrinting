@@ -24,7 +24,7 @@ const AdminPage = () => {
     setOpenSidebar(!openSidebar)
   }
 
-  const [ active, setActive ] = useState('Transactions');
+  const [ active, setActive ] = useState('Feedbacks');
   React.useEffect(() => {
     if (status === 'authenticated' && session?.user?.role !== 'admin') {
       router.push('/');
@@ -61,9 +61,9 @@ const AdminPage = () => {
   }
 
   return (
-    <div className='h-dvh w-screen flex'>
-      
-      <div className={`flex z-20 flex-col justify-between ${openSidebar ? 'left-0':'-left-[295px]'} transition-all duration-500 ease-in-out top-0 absolute p-10 bg-[#f5f5f5] h-full`}>
+    <div className='h-full w-screen flex overflow-y-auto'>
+      <div className='fixed h-full z-20'>
+      <div className={`flex relative h-full flex-col justify-between ${openSidebar ? 'left-0':'-left-[295px]'} transition-all duration-500 ease-in-out top-0 absolute p-10 bg-[#f5f5f5] h-full`}>
         <div className='h-full flex flex-col items-center'>
           <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
           <div className='flex flex-col gap-5 w-full mt-10'>
@@ -83,7 +83,8 @@ const AdminPage = () => {
           <button className='text-main bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm'>Contact Me</button>
         </div>
       </div>
-      <div className={`bg-[#dde0e9] w-full h-full p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
+      </div>
+      <div className={`bg-[#dde0e9] w-full lg:h-[100vh] p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Dashboard' && <Dashboard session={session}/>}
         {active === 'Orders' && <Orders session={session}/>}
         {active === 'Products' && <Products session={session}/>}

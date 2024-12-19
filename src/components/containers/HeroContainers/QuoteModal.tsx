@@ -108,10 +108,10 @@ const QuoteModal = () => {
             REQUEST A QUOTE
         </div>
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined} className='!w-[1000px]'>
-        <DialogTitle className="text-lg md:text-2xl text-neutral-600 font-bold text-center mb-8">
+      <DialogContent aria-describedby={undefined}>
+        <DialogTitle className="text-lg md:text-2xl text-neutral-600 font-bold text-center sm:mb-8">
           Request your{" "}
-              <span className="px-1 py-0.5 rounded-md bg-gray-100 border border-gray-200">
+              <span className="px-1 sm:py-0.5 rounded-md bg-gray-100 border border-gray-200">
                 Quote
               </span>{" "}
               now! 📚
@@ -145,8 +145,8 @@ const QuoteModal = () => {
                 </motion.div>
               ))}
             </div>
-            <div className="py-10 flex flex-wrap gap-x-4 gap-y-6 items-start justify-start max-w-sm mx-auto">
-              <div className="flex  items-center justify-center">
+            <div className="py-2 sm:py-10 flex flex-wrap gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-6 items-start justify-start max-w-sm mx-auto">
+              <div className="flex items-center justify-center">
                 <GalleryVerticalEnd className="mr-1 text-neutral-700 h-4 w-4" />
                 <span className="text-neutral-700 text-sm">
                   60+ over customizable products
@@ -174,12 +174,12 @@ const QuoteModal = () => {
             <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="w-full flex flex-col">
-              <div className="flex gap-5 items-start w-full">
+              <div className="flex sm:flex-row flex-col sm:gap-5 items-start w-full">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-full sm:w-1/2">
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <div className="flex relative">
@@ -195,7 +195,7 @@ const QuoteModal = () => {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-full sm:w-1/2">
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <div className="flex relative w-full">
@@ -208,12 +208,12 @@ const QuoteModal = () => {
                 )}
               />
               </div>
-              <div className="flex gap-5 items-start w-full mt-3">
+              <div className="flex sm:flex-row flex-col sm:gap-5 items-start w-full mt-3">
               <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="flex flex-col w-1/2">
+            <FormItem className="flex flex-col w-full sm:w-1/2">
               <FormLabel className='pb-[5px] mt-[5px]'>Product Type</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -277,7 +277,7 @@ const QuoteModal = () => {
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-full sm:w-1/2">
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
                       <div className="flex relative w-full">

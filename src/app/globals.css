@@ -103,3 +103,20 @@
   -webkit-appearance: none;   /* Safari & Chrome */
   appearance: none;           /* Modern Browsers */
 }
+
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background: #bbbbbb;
+  border-radius: 4px;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}

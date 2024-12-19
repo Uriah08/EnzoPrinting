@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-[#f3f3f3] ${poppins.className} antialiased`}
+        className={`bg-[#f3f3f3] ${poppins.className} antialiased overflow-x-hidden`}
       >
         <StoreProvider>
         {children}
