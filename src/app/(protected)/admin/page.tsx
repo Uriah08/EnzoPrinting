@@ -62,8 +62,8 @@ const AdminPage = () => {
 
   return (
     <div className='h-full w-screen flex overflow-y-auto'>
-      <div className='fixed h-full z-20'>
-      <div className={`flex relative h-full flex-col justify-between ${openSidebar ? 'left-0':'-left-[295px]'} transition-all duration-500 ease-in-out top-0 absolute p-10 bg-[#f5f5f5] h-full`}>
+      <div className={`fixed h-full z-20 transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[295px]'}`}>
+      <div className={`flex relative flex-col justify-between top-0 p-10 bg-[#f5f5f5] h-full`}>
         <div className='h-full flex flex-col items-center'>
           <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
           <div className='flex flex-col gap-5 w-full mt-10'>
