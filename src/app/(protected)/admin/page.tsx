@@ -24,7 +24,7 @@ const AdminPage = () => {
     setOpenSidebar(!openSidebar)
   }
 
-  const [ active, setActive ] = useState('Products');
+  const [ active, setActive ] = useState('Dashboard');
   React.useEffect(() => {
     if (status === 'authenticated' && session?.user?.role !== 'admin') {
       router.push('/');

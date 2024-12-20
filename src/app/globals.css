@@ -121,3 +121,18 @@
 .custom-scroll-bar::-webkit-scrollbar-track {
   background: #e2e8f0;
 }
+
+.custom-scroll-bar2::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scroll-bar2::-webkit-scrollbar-thumb {
+  background: #d1dbec;
+  border-radius: 4px;
+}
+
+.custom-scroll-bar2::-webkit-scrollbar-thumb:hover {
+  background: #c6d2e7;
+}
+

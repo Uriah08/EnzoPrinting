@@ -9,7 +9,7 @@ import ItemsDnd from '../Products/ItemsDnd'
 const Orders = ({ session }: {session?: Session | null}) => {
 
   return (
-    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
+    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden overflow-y-auto'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
         <div className='flex gap-3 items-center'>

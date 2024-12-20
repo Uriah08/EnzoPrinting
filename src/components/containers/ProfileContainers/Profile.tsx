@@ -2,7 +2,9 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import { Album, ShoppingBag, HandCoins, ReceiptText } from 'lucide-react'
+import { Album, ShoppingBag, HandCoins, ReceiptText, LogOut } from 'lucide-react'
+import { WaveChart } from '@/components/charts/wave-chart'
+import { signOut } from 'next-auth/react'
 
 const Profile = ({ session }: {session?: Session | null}) => {
   return (
@@ -29,8 +31,53 @@ const Profile = ({ session }: {session?: Session | null}) => {
         }
       </div>
       <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
-        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'></div>
-        <div className='lg:w-1/3 overflow-hidden h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5'>
+        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
+        <WaveChart/>
+        <div className='flex gap-5 overflow-x-auto custom-scroll-bar2'>
+          <div className='bg-main bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+            <h1 className='text-main text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          </div>
+          <div className='bg-follow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+            <h1 className='text-follow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          </div>
+          <div className='bg-myYellow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+            <h1 className='text-myYellow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          </div>
+          <div className='bg-main bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+            <h1 className='text-main text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          </div>
+          <div className='bg-follow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+            <h1 className='text-follow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          </div>
+          <div className='bg-myYellow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+            <h1 className='text-myYellow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          </div>
+        </div>
+        <div className='flex lg:flex-row flex-col gap-5 w-full'>
+          <div className='lg:w-1/2 w-full flex flex-col'>
+          <div className='flex justify-between items-center'>
+            <div className='flex flex-col'>
+            <h1 className='text-zinc-800 text-lg font-semibold'>Browse History</h1>
+            <p className='text-sm text-zinc-400'>View your order history</p>
+            </div>
+          <h1 className='bg-main px-2 py-1 rounded-md text-[#f5f5f5]'>See All...</h1>
+          </div>
+          <div></div>
+          </div>
+          <div className='lg:w-1/2 w-full flex flex-col'>
+          <div className='flex justify-between items-center'>
+            <div className='flex flex-col'>
+            <h1 className='text-zinc-800 text-lg font-semibold'>Browse History</h1>
+            <p className='text-sm text-zinc-400'>View your order history</p>
+            </div>
+          <h1 className='bg-main px-2 py-1 rounded-md text-[#f5f5f5]'>See All...</h1>
+          </div>
+          <div></div>
+          </div>
+        </div>
+        </div>
+        <div className='lg:w-1/3 overflow-hidden h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col justify-between'>
+        <div className='flex flex-col'>
         <div className='flex gap-5 w-full'>
         <Image src={session?.user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-20 rounded-full'/>
         <div className='flex flex-col justify-between'>
@@ -47,6 +94,10 @@ const Profile = ({ session }: {session?: Session | null}) => {
             <Tags icon={ShoppingBag} label={"Your Orders"}/>
             <Tags icon={HandCoins} label={"Total Purchase"}/>
           </div>
+        </div>
+          <div className='self-end'>
+          <button onClick={() => signOut()} className='flex items-center gap-3 text-zinc-500 font-semibold'>Sign Out <LogOut className='size-8 text-zinc-400'/></button>
+        </div>
         </div>
       </div>
     </div>
