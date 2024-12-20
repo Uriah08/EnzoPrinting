@@ -181,7 +181,7 @@ const CartPage = () => {
           <h1 className='text-zinc-500'>/</h1>
           <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Cart</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>{session?.user.name ? session.user.name[0].toUpperCase() + session.user.name.slice(1).toLowerCase() : ''}&apos;s Cart</h1>
+        <h1 className='font-semibold text-lg text-zinc-800'>{session?.user.name ? session.user.name.split(' ')[0][0].toUpperCase() + session.user.name.split(' ')[0].slice(1).toLowerCase() : ''}&apos;s Cart</h1>
         </div>
 
             {!session ? (

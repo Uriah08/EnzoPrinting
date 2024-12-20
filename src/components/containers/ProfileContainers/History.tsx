@@ -22,7 +22,7 @@ const History = ({ session, status }: {session?: Session | null, status: string}
   }));
 
   return (
-    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
+    <div className='flex flex-col w-full gap-5 h-[100vh] overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
         <div className='flex gap-3 items-center'>
@@ -55,4 +55,4 @@ const History = ({ session, status }: {session?: Session | null, status: string}
   )
 }
 
-export default History
+export default History;

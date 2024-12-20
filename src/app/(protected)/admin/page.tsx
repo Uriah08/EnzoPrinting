@@ -106,4 +106,4 @@ const SideBar = ({ icon: Icon, label, active, onClick} : { icon: React.ElementTy
   )
 }
 
-export default AdminPage
+export default AdminPage;

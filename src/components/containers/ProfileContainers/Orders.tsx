@@ -7,6 +7,8 @@ import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { Skeleton } from '@/components/ui/skeleton'
+import { MessageCircle } from 'lucide-react'
+import { PieCharts } from '@/components/charts/profile-orders'
 
 const Orders = ({ session, status }: {session?: Session | null, status: string}) => {
 
@@ -19,6 +21,8 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
   const [updateOrderReceived, { isLoading: orderReceived}] = useUpdateOrderReceivedMutation()
 
   const items = data?.items || []
+
+  console.log(items);
 
   const handleReceivedUpdate = async (id: string) => {
     console.log(id)
@@ -66,10 +70,10 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
           </div>
         }
       </div>
-      <div className='h-[90vh] w-full flex gap-5 overflow-auto'>
-      <div className='h-full w-2/3 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col p-5 gap-5'>
+      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
+      <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
       <h1 className='font-semibold text-lg text-zinc-800'>Your Orders Status</h1>
-      <div className='flex flex-col gap-5 overflow-auto'>
+      <div className='flex flex-col gap-5 overflow-auto custom-scroll-bar'>
         {userOrderLoading ? (
           <>
           <Skeleton className='w-full h-[200px]'/>
@@ -110,7 +114,18 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
         )}
       </div>
       </div>
-      <div className='h-full w-1/3 bg-[#f5f5f5] rounded-lg shadow-lg'></div>
+      <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col'>
+      <div className='bg-main w-full p-5 rounded-lg flex flex-col gap-5 mb-5'>
+              <div className='flex gap-3 items-center'>
+              <MessageCircle size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main'/>
+              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Total Feedback</h1>
+              </div>
+              <div className='w-full'>
+              <h1 style={{ fontSize: "50px" }} className='font-bold text-[#f5f5f5]'>{items.length}</h1>
+              </div>
+            </div>
+            <PieCharts/>
+          </div>
       </div>
     </div>
   )

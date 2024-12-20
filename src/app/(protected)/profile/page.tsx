@@ -6,11 +6,10 @@ import { useSession } from 'next-auth/react'
 import LoadingSpinner from '@/components/ui/loading'
 import Image from 'next/image'
 
-import { ArrowLeftRight, ChevronLeft, Settings as SettingsIcon, ShoppingBag, User, Users } from 'lucide-react'
+import { ArrowLeftRight, ChevronLeft, ShoppingBag, User, Users } from 'lucide-react'
 import Profile from '@/components/containers/ProfileContainers/Profile'
 import Orders from '@/components/containers/ProfileContainers/Orders'
 import History from '@/components/containers/ProfileContainers/History'
-import Settings from '@/components/containers/ProfileContainers/Settings'
 
 const ProfilePage = () => {
   const { data: session, status} = useSession()
@@ -36,10 +35,6 @@ const ProfilePage = () => {
     {
       icon: ArrowLeftRight,
       label: 'History',
-    },
-    {
-      icon: SettingsIcon,
-      label: 'Settings',
     }
   ]
 
@@ -49,8 +44,9 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className='h-dvh w-screen flex'>
-      <div className={`flex z-20 flex-col justify-between ${openSidebar ? 'left-0':'-left-[295px]'} transition-all duration-500 ease-in-out top-0 absolute p-10 bg-[#f5f5f5] h-full`}>
+    <div className='w-screen flex h-full overflow-y-auto'>
+      <div className={`fixed h-full z-20 transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[295px]'}`}>
+      <div className={`flex relative flex-col justify-between top-0 p-10 bg-[#f5f5f5] h-full`}>
         <div className='h-full flex flex-col items-center'>
           <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
           <div className='flex flex-col gap-5 w-full mt-10'>
@@ -70,11 +66,11 @@ const ProfilePage = () => {
           <button className='text-main bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm'>Contact Me</button>
         </div>
       </div>
-      <div className={`bg-[#dde0e9] w-full h-full p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
+      </div>
+      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Profile' && <Profile session={session}/>}
         {active === 'Orders' && <Orders session={session} status={status}/>}
         {active === 'History' && <History session={session} status={status}/>}
-        {active === 'Settings' && <Settings session={session}/>}
       </div>
     </div>
   )

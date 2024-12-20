@@ -14,7 +14,7 @@ type Product = {
     updatedAt: Date;
 }
 
-type Purchase = {
+export type Purchase = {
     id: string;
     cartTotal: string;
     userId: string;

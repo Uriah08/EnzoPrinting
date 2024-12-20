@@ -2,6 +2,7 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
+import { Album, ShoppingBag, HandCoins, ReceiptText } from 'lucide-react'
 
 const Profile = ({ session }: {session?: Session | null}) => {
   return (
@@ -13,7 +14,7 @@ const Profile = ({ session }: {session?: Session | null}) => {
           <h1 className='text-zinc-500'>/</h1>
           <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Profile</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Profile</h1>
+        <h1 className='font-semibold text-lg text-zinc-800'>{session?.user.name ? session.user.name.split(' ')[0][0].toUpperCase() + session.user.name.split(' ')[0].slice(1).toLowerCase() : ''}&apos;s Profile</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
@@ -27,16 +28,43 @@ const Profile = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='flex gap-5 w-full h-full'>
-        <div className='w-2/3 bg-[#f5f5f5] p-5 rounded-lg shadow-lg h-full'></div>
-        <div className='w-1/3 bg-[#f5f5f5] px-5 py-10 rounded-lg shadow-lg h-full flex flex-col items-center'>
-          <Image src={session?.user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-20 rounded-full mx-auto'/>
-          <h1 className='text-2xl font-semibold text-zinc-800 mt-5'>{session?.user.name}</h1>
+      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
+        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'></div>
+        <div className='lg:w-1/3 overflow-hidden h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5'>
+        <div className='flex gap-5 w-full'>
+        <Image src={session?.user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-20 rounded-full'/>
+        <div className='flex flex-col justify-between'>
+          <h1 className='bg-main px-2 py-1 text-xs rounded-lg text-[#f5f5f5] w-fit'>{session?.user.role}</h1>
+          <div className='flex flex-col'>
+          <h1 className='text-2xl font-semibold text-zinc-800'>{session?.user.name}</h1>
           <h1 className='text-zinc-500'>{session?.user.email}</h1>
+          </div>
+        </div>
+        </div>
+          <div className='grid grid-cols-1 xl:grid-cols-2 md:grid-cols-2 lg:grid-cols-1 gap-5 w-full mt-20'>
+            <Tags icon={Album} label={"Browsed Items"}/>
+            <Tags icon={ReceiptText} label={"Order Count"}/>
+            <Tags icon={ShoppingBag} label={"Your Orders"}/>
+            <Tags icon={HandCoins} label={"Total Purchase"}/>
+          </div>
         </div>
       </div>
     </div>
   )
+}
+
+const Tags = ({ label, icon: Icon }: { label: string, icon: React.ElementType }) => {
+  return (
+    <div className='bg-main w-full p-5 rounded-lg flex flex-col gap-5'>
+      <div className='flex gap-3 items-center'>
+        <Icon size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
+        <h1 className='text-[#f5f5f5] text-xl font-semibold'>{label}</h1>
+      </div>
+      <div className='w-full'>
+        <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>1233</h1>
+      </div>
+    </div>
+  );
 }
 
 export default Profile
