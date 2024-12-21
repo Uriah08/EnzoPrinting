@@ -34,7 +34,7 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
+      <div className='w-full lg:h-full flex flex-col lg:flex-row gap-5 overflow-y-hidden'>
         <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5 overflow-y-auto custom-scroll-bar'>
           <div className='flex flex-wrap gap-5'>
           <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
@@ -95,8 +95,8 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           <RadialBarAdmin/>
 
           <div className='flex flex-col'>
-            <h1 className='text-zinc-800 text-xl font-semibold'>Highlighted Product</h1>
-            <h1 className='text-zinc-500 text-sm'>Featured for its popularity and exceptional value.</h1>
+            <h1 className='text-zinc-800 text-base font-semibold'>Highlighted Product</h1>
+            <h1 className='text-zinc-500 text-xs'>Featured for its popularity and exceptional value.</h1>
             <div className='flex flex-col mt-5 gap-3'>
               <div className='flex gap-3'>
                 <Image src={'/products/mugsample1.jpg'} width={500} height={500} alt='profile' className='size-20'/>
@@ -142,8 +142,8 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           </div>
 
           <div className='flex flex-col mt-7'>
-            <h1 className='text-zinc-800 text-xl font-semibold'>Top Buyer</h1>
-            <h1 className='text-zinc-500 text-sm'>Recognized for consistent purchases and unwavering loyalty.</h1>
+            <h1 className='text-zinc-800 text-base font-semibold'>Top Buyer</h1>
+            <h1 className='text-zinc-500 text-xs'>Recognized for consistent purchases and unwavering loyalty.</h1>
             <div className='flex flex-col mt-5 gap-3'>
               <div className='flex gap-3 items-center'>
                 <Image src={'/profile.png'} width={500} height={500} alt='profile' className='size-12 rounded-full'/>

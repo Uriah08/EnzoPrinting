@@ -9,10 +9,18 @@ import Service from "@/components/pages/Service";
 import LoadingSpinner from "@/components/ui/loading";
 
 import { useSession } from "next-auth/react";
+import React from "react";
 
 export default function Home() {
   const { data: session, status } = useSession();
 
+  React.useEffect(() => {
+    if (localStorage.getItem("reloaded") === "false") {
+      localStorage.setItem("reloaded", "true");
+      window.location.reload();
+    }
+  }, []);
+  
   return (
     <div className="w-full h-full">
       {status === "loading" ? (

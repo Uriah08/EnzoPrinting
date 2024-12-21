@@ -7,6 +7,13 @@ import { WaveChart } from '@/components/charts/wave-chart'
 import { signOut } from 'next-auth/react'
 
 const Profile = ({ session }: {session?: Session | null}) => {
+
+
+    const handleSignOut = () => {
+      localStorage.setItem("reloaded", "false");
+      signOut();
+    }
+
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
@@ -96,7 +103,7 @@ const Profile = ({ session }: {session?: Session | null}) => {
           </div>
         </div>
           <div className='self-end'>
-          <button onClick={() => signOut()} className='flex items-center gap-3 text-zinc-500 font-semibold'>Sign Out <LogOut className='size-8 text-zinc-400'/></button>
+          <button onClick={handleSignOut} className='flex items-center gap-3 text-zinc-500 font-semibold'>Sign Out <LogOut className='size-8 text-zinc-400'/></button>
         </div>
         </div>
       </div>

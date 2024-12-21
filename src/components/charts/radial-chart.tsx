@@ -36,7 +36,7 @@ export function RadialBarAdmin() {
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto w-full max-w-[250px]"
+          className="mx-auto aspect-square w-full max-w-[250px]"
         >
           <RadialBarChart
             data={chartData}

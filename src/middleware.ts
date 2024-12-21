@@ -27,7 +27,7 @@ export default auth((req) => {
     if (isAuthRoute) {
         if (isLoggedIn) {
             if (nextUrl.pathname === DEFAULT_LOGIN_REDIRECT) {
-                return NextResponse.next(); // Prevent redirect loop
+                return NextResponse.next();
             }
             return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }

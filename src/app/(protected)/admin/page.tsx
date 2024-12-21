@@ -1,36 +1,49 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import LoadingSpinner from '@/components/ui/loading'
 import Image from 'next/image'
 
-import { ArrowLeftRight, ChevronLeft, Gauge, MessageSquareDot, Shirt, ShoppingBag, Users } from 'lucide-react'
+import { ArrowLeftRight, ChevronLeft, Gauge, MessageSquareDot, ScrollText, Shirt, ShoppingBag, Users } from 'lucide-react'
 import Dashboard from '@/components/containers/AdminContainers/Dashboard'
 import Orders from '@/components/containers/AdminContainers/Orders'
 import Products from '@/components/containers/AdminContainers/Products'
 import Transactions from '@/components/containers/AdminContainers/Transactions'
 import Feedbacks from '@/components/containers/AdminContainers/Feedbacks'
+import Quotes from '@/components/containers/AdminContainers/Quotes'
 
 const AdminPage = () => {
   const { data: session, status} = useSession()
   const router = useRouter();
 
   const [openSidebar, setOpenSidebar] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const handleSidebar = () => {
     setOpenSidebar(!openSidebar)
   }
 
   const [ active, setActive ] = useState('Dashboard');
-  React.useEffect(() => {
-    if (status === 'authenticated' && session?.user?.role !== 'admin') {
-      router.push('/');
+  useEffect(() => {
+    if (status === "loading") {
+      setLoading(true);
+    } else if (status === "authenticated") {
+      if (session?.user?.role !== "admin") {
+        router.push("/");
+      } else {
+        setLoading(false);
+      }
+    } else if (status === "unauthenticated") {
+      router.push("/");
     }
   }, [status, session, router]);
-  if (status === 'loading') return <LoadingSpinner/>
+  if (loading) return <LoadingSpinner/>
+
+  console.log(session);
+  
 
   const adminNav = [
     {
@@ -44,6 +57,10 @@ const AdminPage = () => {
     {
       icon: Shirt,
       label: 'Products',
+    },
+    {
+      icon: ScrollText,
+      label: 'Quotes',
     },
     {
       icon: ArrowLeftRight,
@@ -88,6 +105,7 @@ const AdminPage = () => {
         {active === 'Dashboard' && <Dashboard session={session}/>}
         {active === 'Orders' && <Orders session={session}/>}
         {active === 'Products' && <Products session={session}/>}
+        {active === 'Quotes' && <Quotes session={session}/>}
         {active === 'Transactions' && <Transactions session={session}/>}
         {active === 'Feedbacks' && <Feedbacks session={session}/>}
       </div>

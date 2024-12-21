@@ -20,7 +20,7 @@ const ProfilePage = () => {
     setOpenSidebar(!openSidebar)
   }
 
-  const [ active, setActive ] = useState('Orders');
+  const [ active, setActive ] = useState('Profile');
   if (status === 'loading') return <LoadingSpinner/>
 
   const adminNav = [

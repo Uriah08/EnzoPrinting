@@ -1,12 +1,8 @@
 import NextAuth from "next-auth"
-import Google from 'next-auth/providers/google'
-import Credentials from 'next-auth/providers/credentials'
 import { prisma } from "@/lib/db"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 
-import bcryptjs from 'bcryptjs'
-
-import { findUserById, loginSchema } from "@/schema"
+import { findUserById } from "@/schema"
 
 import authConfig from "./auth.config"
  
@@ -38,29 +34,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     adapter: PrismaAdapter(prisma),
     session: { strategy: "jwt"},
-    providers: [
-        Google({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        }),
-        Credentials({
-            async authorize(credentials) {
-                const validatedFields = loginSchema.safeParse(credentials)
-
-                if(validatedFields.success) {
-                    const { email, password } = validatedFields.data;
-
-                    const user = await prisma.user.findUnique({ where: { email } });
-
-                    if(!user || !user.password) return null
-
-                    const passwordsMatch = await bcryptjs.compare(password, user.password)
-
-                    if(passwordsMatch) return user;
-                }
-                
-                return null
-            }
-        })
-    ],
 })

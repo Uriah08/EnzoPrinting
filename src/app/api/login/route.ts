@@ -24,6 +24,9 @@ export async function POST(req: Request){
       email, password,
       redirectTo: "/"
   })
+  return NextResponse.json(
+    { message: 'Success', success: true },
+    { status: 200 })
   } catch (error) {
         if(error instanceof AuthError) {
         switch (error.type) {
