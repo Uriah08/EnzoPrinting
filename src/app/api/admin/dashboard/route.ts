@@ -31,12 +31,68 @@ export async function GET() {
             return acc;
         }, {} as PurchaseStatusCounts);
 
+        const categoryCounts = await prisma.cartItem.groupBy({
+            by: ['category'],
+            _count: {
+                category: true,
+            },
+        });
+
+        const categoryCountMap = categoryCounts.reduce((acc, { category, _count }) => {
+            acc[category] = _count.category;
+            return acc;
+        }, {} as { [key: string]: number });
+
+          const usersWithPurchases = await prisma.user.findMany({
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+              purhcase: {
+                select: {
+                  items: {
+                    select: {
+                      price: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+      
+          const usersWithContribution = usersWithPurchases.map((user) => {
+            const totalContribution = user.purhcase.reduce((sum, purchase) => {
+              return (
+                sum +
+                purchase.items.reduce(
+                  (itemSum, item) => itemSum + parseFloat(item.price),
+                  0
+                )
+              );
+            }, 0);
+      
+            return {
+              userId: user.id,
+              name: user.name,
+              email: user.email,
+              image: user.image,
+              totalContribution,
+            };
+          });
+      
+          const sortedTopUsers = usersWithContribution
+            .sort((a, b) => b.totalContribution - a.totalContribution)
+            .slice(0, 3);
+
         return NextResponse.json({ data: {
             productCount,
             feedbackCount,
             quoteCount,
             purchaseCount,
-            purchaseStatus
+            purchaseStatus,
+            categoryCountMap,
+            topUsers: sortedTopUsers,
         }, message: 'Get Admin Dashboard', success: true}, { status: 200 });
     } catch (error) {
         console.error('Error in route handler:', error);

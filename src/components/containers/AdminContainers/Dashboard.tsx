@@ -7,12 +7,40 @@ import { PieCharts } from '@/components/charts/profile-orders'
 import { BarChartX } from '@/components/charts/bar-chart-x'
 import { BarChartSticks } from '@/components/charts/bar-chart-x-sticks'
 import { RadialBarAdmin } from '@/components/charts/radial-chart'
-import { useGetAdminDashboardQuery } from '@/store/api'
+import { useGetAdminDashboardQuery, useGetHighlightProductQuery } from '@/store/api'
 
 const Dashboard = ({ session }: {session?: Session | null}) => {
+
+  const [currentTime, setCurrentTime] = React.useState(new Date());
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer); 
+  }, []);
+
+  const formattedDate = currentTime.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+  const formattedTime = currentTime.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: undefined,
+    hour12: true,
+    weekday: "short",
+  });
+
   const { data, isLoading } = useGetAdminDashboardQuery()
-  const { purchaseStatus, productCount, feedbackCount, quoteCount, purchaseCount } = data?.data || {}
+  const { topUsers, categoryCountMap, purchaseStatus, productCount, feedbackCount, quoteCount, purchaseCount } = data?.data || {}
   const safePurchaseStatus = purchaseStatus || { "To Do": 0, "In Progress": 0, "Finished": 0, "Cancelled": 0 };
+  
+  const safeCategoryCountMap = categoryCountMap || { "bundle": 0, "mug": 0, "shirt": 0, "sticker": 0, "book": 0, "paper": 0, "other": 0, "ID" : 0, "keychain": 0 };
+  const { data: highlight } = useGetHighlightProductQuery()
+  const highlightProduct = highlight?.product || []
   
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
@@ -86,7 +114,17 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
             Finished={safePurchaseStatus["Finished"]}
             Cancelled={safePurchaseStatus["Cancelled"]}
           />
-            <BarChartX/>
+            <BarChartX 
+            mug={safeCategoryCountMap["mug"]}
+            paper={safeCategoryCountMap["paper"]} 
+            shirt={safeCategoryCountMap["shirt"]} 
+            book={safeCategoryCountMap["book"]} 
+            sticker={safeCategoryCountMap["sticker"]} 
+            keychain={safeCategoryCountMap["keychain"]} 
+            ID={safeCategoryCountMap["ID"]} 
+            bundle={safeCategoryCountMap["bundle"]} 
+            other={safeCategoryCountMap["other"]} 
+            />
           </div>
           <BarChartSticks/>
         </div>
@@ -97,97 +135,55 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
               <h1 className='text-[#f5f5f5] text-xl font-semibold'>Time</h1>
             </div>
             <div className='w-full my-5'>
-              <h1 className='text-center text-[#f5f5f5] text-xl font-semibold'>Jan 01, 2024</h1>
-              <h1 style={{ fontSize: "30px" }} className='font-bold text-[#f5f5f5] text-center'>Sun 12:30 AM</h1>
+              <h1 className='text-center text-[#f5f5f5] text-xl font-semibold'>{formattedDate}</h1>
+              <h1 style={{ fontSize: "30px" }} className='font-bold text-[#f5f5f5] text-center'>{formattedTime}</h1>
             </div>
           </div>
 
-          <RadialBarAdmin/>
+          <RadialBarAdmin
+          Finished={safePurchaseStatus["Finished"]}
+          Cancelled={safePurchaseStatus["Cancelled"]}
+          />
 
           <div className='flex flex-col'>
+            <h1 className='text-zinc-800 text-base font-semibold'>Top Buyer</h1>
+            <h1 className='text-zinc-500 text-xs'>Recognized for consistent purchases and unwavering loyalty.</h1>
+            <div className='flex flex-col mt-7 gap-5'>
+              {topUsers?.map((user) => (
+                <div key={user.userId} className='flex gap-3 items-center'>
+                <Image src={user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-12 rounded-full'/>
+                <div className='flex justify-between w-full'>
+                <div className='flex flex-col'>
+                  <h1 className='font-medium text-zinc-800'>{user.name}</h1>
+                  <h1 className='text-zinc-500 text-sm'>{user.email}</h1>
+                </div>
+                <h1 className='text-xs font-semibold text-zinc-800'>Total: <span className='font-normal'>P {user.totalContribution}.00</span></h1>
+                </div>
+              </div>
+              ))}
+            </div>
+          </div>
+
+
+          <div className='flex flex-col mt-7'>
             <h1 className='text-zinc-800 text-base font-semibold'>Highlighted Product</h1>
             <h1 className='text-zinc-500 text-xs'>Featured for its popularity and exceptional value.</h1>
             <div className='flex flex-col mt-5 gap-3'>
-              <div className='flex gap-3'>
-                <Image src={'/products/mugsample1.jpg'} width={500} height={500} alt='profile' className='size-20'/>
+              {highlightProduct.map((product) => (
+                <div key={product.id} className='flex gap-3'>
+                <Image src={product.image} width={500} height={500} alt='profile' className='object-cover max-w-20 w-full h-20'/>
                 <div className='flex justify-between w-full'>
                 <div className='flex flex-col'>
-                  <h1 className='text-xs bg-main py-[2px] px-3 rounded-full w-fit text-[#f5f5f5]'>book</h1>
-                  <h1 className='text-zinc-800 text-lg font-medium'>Quote Mug</h1>
+                  <h1 className='text-xs bg-main py-[2px] px-3 rounded-full w-fit text-[#f5f5f5]'>{product.category}</h1>
+                  <h1 className='text-zinc-800 text-lg font-medium'>{product.name}</h1>
                 </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Price: <span className='font-normal'>P 12342.00</span></h1>
-                </div>
-              </div>
-              <div className='flex gap-3'>
-                <Image src={'/products/mugsample1.jpg'} width={500} height={500} alt='profile' className='size-20'/>
-                <div className='flex justify-between w-full'>
-                <div className='flex flex-col'>
-                  <h1 className='text-xs bg-main py-[2px] px-3 rounded-full w-fit text-[#f5f5f5]'>book</h1>
-                  <h1 className='text-zinc-800 text-lg font-medium'>Quote Mug</h1>
-                </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Price: <span className='font-normal'>P 12342.00</span></h1>
+                <h1 className='text-xs font-semibold text-zinc-800'>Price: <span className='font-normal'>P {product.price}.00</span></h1>
                 </div>
               </div>
-              <div className='flex gap-3'>
-                <Image src={'/products/mugsample1.jpg'} width={500} height={500} alt='profile' className='size-20'/>
-                <div className='flex justify-between w-full'>
-                <div className='flex flex-col'>
-                  <h1 className='text-xs bg-main py-[2px] px-3 rounded-full w-fit text-[#f5f5f5]'>book</h1>
-                  <h1 className='text-zinc-800 text-lg font-medium'>Quote Mug</h1>
-                </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Price: <span className='font-normal'>P 12342.00</span></h1>
-                </div>
-              </div>
-              <div className='flex gap-3'>
-                <Image src={'/products/mugsample1.jpg'} width={500} height={500} alt='profile' className='size-20'/>
-                <div className='flex justify-between w-full'>
-                <div className='flex flex-col'>
-                  <h1 className='text-xs bg-main py-[2px] px-3 rounded-full w-fit text-[#f5f5f5]'>book</h1>
-                  <h1 className='text-zinc-800 text-lg font-medium'>Quote Mug</h1>
-                </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Price: <span className='font-normal'>P 12342.00</span></h1>
-                </div>
-              </div>
+              ))}
+
             </div>
           </div>
-
-          <div className='flex flex-col mt-7'>
-            <h1 className='text-zinc-800 text-base font-semibold'>Top Buyer</h1>
-            <h1 className='text-zinc-500 text-xs'>Recognized for consistent purchases and unwavering loyalty.</h1>
-            <div className='flex flex-col mt-5 gap-3'>
-              <div className='flex gap-3 items-center'>
-                <Image src={'/profile.png'} width={500} height={500} alt='profile' className='size-12 rounded-full'/>
-                <div className='flex justify-between w-full'>
-                <div className='flex flex-col'>
-                  <h1 className='font-medium text-zinc-800'>Username</h1>
-                  <h1 className='text-zinc-500 text-sm'>username@email.com</h1>
-                </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Total: <span className='font-normal'>P 12342.00</span></h1>
-                </div>
-              </div>
-              <div className='flex gap-3 items-center'>
-                <Image src={'/profile.png'} width={500} height={500} alt='profile' className='size-12 rounded-full'/>
-                <div className='flex justify-between w-full'>
-                <div className='flex flex-col'>
-                  <h1 className='font-medium text-zinc-800'>Username</h1>
-                  <h1 className='text-zinc-500 text-sm'>username@email.com</h1>
-                </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Total: <span className='font-normal'>P 12342.00</span></h1>
-                </div>
-              </div>
-              <div className='flex gap-3 items-center'>
-                <Image src={'/profile.png'} width={500} height={500} alt='profile' className='size-12 rounded-full'/>
-                <div className='flex justify-between w-full'>
-                <div className='flex flex-col'>
-                  <h1 className='font-medium text-zinc-800'>Username</h1>
-                  <h1 className='text-zinc-500 text-sm'>username@email.com</h1>
-                </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Total: <span className='font-normal'>P 12342.00</span></h1>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>

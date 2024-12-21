@@ -13,21 +13,21 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [{ month: "january", desktop: 1260, mobile: 570 }]
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    label: "Finished",
+    color: "#1A90F1",
   },
   mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    label: "Cancelled",
+    color: "#9c0202",
   },
 } satisfies ChartConfig
 
-export function RadialBarAdmin() {
-  const totalVisitors = chartData[0].desktop + chartData[0].mobile
+export function RadialBarAdmin({ Finished, Cancelled }: { Finished: number; Cancelled: number }) {
+  const chartData = [{ desktop: Finished, mobile: Cancelled }]
+  const totalVisitors = Finished + Cancelled
 
   return (
     <Card className="flex flex-col bg-[#f5f5f5] border-none shadow-none">
@@ -66,7 +66,7 @@ export function RadialBarAdmin() {
                           y={(viewBox.cy || 0) + 4}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Status
                         </tspan>
                       </text>
                     )

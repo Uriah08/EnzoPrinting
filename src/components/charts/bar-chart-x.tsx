@@ -10,46 +10,76 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  mug: {
+    label: "Mug",
+    color: "#1A90F1",
   },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
+  shirt: {
+    label: "Shirt",
+    color: "#F9C301", 
   },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
+  paper: {
+    label: "Paper",
+    color: "#DD127B", 
   },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
+  book: {
+    label: "Book",
+    color: "#9c0202", 
   },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
+  sticker: {
+    label: "Sticker",
+    color: "#0c8216",
+  },
+  keychain: {
+    label: "Keychain",
+    color: "#8A2BE2", 
+  },
+  ID: {
+    label: "ID",
+    color: "#FF6347",
+  },
+  bundle: {
+    label: "Bundle",
+    color: "#FF4500", 
   },
   other: {
     label: "Other",
-    color: "hsl(var(--chart-5))",
+    color: "#32CD32", 
   },
-} satisfies ChartConfig
+}
 
-export function BarChartX() {
+
+type PurchaseStatus = {
+  bundle: number
+  shirt: number
+  paper: number
+  book: number
+  ID: number
+  other: number
+  keychain: number
+  mug: number
+  sticker: number
+}
+export function BarChartX({ bundle, shirt, paper, book, ID, other, keychain, mug, sticker }: PurchaseStatus) {
+  
+  const chartData = [
+    { category: "mug", counts: mug, fill: chartConfig.mug.color },
+    { category: "shirt", counts: shirt, fill: chartConfig.shirt.color },
+    { category: "paper", counts: paper, fill: chartConfig.paper.color },
+    { category: "book", counts: book, fill: chartConfig.book.color },
+    { category: "sticker", counts: sticker, fill: chartConfig.sticker.color },
+    { category: "keychain", counts: keychain, fill: chartConfig.keychain.color },
+    { category: "ID", counts: ID, fill: chartConfig.ID.color },
+    { category: "bundle", counts: bundle, fill: chartConfig.bundle.color },
+    { category: "other", counts: other, fill: chartConfig.other.color },
+  ]
+  
   return (
     <Card className="bg-[#f5f5f5] border-none shadow-none">
       <CardHeader>
@@ -67,7 +97,7 @@ export function BarChartX() {
             }}
           >
             <YAxis
-              dataKey="browser"
+              dataKey="category"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -76,12 +106,12 @@ export function BarChartX() {
                 chartConfig[value as keyof typeof chartConfig]?.label
               }
             />
-            <XAxis dataKey="visitors" type="number" hide />
+            <XAxis dataKey="counts" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="visitors" layout="vertical" radius={5} />
+            <Bar dataKey="counts" layout="vertical" radius={5} />
           </BarChart>
         </ChartContainer>
       </CardContent>

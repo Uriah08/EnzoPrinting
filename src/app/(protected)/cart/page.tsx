@@ -94,6 +94,7 @@ const CartPage = () => {
                     image: cart.product.image,
                     description: cart.description,
                     facebook: cart.facebook,
+                    category: cart.product.category,
                     quantity: Number(cart.quantity).toString(),
                     price: (Number(cart.quantity) * Number(cart.product.price)).toString(),
                 }));

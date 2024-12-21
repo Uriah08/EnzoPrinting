@@ -78,6 +78,15 @@ type CartResponse = {
 type PurchaseStatusCounts = {
     [key: string]: number;
   };
+ 
+  type TopUser = {
+    userId: string;
+    name: string;
+    email: string;
+    image?: string;
+    totalContribution: number;
+  };
+
   
 type AdminDashboardResponse = {
     data: {
@@ -86,6 +95,8 @@ type AdminDashboardResponse = {
       quoteCount: number;
       purchaseCount: number;
       purchaseStatus: PurchaseStatusCounts;
+      categoryCountMap: { [key: string]: number };
+      topUsers: TopUser[];
     };
     message: string;
     success: boolean;
