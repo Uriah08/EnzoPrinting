@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import bcryptjs from 'bcryptjs'
 
 export const loginSchema = z.object({
     email: z.string().email().min(2).max(50),
@@ -38,9 +39,9 @@ export const registerSchema = z.object({
     return user
   }
 
-  // export const findUserRole = async (id: string) => {
-  //   const user = prisma
-  // }
+  export const passwordMatch = async (password: string, userPassword: string) => {
+    return await bcryptjs.compare(password, userPassword)
+  }
 
   export const productSchema = z.object({
     name: z.string().min(3).max(30),

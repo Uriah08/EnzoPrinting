@@ -42,9 +42,6 @@ const AdminPage = () => {
   }, [status, session, router]);
   if (loading) return <LoadingSpinner/>
 
-  console.log(session);
-  
-
   const adminNav = [
     {
       icon: Gauge,

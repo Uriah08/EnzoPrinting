@@ -74,12 +74,29 @@ type Cart = {
 type CartResponse = {
     cart: Cart[]
 }
+
+type PurchaseStatusCounts = {
+    [key: string]: number;
+  };
+  
+type AdminDashboardResponse = {
+    data: {
+      productCount: number;
+      feedbackCount: number;
+      quoteCount: number;
+      purchaseCount: number;
+      purchaseStatus: PurchaseStatusCounts;
+    };
+    message: string;
+    success: boolean;
+  };
+
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_URL
     }),
-    tagTypes: ['Feedback','Product', 'Cart','Item'],
+    tagTypes: ['Feedback','Product', 'Cart','Item','Quote'],
     endpoints: (build) => ({
         createUser: build.mutation({
             query: (userData) => ({
@@ -238,7 +255,8 @@ export const api = createApi({
                 headers: {
                     "Content-Type": "application/json"
                 }
-            })
+            }),
+            invalidatesTags: ['Quote']
         }),
         getItemsPurchase: build.query<PurchaseResponse, string>({
             query: (transaction) => ({
@@ -289,6 +307,13 @@ export const api = createApi({
                 method: 'GET'
             }),
             providesTags: ['Item']
+        }),
+        getAdminDashboard: build.query<AdminDashboardResponse, void>({
+            query: () => ({
+                url: '/api/admin/dashboard',
+                method: 'GET'
+            }),
+            providesTags: ['Feedback','Product', 'Cart','Item','Quote']
         })
     })
 })
@@ -318,5 +343,6 @@ export const {
     useUpdatePurchaseTransactionMutation,
     useGetUserOrderQuery,
     useUpdateOrderReceivedMutation,
-    useGetUserHistoryQuery
+    useGetUserHistoryQuery,
+    useGetAdminDashboardQuery
 } = api

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { Skeleton } from '@/components/ui/skeleton'
 import { MessageCircle } from 'lucide-react'
-import { PieCharts } from '@/components/charts/profile-orders'
+// import { PieCharts } from '@/components/charts/profile-orders'
 
 const Orders = ({ session, status }: {session?: Session | null, status: string}) => {
 
@@ -124,7 +124,7 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
               <h1 style={{ fontSize: "50px" }} className='font-bold text-[#f5f5f5]'>{items.length}</h1>
               </div>
             </div>
-            <PieCharts/>
+            {/* <PieCharts/> */}
           </div>
       </div>
     </div>

@@ -2,13 +2,18 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
-import { Clock, ShoppingBag } from 'lucide-react'
+import { Clock, MessageCircle, Package, ScrollText, ShoppingBag } from 'lucide-react'
 import { PieCharts } from '@/components/charts/profile-orders'
 import { BarChartX } from '@/components/charts/bar-chart-x'
 import { BarChartSticks } from '@/components/charts/bar-chart-x-sticks'
 import { RadialBarAdmin } from '@/components/charts/radial-chart'
+import { useGetAdminDashboardQuery } from '@/store/api'
 
 const Dashboard = ({ session }: {session?: Session | null}) => {
+  const { data, isLoading } = useGetAdminDashboardQuery()
+  const { purchaseStatus, productCount, feedbackCount, quoteCount, purchaseCount } = data?.data || {}
+  const safePurchaseStatus = purchaseStatus || { "To Do": 0, "In Progress": 0, "Finished": 0, "Cancelled": 0 };
+  
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
@@ -39,43 +44,48 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           <div className='flex flex-wrap gap-5'>
           <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
-              <ShoppingBag size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
-              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Product</h1>
+              <Package size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
+              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Products</h1>
             </div>
             <div className='w-full'>
-              <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>1233</h1>
+              <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 :  productCount}</h1>
             </div>
           </div>
           <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <ShoppingBag size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
-              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Product</h1>
+              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Orders</h1>
             </div>
             <div className='w-full'>
-              <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>1233</h1>
+              <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 : purchaseCount}</h1>
             </div>
           </div>
           <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
-              <ShoppingBag size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
-              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Product</h1>
+              <ScrollText size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
+              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Quotes</h1>
             </div>
             <div className='w-full'>
-              <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>1233</h1>
+              <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 : quoteCount}</h1>
             </div>
           </div>
           <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
-              <ShoppingBag size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
-              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Product</h1>
+              <MessageCircle size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
+              <h1 className='text-[#f5f5f5] text-xl font-semibold'>Feedbacks</h1>
             </div>
             <div className='w-full'>
-              <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>1233</h1>
+              <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 : feedbackCount}</h1>
             </div>
           </div>
           </div>
           <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
-            <PieCharts/>
+          <PieCharts
+            ToDo={safePurchaseStatus["To Do"]}
+            InProgress={safePurchaseStatus["In Progress"]}
+            Finished={safePurchaseStatus["Finished"]}
+            Cancelled={safePurchaseStatus["Cancelled"]}
+          />
             <BarChartX/>
           </div>
           <BarChartSticks/>

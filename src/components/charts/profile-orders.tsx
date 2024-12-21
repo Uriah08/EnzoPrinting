@@ -18,12 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { browser: "To Do", visitors: 275, fill: "#1A90F1" },
-  { browser: "In Progress", visitors: 200, fill: "#F9C301" },
-  { browser: "Finished", visitors: 287, fill: "#DD127B" },
-  { browser: "Cancelled", visitors: 173, fill: "#9c0202" },
-]
+
 
 const chartConfig = {
   visitors: {
@@ -51,15 +46,25 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-// interface PieChartsProps {
-//     items?: Purchase[];
-//     type?: string;  
-// }
+type PurchaseStatus = {
+  ToDo: number;
+  InProgress: number;
+  Finished: number;
+  Cancelled: number;
+}
 
-export function PieCharts() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
+export function PieCharts({ ToDo, InProgress, Finished, Cancelled }: PurchaseStatus) {
+  
+  const chartData = React.useMemo(() => {
+    return [
+      { status: "To Do", count: ToDo, fill: "#1A90F1" },
+      { status: "In Progress", count: InProgress, fill: "#F9C301" },
+      { status: "Finished", count: Finished, fill: "#DD127B" },
+      { status: "Cancelled", count: Cancelled, fill: "#9c0202" },
+    ];
+  }, [ToDo, Finished, InProgress, Cancelled]);
+
+  const totalVisitors = ToDo + InProgress + Finished + Cancelled
 
   return (
     <Card className="flex flex-col bg-[#f5f5f5] border-none shadow-none">
@@ -79,8 +84,8 @@ export function PieCharts() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="count"
+              nameKey="status"
               innerRadius={60}
               strokeWidth={5}
             >

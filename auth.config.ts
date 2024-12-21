@@ -1,8 +1,8 @@
 import type { NextAuthConfig } from 'next-auth'
 import Google from 'next-auth/providers/google'
 import Credentials from 'next-auth/providers/credentials'
-import bcryptjs from 'bcryptjs'
 import { prisma } from "@/lib/db"
+import { passwordMatch } from '@/schema'
 
 import { loginSchema } from '@/schema'
 
@@ -23,7 +23,7 @@ export default {
 
                     if(!user || !user.password) return null
 
-                    const passwordsMatch = await bcryptjs.compare(password, user.password)
+                    const passwordsMatch = await passwordMatch(password, user.password)
 
                     if(passwordsMatch) return user;
                 }

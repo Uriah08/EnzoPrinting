@@ -110,6 +110,7 @@ model CartItem {
   id          String   @id @default(cuid())
   name        String
   image       String
+  category    String
   quantity    String
   description String?
   facebook    String?
