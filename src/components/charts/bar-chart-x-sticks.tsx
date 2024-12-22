@@ -17,56 +17,41 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartDataPerMonth = [
-  { date: "Jan", desktop: 9507 },
-  { date: "Feb", desktop: 0 },
-  { date: "Mar", desktop: 0 },
-  { date: "Apr", desktop: 9507 },
-  { date: "May", desktop: 10123 },
-  { date: "Jun", desktop: 9763 },
-  { date: "Jul", desktop: 0 },
-  { date: "Aug", desktop: 0 },
-  { date: "Sep", desktop: 0 },
-  { date: "Oct", desktop: 0 },
-  { date: "Nov", desktop: 0 },
-  { date: "Dec", desktop: 0 },
-]
-
 const chartConfig = {
   views: {
-    label: "Page Views",
+    label: "Total Sales",
   },
-  desktop: {
-    label: "Total:",
+  order: {
+    label: "Sales",
     color: "#1A90F1",
   },
 } satisfies ChartConfig
 
-export function BarChartSticks() {
+export function BarChartSticks({ chartData }: { chartData: Array<{
+  date: string;
+  order: number;
+}>;}) {
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop")
+    React.useState<keyof typeof chartConfig>("order")
 
   const total = React.useMemo(
     () => ({
-      desktop: chartDataPerMonth.reduce(
-        (acc, curr) => acc + (curr.desktop > 0 ? curr.desktop : 0),
-        0
-      ),
+      order: chartData.reduce((acc, curr) => acc + curr.order, 0),
     }),
-    []
+    [chartData]
   )
 
   return (
     <Card className="bg-[#f5f5f5] border-none shadow-none">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Currently working on this</CardTitle>
+          <CardTitle>Your Whole Sales</CardTitle>
           <CardDescription>
-            Your whole year&apos;s sales page views at a glance
+            Total sales of your products
           </CardDescription>
         </div>
         <div className="flex">
-          {["desktop"].map((key) => {
+          {["order"].map((key) => {
             const chart = key as keyof typeof chartConfig
             return (
               <button
@@ -79,7 +64,7 @@ export function BarChartSticks() {
                   {chartConfig[chart].label}
                 </span>
                 <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
+                  ₱ {total[key as keyof typeof total].toLocaleString()}
                 </span>
               </button>
             )
@@ -93,7 +78,7 @@ export function BarChartSticks() {
         >
           <BarChart
             accessibilityLayer
-            data={chartDataPerMonth}
+            data={chartData}
             margin={{
               left: 12,
               right: 12,
@@ -106,14 +91,26 @@ export function BarChartSticks() {
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => value} // Display the month abbreviation (e.g., Jan, Feb)
+              tickFormatter={(value) => {
+                const date = new Date(value)
+                return date.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })
+              }}
             />
             <ChartTooltip
               content={
                 <ChartTooltipContent
                   className="w-[150px]"
                   nameKey="views"
-                  labelFormatter={(value) => value} // No need to format the date further
+                  labelFormatter={(value) => {
+                    return new Date(value).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  }}
                 />
               }
             />

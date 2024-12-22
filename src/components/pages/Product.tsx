@@ -5,33 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '../ui/button'
-
-const products = [
-    {
-        image:"/products/mugsample1.jpg",
-        title:"Quote Mug",
-        tag:"Mug",
-        description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut nemo modi quae quam tempora vel"
-    },
-    {
-        image:"/products/mugsample1.jpg",
-        title:"Quote Mug",
-        tag:"Mug",
-        description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut nemo modi quae quam tempora vel"
-    },
-    {
-        image:"/products/mugsample1.jpg",
-        title:"Quote Mug",
-        tag:"Mug",
-        description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut nemo modi quae quam tempora vel"
-    },
-    {
-        image:"/products/mugsample1.jpg",
-        title:"Quote Mug",
-        tag:"Mug",
-        description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut nemo modi quae quam tempora vel"
-    },
-]
+import { useGetHighlightProductQuery } from '@/store/api'
+import { Skeleton } from '../ui/skeleton'
 
 const testimonials = [
     {
@@ -49,6 +24,9 @@ const testimonials = [
 ]
 
 const Product = () => {
+
+    const { data, isLoading } = useGetHighlightProductQuery()
+    const products = data?.product || []
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -92,25 +70,37 @@ const Product = () => {
                 <Link href={'/product'} className='bg-main duration-200 transition-all hover:bg-main2 text-white px-5 py-2 rounded-lg'>View All</Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 rounded-sm overflow-hidden'>
-                {products.map((product, i) => (
-                    <div key={i} className='bg-[#f3f3f3] w-full flex'>
-                    <div className='w-1/2'>
-                    <Image src={product.image} width={300} height={300} alt='logo' className='object-cover h-full'/>
+                {isLoading ? (
+                    <>
+                    <Skeleton className='w-full h-[300px]'/>
+                    <Skeleton className='w-full h-[300px]'/>
+                    <Skeleton className='w-full h-[300px]'/>
+                    <Skeleton className='w-full h-[300px]'/>
+                    </>
+                    
+                ) : (
+                    products.map((product) => (
+                        <div key={product.id} className='bg-[#f3f3f3] w-full flex'>
+                        <div className='w-1/2'>
+                        <Image src={product.image} width={500} height={500} alt='logo' className='max-h-[300px] h-full object-cover'/>
+                        </div>
+                        <div className='w-1/2 flex flex-col p-3 h-full'>
+                            <h1 className='text-xl font-semibold'>
+                                {product.name}
+                            </h1>
+                            <h2 className='bg-main px-3 py-1 rounded-xl w-fit text-white font-light mt-2'>
+                            {product.category}
+                            </h2>
+                            <p className='text-sm text-zinc-600 font-light text-justify mt-5'>{product.description}</p>
+                            <Link href={'/product'} className='w-full'>
+                            <Button className='bg-main rounded-xl mt-5 font-light duration-200 transition-all hover:bg-main2 w-full'>
+                                Inquire
+                            </Button>
+                            </Link>
+                        </div>
                     </div>
-                    <div className='w-1/2 flex flex-col p-3 h-full'>
-                        <h1 className='text-xl font-semibold'>
-                            {product.title}
-                        </h1>
-                        <h2 className='bg-main px-3 py-1 rounded-xl w-fit text-white font-light mt-2'>
-                        {product.tag}
-                        </h2>
-                        <p className='text-sm text-zinc-600 font-light text-justify mt-5'>{product.description}</p>
-                        <Button className='bg-main rounded-xl mt-5 font-light duration-200 transition-all hover:bg-main2'>
-                            Inquire
-                        </Button>
-                    </div>
-                </div>
-                ))}
+                    ))
+                )}
             </div>
         </div>
         <div className='max-w-[1200px] flex flex-col w-full h-full p-5 sm:p-10 mb-20'>

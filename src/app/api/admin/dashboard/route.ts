@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { format } from "date-fns";
 
 type PurchaseStatusCounts = {
     [key: string]: number;
@@ -15,6 +16,26 @@ export async function GET() {
                 transaction: 'pending'
             }
         });
+
+        const purchases = await prisma.purchase.findMany({
+          select: {
+              createdAt: true,
+              cartTotal: true
+          }
+      });
+
+      const dailySummaryMap = new Map<string, number>();
+      
+              purchases.forEach(purchase => {
+              const formattedDate = format(purchase.createdAt, 'yyyy-MM-dd');
+              const currentTotal = dailySummaryMap.get(formattedDate) || 0;
+              dailySummaryMap.set(formattedDate, currentTotal + parseFloat(purchase.cartTotal));
+              });
+      
+              const dailySummary = Array.from(dailySummaryMap, ([date, order]) => ({
+              date,
+              order
+              }));
 
         const purchaseStatusCounts = await prisma.purchase.groupBy({
             by: ['status'],
@@ -86,6 +107,7 @@ export async function GET() {
             .slice(0, 3);
 
         return NextResponse.json({ data: {
+            dailySummary,
             productCount,
             feedbackCount,
             quoteCount,

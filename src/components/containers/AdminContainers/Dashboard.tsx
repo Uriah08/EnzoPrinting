@@ -35,12 +35,13 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
   });
 
   const { data, isLoading } = useGetAdminDashboardQuery()
-  const { topUsers, categoryCountMap, purchaseStatus, productCount, feedbackCount, quoteCount, purchaseCount } = data?.data || {}
+  const { dailySummary, topUsers, categoryCountMap, purchaseStatus, productCount, feedbackCount, quoteCount, purchaseCount } = data?.data || {}
   const safePurchaseStatus = purchaseStatus || { "To Do": 0, "In Progress": 0, "Finished": 0, "Cancelled": 0 };
   
   const safeCategoryCountMap = categoryCountMap || { "bundle": 0, "mug": 0, "shirt": 0, "sticker": 0, "book": 0, "paper": 0, "other": 0, "ID" : 0, "keychain": 0 };
   const { data: highlight } = useGetHighlightProductQuery()
   const highlightProduct = highlight?.product || []
+  const finalDailySummary = dailySummary ?? [];
   
   return (
     <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
@@ -126,7 +127,7 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
             other={safeCategoryCountMap["other"]} 
             />
           </div>
-          <BarChartSticks/>
+          <BarChartSticks chartData={finalDailySummary}/>
         </div>
         <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 overflow-y-auto custom-scroll-bar'>
         <div className='flex-1 bg-main p-5 rounded-lg flex flex-col gap-5 shadow-lg'>

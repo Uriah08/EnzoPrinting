@@ -2,13 +2,21 @@ import { Session } from 'next-auth'
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import { Album, ShoppingBag, HandCoins, ReceiptText, LogOut } from 'lucide-react'
+import { Album, ShoppingBag, HandCoins, LogOut, ShoppingCart } from 'lucide-react'
 import { WaveChart } from '@/components/charts/wave-chart'
 import { signOut } from 'next-auth/react'
+import { useGetUserDashboardQuery } from '@/store/api'
 
-const Profile = ({ session }: {session?: Session | null}) => {
+const Profile = ({ session, status }: {session?: Session | null, status: string}) => {
+    
+  const { data, isLoading } = useGetUserDashboardQuery(session?.user.id ?? '', {
+    skip: status !== "authenticated" || !session?.user?.id,
+  })
 
+  const { cartItemCount, pendingItemsCount, total, cart, dailySummary } = data?.data || {}
 
+  const finalDailySummary = dailySummary ?? [];
+  
     const handleSignOut = () => {
       localStorage.setItem("reloaded", "false");
       signOut();
@@ -38,48 +46,26 @@ const Profile = ({ session }: {session?: Session | null}) => {
         }
       </div>
       <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
-        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
-        <WaveChart/>
-        <div className='flex gap-5 overflow-x-auto custom-scroll-bar2'>
-          <div className='bg-main bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
+        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5 overflow-auto custom-scroll-bar'>
+        <WaveChart chartData={finalDailySummary}/>
+        <div className='flex gap-5 overflow-x-auto custom-scroll-bar2 flex-wrap'>
+          <div className='bg-main bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 flex-1 w-full'>
             <h1 className='text-main text-xl font-semibold'>Everything you need, printed to perfection.</h1>
           </div>
-          <div className='bg-follow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
-            <h1 className='text-follow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          <div className='bg-follow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 flex-1 w-full'>
+            <h1 className='text-follow text-xl font-semibold'>Sip in style, printed just for you.</h1>
           </div>
-          <div className='bg-myYellow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
-            <h1 className='text-myYellow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          <div className='bg-myYellow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 flex-1 w-full'>
+            <h1 className='text-myYellow text-xl font-semibold'>Wear your vibe, printed to perfection.</h1>
           </div>
-          <div className='bg-main bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
-            <h1 className='text-main text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          <div className='bg-main bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 flex-1 w-full'>
+            <h1 className='text-main text-xl font-semibold'>Your words, beautifully printed.</h1>
           </div>
-          <div className='bg-follow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
-            <h1 className='text-follow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
+          <div className='bg-follow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 flex-1 w-full'>
+            <h1 className='text-follow text-xl font-semibold'>Carry memories, printed in detail.</h1>
           </div>
-          <div className='bg-myYellow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 w-full'>
-            <h1 className='text-myYellow text-xl font-semibold'>Everything you need, printed to perfection.</h1>
-          </div>
-        </div>
-        <div className='flex lg:flex-row flex-col gap-5 w-full'>
-          <div className='lg:w-1/2 w-full flex flex-col'>
-          <div className='flex justify-between items-center'>
-            <div className='flex flex-col'>
-            <h1 className='text-zinc-800 text-lg font-semibold'>Browse History</h1>
-            <p className='text-sm text-zinc-400'>View your order history</p>
-            </div>
-          <h1 className='bg-main px-2 py-1 rounded-md text-[#f5f5f5]'>See All...</h1>
-          </div>
-          <div></div>
-          </div>
-          <div className='lg:w-1/2 w-full flex flex-col'>
-          <div className='flex justify-between items-center'>
-            <div className='flex flex-col'>
-            <h1 className='text-zinc-800 text-lg font-semibold'>Browse History</h1>
-            <p className='text-sm text-zinc-400'>View your order history</p>
-            </div>
-          <h1 className='bg-main px-2 py-1 rounded-md text-[#f5f5f5]'>See All...</h1>
-          </div>
-          <div></div>
+          <div className='bg-myYellow bg-opacity-10 p-5 rounded-xl flex flex-col gap-5 max-w-60 flex-1 w-full'>
+            <h1 className='text-myYellow text-xl font-semibold'>Everything you need, printed with passion.</h1>
           </div>
         </div>
         </div>
@@ -90,19 +76,19 @@ const Profile = ({ session }: {session?: Session | null}) => {
         <div className='flex flex-col justify-between'>
           <h1 className='bg-main px-2 py-1 text-xs rounded-lg text-[#f5f5f5] w-fit'>{session?.user.role}</h1>
           <div className='flex flex-col'>
-          <h1 className='text-2xl font-semibold text-zinc-800'>{session?.user.name}</h1>
+          <h1 className='text-xl font-semibold text-zinc-800'>{session?.user.name}</h1>
           <h1 className='text-zinc-500'>{session?.user.email}</h1>
           </div>
         </div>
         </div>
           <div className='grid grid-cols-1 xl:grid-cols-2 md:grid-cols-2 lg:grid-cols-1 gap-5 w-full mt-20'>
-            <Tags icon={Album} label={"Browsed Items"}/>
-            <Tags icon={ReceiptText} label={"Order Count"}/>
-            <Tags icon={ShoppingBag} label={"Your Orders"}/>
-            <Tags icon={HandCoins} label={"Total Purchase"}/>
+            <Tags icon={Album} label={"Browsed Items"} count={cartItemCount} isLoading={isLoading}/>
+            <Tags icon={ShoppingCart} label={"Cart"} count={cart} isLoading={isLoading}/>
+            <Tags icon={ShoppingBag} label={"Your Orders"} count={pendingItemsCount} isLoading={isLoading}/>
+            <Tags icon={HandCoins} label={"Total Purchase"} count={total} isLoading={isLoading}/>
           </div>
         </div>
-          <div className='self-end'>
+          <div className='self-end mt-10'>
           <button onClick={handleSignOut} className='flex items-center gap-3 text-zinc-500 font-semibold'>Sign Out <LogOut className='size-8 text-zinc-400'/></button>
         </div>
         </div>
@@ -111,15 +97,15 @@ const Profile = ({ session }: {session?: Session | null}) => {
   )
 }
 
-const Tags = ({ label, icon: Icon }: { label: string, icon: React.ElementType }) => {
+const Tags = ({ label, icon: Icon, count, isLoading }: { label: string, icon: React.ElementType, count?: number, isLoading: boolean }) => {
   return (
     <div className='bg-main w-full p-5 rounded-lg flex flex-col gap-5'>
       <div className='flex gap-3 items-center'>
         <Icon size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
-        <h1 className='text-[#f5f5f5] text-xl font-semibold'>{label}</h1>
+        <h1 className='text-[#f5f5f5] text-lg font-semibold'>{label}</h1>
       </div>
       <div className='w-full'>
-        <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>1233</h1>
+        <h1 style={{ fontSize: "20px" }} className='font-bold text-[#f5f5f5]'>{label === "Total Purchase" ? isLoading ? 0 : `P ${count}.00` : isLoading ? 0 : count}</h1>
       </div>
     </div>
   );

@@ -97,10 +97,29 @@ type AdminDashboardResponse = {
       purchaseStatus: PurchaseStatusCounts;
       categoryCountMap: { [key: string]: number };
       topUsers: TopUser[];
+      dailySummary: Array<{
+        date: string;
+        order: number;
+      }>;
     };
     message: string;
     success: boolean;
   };
+
+interface GetUserDashboardResponse {
+    message: string;
+    success: boolean;
+    data: {
+        cartItemCount: number;
+        pendingItemsCount: number
+        total: number
+        cart: number
+        dailySummary: Array<{
+            date: string;
+            order: number;
+          }>;
+    }
+  }
 
 export const api = createApi({
     reducerPath: 'api',
@@ -324,7 +343,14 @@ export const api = createApi({
                 url: '/api/admin/dashboard',
                 method: 'GET'
             }),
-            providesTags: ['Feedback','Product', 'Cart','Item','Quote']
+            providesTags: ['Feedback','Product','Cart','Item','Quote']
+        }),
+        getUserDashboard: build.query<GetUserDashboardResponse, string>({
+            query: (id) => ({
+                url: `/api/users/dashboard/${id}`,
+                method: 'GET'
+            }),
+            providesTags: ['Product','Cart','Item','Cart']
         })
     })
 })
@@ -355,5 +381,6 @@ export const {
     useGetUserOrderQuery,
     useUpdateOrderReceivedMutation,
     useGetUserHistoryQuery,
-    useGetAdminDashboardQuery
+    useGetAdminDashboardQuery,
+    useGetUserDashboardQuery
 } = api
