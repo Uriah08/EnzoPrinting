@@ -5,17 +5,17 @@ import Image from 'next/image'
 
 const Quotes = ({ session }: {session?: Session | null}) => {
   return (
-    <div className='flex flex-col w-full gap-5 h-full '>
+    <div className='flex flex-col w-full gap-3 sm:gap-5 h-full '>
         <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
-        <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+        <div className='flex gap-1 sm:gap-3 items-center'>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Quotes</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Quotes</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Quotes</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>Quotes</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
@@ -31,7 +31,7 @@ const Quotes = ({ session }: {session?: Session | null}) => {
       </div>
       <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
       <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
-        
+        <h1 className='text-center w-full text-lg font-semibold text-zinc-500 py-10'>Under Development</h1>
       </div>
       </div>
     </div>

@@ -76,18 +76,18 @@ const AdminPage = () => {
 
   return (
     <div className='h-full w-screen flex overflow-y-auto'>
-      <div className={`fixed h-full z-20 transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[295px]'}`}>
+      <div className={`fixed h-full z-[9999] transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[295px]'}`}>
       <div className={`flex relative flex-col justify-between top-0 p-10 bg-[#f5f5f5] h-full`}>
         <div className='h-full flex flex-col items-center'>
-          <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
-          <div className='flex flex-col gap-5 w-full mt-10'>
+          <Image src={'/logo.svg'} width={200} height={200} alt='logo' className='w-full h-[50px] sm:h-[100px]'/>
+          <div className='flex flex-col gap-3 sm:gap-5 w-full mt-5 sm:mt-10'>
             {adminNav.map((item, index) => (
                 <SideBar key={index} icon={item.icon} label={item.label} active={active === item.label} 
                 onClick={() => handleNav(item.label)} />
               ))}
           </div>
         </div>
-        <div className='bg-main p-3 w-full flex flex-col rounded-lg relative'>
+        <div className='bg-main p-2 sm:p-3 w-full flex flex-col rounded-lg relative'>
           <button onClick={handleSidebar} className='absolute -right-[72px] cursor-pointer bg-main rounded-e-lg'>
             <ChevronLeft size={32} className={`px-[6px] text-[#f5f5f5] duration-200 transition-all rounded-e-lg ${!openSidebar ? 'rotate-180': 'rotate-0'}`}/>
           </button>
@@ -98,7 +98,7 @@ const AdminPage = () => {
         </div>
       </div>
       </div>
-      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
+      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-3 sm:p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-3 sm:pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Dashboard' && <Dashboard session={session}/>}
         {active === 'Orders' && <Orders session={session}/>}
         {active === 'Products' && <Products session={session}/>}
@@ -112,10 +112,10 @@ const AdminPage = () => {
 
 const SideBar = ({ icon: Icon, label, active, onClick} : { icon: React.ElementType, label: string, active: boolean, onClick: () => void}) => {
   return (
-  <>{label === 'Transactions' && <h1 className='text-zinc-500 ml-4 font-medium'>OTHERS</h1>}
+  <>{label === 'Transactions' && <h1 className='text-zinc-500 ml-4 font-medium sm:text-base text-xs'>OTHERS</h1>}
     <div onClick={onClick} className={`cursor-pointer group flex items-center gap-3 p-[5px] duration-200 transition-all hover:shadow-xl ${active ? 'shadow-xl':''}`}>
       <Icon size={32} className={`p-[6px] ml-1 shadow-md rounded-md duration-200 transition-all group-hover:bg-main group-hover:text-[#f5f5f5] ${active ? 'bg-main text-[#f5f5f5]':'bg-white text-[#858585]'}`}/>
-      <h1 className={`text-zinc-800 duration-200 transition-all group-hover:`}>{label}</h1>
+      <h1 className={`text-zinc-800 duration-200 transition-all sm:text-base text-sm group-hover:`}>{label}</h1>
     </div>
     </>
   )

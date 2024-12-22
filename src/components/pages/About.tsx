@@ -5,10 +5,10 @@ const About = () => {
   return (
     <section id='about' className='bg-zinc-50 h-full w-full flex flex-col items-center justify-center'>
       <h1 className='text-center text-2xl pt-20 w-full'>About Us</h1>
-      <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 flex flex-col lg:flex-row'>
+      <div className='max-w-[1200px] w-full h-full p-3 sm:p-10 flex flex-col lg:flex-row'>
         <div className='w-full max-w-[500px] lg:w-1/2 mt-32 pr-10'>
-          <h1 className='text-2xl font-semibold'>How we started?</h1>
-          <p className='mt-10 text-zinc-600 font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit perferendis eveniet dolor, amet quia iusto exercitationem porro autem eaque rem laborum, fuga magnam non asperiores enim obcaecati vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita iste incidunt, aspernatur quam temporibus, dicta accusantium delectus officiis!</p>
+          <h1 className='text-lg sm:text-2xl font-semibold'>How we started?</h1>
+          <p className='mt-10 text-zinc-600 font-light text-xs sm:text-base'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit perferendis eveniet dolor, amet quia iusto exercitationem porro autem eaque rem laborum, fuga magnam non asperiores enim obcaecati vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita iste incidunt, aspernatur quam temporibus, dicta accusantium delectus officiis!</p>
           <div className='flex gap-3 mt-5'>
             <a target='_blank' href='#' className='cursor-pointer w-10 h-10 group rounded-full border border-main duration-200 transition-all hover:bg-main flex justify-center items-center'>
               <svg width="13" height="24" viewBox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +26,7 @@ const About = () => {
           <Image src={"/about.png"} alt='about' height={500} width={500}/>
         </div>
       </div>
-      <div className='flex justify-between flex-wrap w-full max-w-[1200px] px-5 sm:px-10 gap-5 mt-10 mb-20'>
+      <div className='flex justify-between flex-wrap w-full max-w-[1200px] px-3 sm:px-10 gap-5 mt-10 mb-20'>
         <div className='flex flex-col flex-1 min-w-[250px] items-start sm:items-center'>
         <Image src={"/payment.svg"} alt='about' height={50} width={50}/>
         <h1 className='font-semibold text-lg mt-10'>Online Payments Available</h1>

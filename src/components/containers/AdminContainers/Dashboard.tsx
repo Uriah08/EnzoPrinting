@@ -44,17 +44,17 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
   const finalDailySummary = dailySummary ?? [];
   
   return (
-    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
+    <div className='flex flex-col w-full gap-3 sm:gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
-        <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+        <div className='flex gap-1 sm:gap-3 items-center'>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Dashboard</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Dashboard</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Dashboard</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>Dashboard</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
@@ -68,10 +68,10 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='w-full lg:h-full flex flex-col lg:flex-row gap-5 overflow-y-hidden'>
-        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5 overflow-y-auto custom-scroll-bar'>
-          <div className='flex flex-wrap gap-5'>
-          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
+      <div className='w-full lg:h-full flex flex-col lg:flex-row gap-3 sm:gap-5 overflow-y-hidden'>
+        <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-3 sm:p-5 flex flex-col gap-5 overflow-y-auto custom-scroll-bar'>
+          <div className='flex flex-wrap gap-3 sm:gap-5'>
+          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-3 sm:gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <Package size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
               <h1 className='text-[#f5f5f5] text-xl font-semibold'>Products</h1>
@@ -80,7 +80,7 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
               <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 :  productCount}</h1>
             </div>
           </div>
-          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
+          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-3 sm:gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <ShoppingBag size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
               <h1 className='text-[#f5f5f5] text-xl font-semibold'>Orders</h1>
@@ -89,7 +89,7 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
               <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 : purchaseCount}</h1>
             </div>
           </div>
-          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
+          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-3 sm:gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <ScrollText size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
               <h1 className='text-[#f5f5f5] text-xl font-semibold'>Quotes</h1>
@@ -98,7 +98,7 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
               <h1 style={{ fontSize: "26px" }} className='font-bold text-[#f5f5f5]'>{isLoading ? 0 : quoteCount}</h1>
             </div>
           </div>
-          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
+          <div className='bg-main flex-1 p-5 rounded-lg flex flex-col gap-3 sm:gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <MessageCircle size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main' />
               <h1 className='text-[#f5f5f5] text-xl font-semibold'>Feedbacks</h1>
@@ -129,7 +129,7 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           </div>
           <BarChartSticks chartData={finalDailySummary}/>
         </div>
-        <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 overflow-y-auto custom-scroll-bar'>
+        <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-3 sm:p-5 overflow-y-auto custom-scroll-bar'>
         <div className='flex-1 bg-main p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <Clock size={32} className='p-[6px] ml-1 shadow-md rounded-md text-main bg-[#f5f5f5]' />
@@ -152,13 +152,13 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
             <div className='flex flex-col mt-7 gap-5'>
               {topUsers?.map((user) => (
                 <div key={user.userId} className='flex gap-3 items-center'>
-                <Image src={user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-12 rounded-full'/>
-                <div className='flex justify-between w-full'>
+                <Image src={user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-10 sm:size-12 rounded-full'/>
+                <div className='flex sm:flex-row flex-col justify-between w-full'>
                 <div className='flex flex-col'>
-                  <h1 className='font-medium text-zinc-800'>{user.name}</h1>
-                  <h1 className='text-zinc-500 text-sm'>{user.email}</h1>
+                  <h1 className='font-medium text-zinc-800 text-sm sm:text-base'>{user.name}</h1>
+                  <h1 className='text-zinc-500 text-xs sm:text-sm'>{user.email}</h1>
                 </div>
-                <h1 className='text-xs font-semibold text-zinc-800'>Total: <span className='font-normal'>P {user.totalContribution}.00</span></h1>
+                <h1 className='text-xs font-semibold text-zinc-800 text-end'>Total: <span className='font-normal'>P {user.totalContribution}.00</span></h1>
                 </div>
               </div>
               ))}
@@ -172,11 +172,11 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
             <div className='flex flex-col mt-5 gap-3'>
               {highlightProduct.map((product) => (
                 <div key={product.id} className='flex gap-3'>
-                <Image src={product.image} width={500} height={500} alt='profile' className='object-cover max-w-20 w-full h-20'/>
+                <Image src={product.image} width={500} height={500} alt='profile' className='object-cover max-w-16 sm:max-w-20 w-full h-16 sm:h-20'/>
                 <div className='flex justify-between w-full'>
                 <div className='flex flex-col'>
                   <h1 className='text-xs bg-main py-[2px] px-3 rounded-full w-fit text-[#f5f5f5]'>{product.category}</h1>
-                  <h1 className='text-zinc-800 text-lg font-medium'>{product.name}</h1>
+                  <h1 className='text-zinc-800 text-sm sm:text-lg font-medium'>{product.name}</h1>
                 </div>
                 <h1 className='text-xs font-semibold text-zinc-800'>Price: <span className='font-normal'>P {product.price}.00</span></h1>
                 </div>

@@ -116,7 +116,7 @@ const QuoteModal = () => {
               </span>{" "}
               now! 📚
         </DialogTitle>
-        <div className="flex justify-center items-center">
+        <div className="hidden justify-center items-center sm:flex">
               {images.map((image, idx) => (
                 <motion.div
                   key={"images" + idx}
@@ -148,25 +148,25 @@ const QuoteModal = () => {
             <div className="py-2 sm:py-10 flex flex-wrap gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-6 items-start justify-start max-w-sm mx-auto">
               <div className="flex items-center justify-center">
                 <GalleryVerticalEnd className="mr-1 text-neutral-700 h-4 w-4" />
-                <span className="text-neutral-700 text-sm">
+                <span className="text-neutral-700 text-xs sm:text-sm">
                   60+ over customizable products
                 </span>
               </div>
               <div className="flex items-center justify-center">
                 <Clock className="mr-1 text-neutral-700 h-4 w-4" />
-                <span className="text-neutral-700 text-sm">
+                <span className="text-neutral-700 text-xs sm:text-sm">
                   48 hours
                 </span>
               </div>
               <div className="flex items-center justify-center">
                 <Paintbrush className="mr-1 text-neutral-700 h-4 w-4" />
-                <span className="text-neutral-700 text-sm">
+                <span className="text-neutral-700 text-xs sm:text-sm">
                   Custom Design
                 </span>
               </div>
               <div className="flex  items-center justify-center">
                 <Anvil className="mr-1 text-neutral-700 h-4 w-4" />
-                <span className="text-neutral-700 text-sm">
+                <span className="text-neutral-700 text-xs sm:text-sm">
                 Quality Printings
                 </span>
               </div>
@@ -180,7 +180,7 @@ const QuoteModal = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem className="w-full sm:w-1/2">
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel className='text-xs sm:text-sm'>Name</FormLabel>
                     <FormControl>
                       <div className="flex relative">
                       <User size={25} className="text-zinc-500 absolute top-1/2 -translate-y-1/2 ml-2"/>
@@ -196,7 +196,7 @@ const QuoteModal = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="w-full sm:w-1/2">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className='text-xs sm:text-sm'>Email</FormLabel>
                     <FormControl>
                       <div className="flex relative w-full">
                       <Mail size={25} className="text-zinc-500 absolute top-1/2 -translate-y-1/2 ml-2"/>
@@ -278,7 +278,7 @@ const QuoteModal = () => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem className="w-full sm:w-1/2">
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel className='text-xs sm:text-sm'>Phone Number</FormLabel>
                     <FormControl>
                       <div className="flex relative w-full">
                       <Phone size={25} className="text-zinc-500 absolute top-1/2 -translate-y-1/2 ml-2"/>
@@ -295,7 +295,7 @@ const QuoteModal = () => {
                 name="message"
                 render={({ field }) => (
                   <FormItem className="w-full mt-3">
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel className='text-xs sm:text-sm'>Message</FormLabel>
                     <FormControl>
                       <Textarea placeholder="Message here..." {...field} className="rounded-none resize-none"/>
                     </FormControl>

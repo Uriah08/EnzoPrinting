@@ -79,7 +79,7 @@ const Navigation = ({session, status}:{session?: Session | null, status?: "authe
                         <>
                         <Link href={'/cart'} className='relative'>   
                             <ShoppingCart size={35} className='text-zinc-500'/>
-                            <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${!cartData?.cart || isLoading || cartData?.cart.length === 0 ? 'hidden':''}`}>{cartData?.cart.length || 0}</h1>
+                            <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute left-6 flex items-center justify-center text-white text-xs ${!cartData?.cart || isLoading || cartData?.cart.length === 0 ? 'hidden':''}`}>{cartData?.cart.length || 0}</h1>
                         </Link>
                         <Link href='/profile' className='cursor-pointer flex items-center gap-3'>
                             <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>

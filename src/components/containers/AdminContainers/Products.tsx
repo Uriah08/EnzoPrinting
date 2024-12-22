@@ -48,17 +48,17 @@ const Products = ({ session }: {session?: Session | null}) => {
   }
 
   return (
-    <div className='flex flex-col w-full gap-5 h-full overflow-x-hidden'>
+    <div className='flex flex-col w-full gap-3 sm:gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
-        <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+        <div className='flex gap-1 sm:gap-3 items-center'>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Products</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Products</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Products</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>Products</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
@@ -72,9 +72,9 @@ const Products = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='w-full h-full flex flex-col-reverse xl:flex-row gap-5 overflow-y-hidden'>
+      <div className='w-full h-full flex flex-col-reverse xl:flex-row gap-3 sm:gap-5 overflow-y-hidden'>
         
-        <div className='xl:w-2/3 w-full h-[100vh] lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
+        <div className='xl:w-2/3 w-full h-[100vh] lg:h-full bg-[#f5f5f5] rounded-lg shadow-lg p-3 sm:p-5 flex flex-col gap-5'>
         <h1 className='text-base font-semibold text-zinc-700'>Your Products</h1>
         <div className='w-full flex justify-between items-center'>
           <div className='w-fit flex items-center relative'>
@@ -85,9 +85,9 @@ const Products = ({ session }: {session?: Session | null}) => {
           </div>
         <GetProduct/>
         </div>
-        <div className='xl:w-1/3 h-full xl:h-full p-5 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col'>
+        <div className='xl:w-1/3 h-full xl:h-full p-3 sm:p-5 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col'>
           <div className='flex justify-between items-center gap-3'>
-          <h1 className='text-base font-semibold text-zinc-700'>Manage Products</h1>
+          <h1 className='text-sm sm:text-base font-semibold text-zinc-700'>Manage Products</h1>
           <Dialog>
             <DialogTrigger asChild>
             <Button className='bg-main hover:bg-main2'>Create Product</Button>
@@ -110,7 +110,7 @@ const Products = ({ session }: {session?: Session | null}) => {
               </div>
             </div>
             <div>
-              <h1 className='text-base font-semibold text-zinc-700 mt-5'>Highlighted <span className='text-zinc-500 text-sm font-normal'>(Maximum of 4)</span></h1>
+              <h1 className='text-sm sm:text-base font-semibold text-zinc-700 mt-5'>Highlighted <span className='text-zinc-500 text-sm font-normal'>(Maximum of 4)</span></h1>
               <div className='flex flex-col gap-3 mt-3'>
                 {isLoading ? (
                   <>
@@ -122,14 +122,14 @@ const Products = ({ session }: {session?: Session | null}) => {
                 ) : (
                   highlights.map((product) => (
                     <div key={product.id} className='py-2 w-full flex gap-3'>
-                      <Image src={product.image} width={500} height={500} alt='highlighted product' className='h-24 max-w-24 w-full object-cover'/>
+                      <Image src={product.image} width={500} height={500} alt='highlighted product' className='h-20 sm:h-24 max-w-20 sm:max-w-24 w-full object-cover'/>
                       <div className='flex-col w-full flex justify-between'>
                         <div className='flex flex-col'>
                         <h1 className='text-xs bg-main rounded-full w-fit px-3 py-[2px] text-[#f5f5f5]'>{product.category}</h1>
-                        <h1 className='text-zinc-800 text-md font-medium'>{product.name}</h1>
+                        <h1 className='text-zinc-800 text-sm sm:text-base font-medium'>{product.name}</h1>
                         </div>
                         <div className='flex w-full justify-between items-center'>
-                          <h1 className='text-zinc-800'>P {product.price}.00</h1>
+                          <h1 className='text-zinc-800 text-xs sm:text-base'>P {product.price}.00</h1>
                           <Button disabled={highlightLoading} onClick={() => handleRemoveHighlight(product.id, false)} className='bg-main hover:bg-main2'>Remove</Button>
                         </div>
                       </div>

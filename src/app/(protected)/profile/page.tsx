@@ -48,8 +48,8 @@ const ProfilePage = () => {
       <div className={`fixed h-full z-20 transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[295px]'}`}>
       <div className={`flex relative flex-col justify-between top-0 p-10 bg-[#f5f5f5] h-full`}>
         <div className='h-full flex flex-col items-center'>
-          <Image src={'/logo.svg'} width={200} height={200} alt='logo'/>
-          <div className='flex flex-col gap-5 w-full mt-10'>
+          <Image src={'/logo.svg'} width={200} height={200} alt='logo' className='w-full h-[50px] sm:h-[100px]'/>
+          <div className='flex flex-col gap-3 sm:gap-5 w-full mt-10'>
             {adminNav.map((item, index) => (
                 <SideBar key={index} icon={item.icon} label={item.label} active={active === item.label} 
                 onClick={() => handleNav(item.label)} />
@@ -67,7 +67,7 @@ const ProfilePage = () => {
         </div>
       </div>
       </div>
-      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-5'} transition-all duration-500 ease-in-out`}>
+      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-3 sm:p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-3 sm:pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Profile' && <Profile session={session} status={status}/>}
         {active === 'Orders' && <Orders session={session} status={status}/>}
         {active === 'History' && <History session={session} status={status}/>}
@@ -81,7 +81,7 @@ const SideBar = ({ icon: Icon, label, active, onClick} : { icon: React.ElementTy
   <>
     <div onClick={onClick} className={`cursor-pointer group flex items-center gap-3 p-[5px] duration-200 transition-all hover:shadow-xl ${active ? 'shadow-xl':''}`}>
       <Icon size={32} className={`p-[6px] ml-1 shadow-md rounded-md duration-200 transition-all group-hover:bg-main group-hover:text-[#f5f5f5] ${active ? 'bg-main text-[#f5f5f5]':'bg-white text-[#858585]'}`}/>
-      <h1 className={`text-zinc-800 duration-200 transition-all group-hover:`}>{label}</h1>
+      <h1 className={`text-zinc-800 duration-200 transition-all text-sm sm:text-base group-hover:`}>{label}</h1>
     </div>
     </>
   )

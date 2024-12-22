@@ -50,7 +50,7 @@ const ItemsDnd = () => {
 
   return (
     <DndProvider backend={backend}>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4 overflow-y-auto custom-scroll-bar">
+      <div className="grid grid-cols-1 gap-2 sm:gap-4 lg:grid-cols-2 xl:grid-cols-4 overflow-y-auto custom-scroll-bar">
         {itemStatus.map((item) => (
           <ItemColumn key={item} status={item} items={items} moveItem={moveItem} loading={isLoading}/>
         ))}
@@ -187,7 +187,7 @@ const Item = ({ item }: ItemProps) => {
   }
 
   return (
-    <div ref={(instance) => {drag(instance)}} className={`mb-4 w-full overflow-hidden flex flex-col bg-[#f5f5f5] rounded-lg shadow-md p-5 ${isDragging ? "opacity-50":"opacity-100"}`}>
+    <div ref={(instance) => {drag(instance)}} className={`mb-4 w-full overflow-hidden flex flex-col bg-[#f5f5f5] rounded-lg shadow-md p-3 sm:p-5 ${isDragging ? "opacity-50":"opacity-100"}`}>
       <div className='flex items-center gap-3'>
         <Image src={item.user?.image || '/profile.png'} width={500} height={500} alt='profile' className='size-10 rounded-full'/>
         <h1 className='text-zinc-800 text-sm font-medium'>{item.user.email}</h1>
@@ -210,10 +210,10 @@ const Item = ({ item }: ItemProps) => {
                 <Image src={order.image} width={500} height={500} className="size-20 object-cover" alt='order image'/>
                 <div className="flex flex-col gap-2 justify-between">
                   <div className='flex flex-col'>
-                  <h1 className='text-md font-semibold text-zinc-800'>{order.name}</h1>
-                  <h1 className='text-zinc-500'>{order.quantity} Pcs</h1>
+                  <h1 className='text-sm sm:text-base font-semibold text-zinc-800'>{order.name}</h1>
+                  <h1 className='text-zinc-500 text-xs sm:text-base'>{order.quantity} Pcs</h1>
                   </div> 
-                  <h1 className='text-md font-semibold text-zinc-800'>P {order.price}.00</h1>
+                  <h1 className='text-sm sm:text-base font-semibold text-zinc-800'>P {order.price}.00</h1>
                 </div>
                 <div className='flex flex-col gap-2'>
                   <h1 className={`text-zinc-500 ${order.facebook ? '': 'hidden'}`}><span className='text-zinc-800'>Socials:</span> {order?.facebook}</h1>

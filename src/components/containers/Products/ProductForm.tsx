@@ -135,7 +135,7 @@ const ProductForm = () => {
             </FormItem>
         )}
         />
-        <div className='flex gap-3 items-center'>
+        <div className='flex sm:flex-row flex-col gap-3 items-center'>
         <FormField
           control={form.control}
           name="category"

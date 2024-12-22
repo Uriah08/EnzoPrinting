@@ -26,13 +26,13 @@ const History = ({ session, status }: {session?: Session | null, status: string}
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
         <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Profile</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Profile</h1>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>History</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>History</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>History</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>History</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>

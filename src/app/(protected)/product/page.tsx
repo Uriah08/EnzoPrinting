@@ -103,24 +103,24 @@ const ProductPage = () => {
 
     if (status === 'loading') return <LoadingSpinner/>
   return (
-    <div className='min-h-[100%] w-full p-5 bg-[#dde0e9] flex flex-col gap-5 overflow-y-auto'>
+    <div className='min-h-[100%] w-full p-3 sm:p-5 bg-[#dde0e9] flex flex-col gap-3 sm:gap-5 overflow-y-auto'>
         <div className='bg-[#f5f5f5] py-3 px-5 rounded-lg items-center shadow-lg flex justify-between'>
         <div className='flex-col'>
-        <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+        <div className='flex gap-1 sm:gap-3 items-center'>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Products</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Products</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Products</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>Products</h1>
         </div>
             {!session ? (
                 <Link href={'/auth/sign-in'} className='cursor-pointer mt-5'>
-                <button className='tracking-widest py-2 px-10 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
+                <button className='tracking-widest py-2 sm:text-base text-xs px-5 sm:px-10 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
                     LOGIN
                 </button>
                 </Link>
             ) : (
-                <div className='flex gap-5 items-center'>
+                <div className='flex gap-3 sm:gap-5 items-center'>
                 <Link href='/profile' className='cursor-pointer flex items-center gap-3'>
             <div className='flex flex-col items-end'>
                         <p className='text-base font-medium text-zinc-800 hidden sm:block'>{session.user.name}</p>
@@ -135,19 +135,19 @@ const ProductPage = () => {
             </div>
             )}
         </div>
-        <div className='w-full h-[100vh] lg:h-full rounded-lg flex flex-col gap-5 overflow-hidden'>
-            <div className='flex md:flex-row flex-col gap-5'>
+        <div className='w-full h-full rounded-lg flex flex-col gap-3 sm:gap-5 overflow-hidden'>
+            <div className='flex md:flex-row flex-col gap-3 sm:gap-5'>
             <Image src={'/store-cover.png'} width={2500} height={2500} alt='cover' className='rounded-lg shadow-lg md:w-1/3 w-full object-cover'/>
             <Image src={'/store-cover-hero.png'} width={2500} height={2500} alt='cover' className='rounded-lg shadow-lg md:w-2/3 w-full object-cover'/>
             </div>
-        <div className='w-full bg-[#f5f5f5] p-5 shadow-lg rounded-lg relative'>
-            <h1 className='text-xl font-semibold text-zinc-600'>Products</h1>
+        <div className='w-full bg-[#f5f5f5] p-3 sm:p-5 shadow-lg rounded-lg relative'>
+            <h1 className='text-sm sm:text-xl font-semibold text-zinc-600'>Products</h1>
             <div className='flex gap-x-2 gap-y-1 sm:gap-x-3 mt-5 flex-wrap'>
                 {productNav.map((nav) => (
-                    <h1 key={nav.label} onClick={() => setActive(nav.label)} className={`text-sm lg:text-lg font-light cursor-pointer px-3 sm:px-5 py-1 rounded-sm ${active === nav.label ? 'text-[#f5f5f5] bg-main':'text-zinc-400'}`}>{nav.label}</h1>
+                    <h1 key={nav.label} onClick={() => setActive(nav.label)} className={`text-xs lg:text-lg font-light cursor-pointer px-1 sm:px-5 sm:py-1 rounded-sm ${active === nav.label ? 'text-[#f5f5f5] bg-main':'text-zinc-400'}`}>{nav.label}</h1>
                 ))}
             </div>
-            <div className='grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5 mt-5'>
+            <div className='grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 mt-5'>
                 {isLoading ? (
                     <>
                     <Skeleton className='w-full h-[340px] rounded-lg'/>
@@ -160,11 +160,11 @@ const ProductPage = () => {
                         <div className='absolute flex items-center justify-center text-2xl font-semibold text-zinc-500 w-full'>No Products Found</div>
                     ) : (
                         products.map((product) => (
-                            <div key={product.id} className='flex flex-col p-3 border border-zinc-300 gap-4'>
+                            <div key={product.id} className='flex flex-col h-fit p-1 sm:p-3 border border-zinc-300 gap-4'>
                                 <Image src={product.image} width={500} height={500} alt='image' className='h-20 lg:h-72 sm:h-32 object-cover w-full object-center'/>
                                 <h1 className='px-2 py-1 rounded-full bg-main text-[#f5f5f5] text-xs w-fit'>{product.category}</h1>
                                 <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
-                                    <h1 className='text-xs lg:text-xl font-semibold'>{product.name}</h1>
+                                    <h1 className='text-sm lg:text-xl font-semibold'>{product.name}</h1>
                                     <h1 className='text-xs lg:text-sm text-zinc-700'>₱ {product.price}.00</h1>
                                 </div>
                                 <Dialog>

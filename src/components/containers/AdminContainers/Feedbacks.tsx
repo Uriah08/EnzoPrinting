@@ -50,17 +50,17 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
 
   
   return (
-    <div className='flex flex-col w-full gap-5 h-full '>
+    <div className='flex flex-col w-full gap-3 sm:gap-5 h-full '>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
-        <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+        <div className='flex gap-1 sm:gap-3 items-center'>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Admin</h1>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Feedbacks</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Feedbacks</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>Feedbacks</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>Feedbacks</h1>
         </div>
         {session && 
           <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
@@ -74,8 +74,8 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
           </div>
         }
       </div>
-      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-5 overflow-y-hidden'>
-          <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-5 flex flex-col gap-5'>
+      <div className='w-full lg:h-full flex flex-col-reverse lg:flex-row gap-3 sm:gap-5 overflow-y-hidden'>
+          <div className='lg:w-2/3 h-[100vh] lg:h-full w-full bg-[#f5f5f5] rounded-lg shadow-lg p-3 sm:p-5 flex flex-col gap-5'>
           <div className='w-full flex justify-between items-center'>
           <div className='w-fit flex items-center relative'>
             <Search size={20} className='absolute left-2 text-zinc-500'/>
@@ -129,7 +129,7 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
             </>):(
               Array.isArray(feedbacks) && feedbacks.length > 0 ? (
                 feedbacks?.map((feedback) => (
-                  <div key={feedback.id} className='flex flex-col p-4 shadow-lg rounded-lg'>
+                  <div key={feedback.id} className='flex flex-col p-2 sm:p-4 shadow-lg rounded-lg'>
                   <div className='flex justify-between'>
                   <div className='flex gap-3'>
                   <Image src={feedback.user.image ? feedback.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[35px] lg:size-[45px] rounded-full'/>
@@ -140,7 +140,7 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
                   </div>
                   <p className='text-xs text-zinc-500 mt-3 text-end'>January 2, 2022</p>
                   </div>
-                  <h1 className='text-sm mt-3 text-zinc-600'>{feedback.feedback}
+                  <h1 className='text-xs sm:text-sm mt-3 text-zinc-600'>{feedback.feedback}
                   </h1>
                   <div className='flex gap-5 mt-3'>
                     <Button disabled={deleteLoading} onClick={() => handleDelete(feedback.id)} className='bg-red-500 hover:bg-red-600 duration-200 transition-all'>{deleteLoading ? 'Deleting...':'Delete'}</Button>
@@ -153,7 +153,7 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
             }
           </div>
           </div>
-          <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-5'>
+          <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-3 sm:p-5'>
             <div className='bg-main w-full p-5 rounded-lg flex flex-col gap-5'>
               <div className='flex gap-3 items-center'>
               <MessageCircle size={32} className='p-[6px] ml-1 shadow-md rounded-md bg-white text-main'/>

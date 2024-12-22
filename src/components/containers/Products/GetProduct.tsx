@@ -76,27 +76,27 @@ const GetProduct = () => {
                 products.map((product) => (
                     <div key={product.id} className='flex flex-col justify-between'>
                     <div className='flex p-3 gap-3 shadow-lg rounded-lg'>
-                        <Image src={product.image} width={500} height={500} alt='product image' className='md:h-40 md:max-w-40 h-full max-w-24 w-full object-cover'/>
+                        <Image src={product.image} width={500} height={500} alt='product image' className='md:h-40 md:max-w-40 h-full max-w-16 sm:max-w-24 w-full object-cover'/>
                         <div className='flex flex-col w-full h-full justify-between'>
                             <div className='flex-col gap-3 flex'>
                                 <div className='flex flex-row md:flex-col gap-2'>
                                     <div className='flex justify-between items-center'>
-                                    <h1 className='text-lg font-semibold text-zinc-700'>{product.name}</h1>
+                                    <h1 className='text-xs sm:text-lg font-semibold text-zinc-700'>{product.name}</h1>
                                     <button disabled={highlightLoading} onClick={() => handleHighlight(product.id, true)} className='cursor-pointer'>
                                     <StarIcon className={`${highlightLoading ? 'text-[#ddc060]': 'text-[#caa631]'}`} fill={`${product.highlight ? highlightLoading ? '#ddc060': '#caa631' : '#f5f5f5' }`}/>
                                     </button>
                                     </div>
-                                <h1 className='px-3 py-1 bg-main rounded-lg text-[#f5f5f5] text-sm w-fit'>{product.category}</h1>
+                                <h1 className='px-1 sm:px-3 sm:py-1 bg-main rounded-lg text-[#f5f5f5] text-xs sm:text-sm w-fit'>{product.category}</h1>
                                 </div>
                             <p className='text-xs md:text-sm text-zinc-500'>{product.description}
                             </p>
                             </div>
                             <div className='flex justify-between items-center font-semibold mt-2'>
                                 <h1 className='text-xs md:text-sm text-zinc-800'>Price: {product.price}</h1>
-                                <div className='flex gap-3'>
+                                <div className='flex gap-1 sm:gap-3'>
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                        <Button className='bg-main hover:bg-main2'>Edit</Button>
+                                        <Button className='bg-main hover:bg-main2 text-xs sm:text-base px-2 sm:px-4'>Edit</Button>
                                         </DialogTrigger>
                                         <DialogContent aria-describedby={undefined}>
                                             <DialogTitle>Edit Product</DialogTitle>
@@ -105,7 +105,7 @@ const GetProduct = () => {
                                     </Dialog>
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                        <Button disabled={productLoading} className='bg-red-500 hover:bg-red-600'>Delete</Button>
+                                        <Button disabled={productLoading} className='bg-red-500 hover:bg-red-600 text-xs sm:text-base px-2 sm:px-4'>Delete</Button>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogTitle>Delete Product</DialogTitle>

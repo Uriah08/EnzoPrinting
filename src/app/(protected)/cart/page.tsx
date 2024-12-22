@@ -175,15 +175,15 @@ const CartPage = () => {
         router.push('/')
     }
   return (
-    <div className='min-h-[100dvh] w-full p-5 bg-[#dde0e9] flex flex-col gap-5 overflow-y-auto'>
-      <div className='bg-[#f5f5f5] py-3 px-5 rounded-lg items-center shadow-lg flex justify-between'>
+    <div className='min-h-[100dvh] w-full p-3 sm:p-5 bg-[#dde0e9] flex flex-col gap-3 sm:gap-5 overflow-y-auto'>
+      <div className='bg-[#f5f5f5] p-3 sm:p-5 rounded-lg items-center shadow-lg flex justify-between'>
       <div className='flex-col'>
-        <div className='flex gap-3 items-center'>
-          <Link href={'/'} className='text-sm text-zinc-500 hover:underline'>Home</Link>
+        <div className='flex gap-1 sm:gap-3 items-center'>
+          <Link href={'/'} className='text-xs sm:text-sm text-zinc-500 hover:underline'>Home</Link>
           <h1 className='text-zinc-500'>/</h1>
-          <h1 className='text-sm text-zinc-800 cursor-pointer hover:underline'>Cart</h1>
+          <h1 className='text-xs sm:text-sm text-zinc-800 cursor-pointer hover:underline'>Cart</h1>
         </div>
-        <h1 className='font-semibold text-lg text-zinc-800'>{session?.user.name ? session.user.name.split(' ')[0][0].toUpperCase() + session.user.name.split(' ')[0].slice(1).toLowerCase() : ''}&apos;s Cart</h1>
+        <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>{session?.user.name ? session.user.name.split(' ')[0][0].toUpperCase() + session.user.name.split(' ')[0].slice(1).toLowerCase() : ''}&apos;s Cart</h1>
         </div>
 
             {!session ? (
@@ -204,9 +204,9 @@ const CartPage = () => {
             </div>
             )}
         </div>
-        <div className='flex xl:flex-row flex-col-reverse gap-5'>
-            <div className='xl:w-1/2 w-full bg-[#f5f5f5] p-5 rounded-lg shadow-lg max-h-[100vh] overflow-auto custom-scroll-bar h-full flex flex-col'>
-            <h1 className='text-xl font-semibold text-zinc-600'>Manage Your Cart</h1>
+        <div className='flex xl:flex-row flex-col-reverse gap-3 sm:gap-5'>
+            <div className='xl:w-1/2 w-full bg-[#f5f5f5] p-3 sm:p-5 rounded-lg shadow-lg max-h-[100vh] overflow-auto custom-scroll-bar h-full flex flex-col'>
+            <h1 className='text-sm sm:text-xl font-semibold text-zinc-600'>Manage Your Cart</h1>
             <div className='w-full flex justify-between items-center my-5'>
                 <div className='w-fit flex items-center relative'>
                     <Search size={20} className='absolute left-2 text-zinc-500'/>
@@ -229,16 +229,16 @@ const CartPage = () => {
                     </div>
                 ) : (
                     data?.cart.map((cart) => (
-                        <div key={cart.id} className='flex gap-3 rounded-lg shadow-lg overflow-hidden relative w-full'>
-                        <Image src={cart.product?.image || '/noimg.png'} width={500} height={500} alt='cart image' className='w-32 object-cover'/>
+                        <div key={cart.id} className='flex sm:flex-row flex-col gap-3 rounded-lg shadow-lg overflow-hidden relative w-full'>
+                        <Image src={cart.product?.image || '/noimg.png'} width={500} height={500} alt='cart image' className='sm:max-w-32 w-full sm:w-fit  object-cover'/>
                         <div className='flex xl:flex-row flex-col gap-3 w-full'>
                             <div className='flex w-full xl:w-1/2 flex-col py-3'>
                             <div className='flex gap-3 items-center'>
-                            <h1 className='text-xs bg-main rounded-full w-fit px-3 py-1 text-[#f5f5f5]'>{cart.product?.category || 'removed'}</h1>
+                            <h1 className='text-xs bg-main rounded-full w-fit px-3 py-1 text-[#f5f5f5] ml-2 sm:ml-0'>{cart.product?.category || 'removed'}</h1>
                             <h1 className='text-xs text-zinc-400 w-full'>{format(new Date(cart.createdAt), 'MMM d, yyyy')}</h1>
                             </div>
-                                <h1 className='text-base lg:text-lg font-medium text-zinc-600 mt-1'>{cart.product?.name || 'Product Deleted By Admin'}</h1>
-                                <p className='text-xs lg:text-sm text-zinc-500 mt-2'>{cart.description}</p>
+                                <h1 className='text-base lg:text-lg font-medium text-zinc-600 mt-1 ml-2 sm:ml-0'>{cart.product?.name || 'Product Deleted By Admin'}</h1>
+                                <p className='text-xs lg:text-sm text-zinc-500 mt-2 ml-2 sm:ml-0'>{cart.description}</p>
                             </div>
                             <div className='flex flex-col lg:flex-row xl:flex-col w-full xl:w-1/2 p-3 justify-between'>
                                 <div className='flex gap-3 justify-between w-full'>
@@ -308,11 +308,11 @@ const CartPage = () => {
             )}
             </div>
             </div>
-            <div className='flex flex-col-reverse xl:flex-col xl:w-1/2 w-full gap-5'>
-                <div className='bg-main p-5 rounded-lg shadow-lg justify-between items-center flex'>
-                    <h1 className='text-xl font-semibold text-[#f5f5f5]'>Cart Total</h1>
-                    <div className='flex gap-5 items-center'>
-                        <h1 className={`text-[#f5f5f5] text-sm sm:text-xl`}>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product?.price || 0),0) || 0)}.00</h1>
+            <div className='flex flex-col-reverse xl:flex-col xl:w-1/2 w-full gap-3 sm:gap-5'>
+                <div className='bg-main p-3 sm:p-5 rounded-lg shadow-lg justify-between items-center flex'>
+                    <h1 className='text-sm sm:text-xl font-semibold text-[#f5f5f5]'>Cart Total</h1>
+                    <div className='flex sm:flex-row flex-col gap-2 sm:gap-5 items-center'>
+                        <h1 className={`text-[#f5f5f5] text-xs sm:text-xl`}>₱ {new Intl.NumberFormat("en-US").format(data?.cart.reduce((acc, cart) => acc + Number(cart.quantity) * Number(cart.product?.price || 0),0) || 0)}.00</h1>
                         <Dialog>
                             <DialogTrigger asChild>
                             <Button disabled={deletingAllCartsLoading && !session && yourCartLoading} className={`px-4 py-1 text-sm sm:text-base sm:px-5 sm:py-2 rounded-full bg-[#f5f5f5] shadow-none hover:bg-[#e2e2e2] font-semibold text-main ${data?.cart.length === 0 ? 'hidden':''}`}>Check Out All</Button>
