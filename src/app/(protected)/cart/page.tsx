@@ -205,7 +205,7 @@ const CartPage = () => {
             )}
         </div>
         <div className='flex xl:flex-row flex-col-reverse gap-5'>
-            <div className='xl:w-1/2 w-full bg-[#f5f5f5] p-5 rounded-lg shadow-lg full flex flex-col'>
+            <div className='xl:w-1/2 w-full bg-[#f5f5f5] p-5 rounded-lg shadow-lg max-h-[100vh] overflow-auto custom-scroll-bar h-full flex flex-col'>
             <h1 className='text-xl font-semibold text-zinc-600'>Manage Your Cart</h1>
             <div className='w-full flex justify-between items-center my-5'>
                 <div className='w-fit flex items-center relative'>

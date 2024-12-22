@@ -103,7 +103,7 @@ const ProductPage = () => {
 
     if (status === 'loading') return <LoadingSpinner/>
   return (
-    <div className='min-h-[100dvh] w-full p-5 bg-[#dde0e9] flex flex-col gap-5 overflow-y-auto'>
+    <div className='min-h-[100%] w-full p-5 bg-[#dde0e9] flex flex-col gap-5 overflow-y-auto'>
         <div className='bg-[#f5f5f5] py-3 px-5 rounded-lg items-center shadow-lg flex justify-between'>
         <div className='flex-col'>
         <div className='flex gap-3 items-center'>
@@ -113,7 +113,6 @@ const ProductPage = () => {
         </div>
         <h1 className='font-semibold text-lg text-zinc-800'>Products</h1>
         </div>
-
             {!session ? (
                 <Link href={'/auth/sign-in'} className='cursor-pointer mt-5'>
                 <button className='tracking-widest py-2 px-10 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
@@ -136,9 +135,12 @@ const ProductPage = () => {
             </div>
             )}
         </div>
-        <div className='lg:w-2/3 w-full flex flex-col gap-5'>
-        <Image src={'/store-cover.png'} width={2500} height={2500} alt='cover' className='rounded-lg shadow-lg w-full object-cover'/>
-        <div className='w-full bg-[#f5f5f5] p-5 shadow-lg rounded-lg relative min-h-[40vh]'>
+        <div className='w-full h-[100vh] lg:h-full rounded-lg flex flex-col gap-5 overflow-hidden'>
+            <div className='flex md:flex-row flex-col gap-5'>
+            <Image src={'/store-cover.png'} width={2500} height={2500} alt='cover' className='rounded-lg shadow-lg md:w-1/3 w-full object-cover'/>
+            <Image src={'/store-cover-hero.png'} width={2500} height={2500} alt='cover' className='rounded-lg shadow-lg md:w-2/3 w-full object-cover'/>
+            </div>
+        <div className='w-full bg-[#f5f5f5] p-5 shadow-lg rounded-lg relative'>
             <h1 className='text-xl font-semibold text-zinc-600'>Products</h1>
             <div className='flex gap-x-2 gap-y-1 sm:gap-x-3 mt-5 flex-wrap'>
                 {productNav.map((nav) => (
@@ -230,7 +232,7 @@ const ProductPage = () => {
                                         </div>
                                         {!session ? (
                                             <Link href={'/auth/sign-in'} className='w-full mt-5'>
-                                            <Button className='text-[#f5f5f5] bg-main hover:bg-main2 px-3 rounded-full w-full'>LOGIN</Button>
+                                            <Button className='text-[#f5f5f5] bg-main hover:bg-main2 px-3 rounded-full w-full mt-5'>LOGIN</Button>
                                             </Link>
                                         ) : (
                                             <div className='flex w-full justify-end gap-3 mt-5'>
