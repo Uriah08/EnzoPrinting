@@ -76,7 +76,7 @@ const AdminPage = () => {
 
   return (
     <div className='h-full w-screen flex overflow-y-auto'>
-      <div className={`fixed h-full z-[9999] transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[295px]'}`}>
+      <div className={`fixed h-full z-[9999] transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[286px] sm:-left-[336px]'}`}>
       <div className={`flex relative flex-col justify-between top-0 p-10 bg-[#f5f5f5] h-full`}>
         <div className='h-full flex flex-col items-center'>
           <Image src={'/logo.svg'} width={200} height={200} alt='logo' className='w-full h-[50px] sm:h-[100px]'/>
@@ -98,7 +98,7 @@ const AdminPage = () => {
         </div>
       </div>
       </div>
-      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-3 sm:p-5 ${openSidebar ? 'lg:pl-[320px]':'pl-3 sm:pl-5'} transition-all duration-500 ease-in-out`}>
+      <div className={`bg-[#dde0e9] w-full h-full lg:h-[100vh] overflow-y-hidden p-3 sm:p-5 ${openSidebar ? 'lg:pl-[355px]':'pl-3 sm:pl-5'} transition-all duration-500 ease-in-out`}>
         {active === 'Dashboard' && <Dashboard session={session}/>}
         {active === 'Orders' && <Orders session={session}/>}
         {active === 'Products' && <Products session={session}/>}
