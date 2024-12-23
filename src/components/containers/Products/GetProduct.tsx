@@ -4,19 +4,22 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import React from 'react'
 
-import { useDeleteProductMutation, useGetProductQuery, useHighlightProductMutation } from '@/store/api'
+import { useDeleteProductMutation, useHighlightProductMutation } from '@/store/api'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { useToast } from '@/hooks/use-toast'
 import UpdateProductForm from './UpdateProductForm'
 import { StarIcon } from 'lucide-react'
+import { Product } from '@prisma/client'
 
-const GetProduct = () => {
-    const { data, isLoading } = useGetProductQuery();
+type ProductProps = {
+    products: Product[],
+    isLoading: boolean
+}
+
+const GetProduct = ({ products, isLoading }: ProductProps) => {
     const [deleteProduct, {isLoading: productLoading}] = useDeleteProductMutation();
     const { toast} = useToast()
-
-    const products = data?.product || []
 
     const handleDeleteProduct = async (id: string) => {
         try {

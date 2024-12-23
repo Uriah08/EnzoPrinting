@@ -5,13 +5,14 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
-import { Filter, MessageCircle, Search } from 'lucide-react'
+import { MessageCircle, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 import { useGetFeedbackQuery, useDeleteFeedbackMutation, api } from '@/store/api'
 
 import { Skeleton } from '@/components/ui/skeleton'
 import { useToast } from '@/hooks/use-toast'
+import { format } from 'date-fns'
 
 const Feedbacks = ({ session }: {session?: Session | null}) => {
 
@@ -20,6 +21,13 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
   const { data, isLoading } = useGetFeedbackQuery();
   const [deleteFeedback, { isLoading: deleteLoading }] = useDeleteFeedbackMutation();
   const feedbacks = data?.feedback || [];
+
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const filteredFeedbacks = feedbacks.filter((feedback) =>
+    feedback.user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
 
   const handleDelete = async (feedbackId: string) => {
     try {
@@ -79,9 +87,8 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
           <div className='w-full flex justify-between items-center'>
           <div className='w-fit flex items-center relative'>
             <Search size={20} className='absolute left-2 text-zinc-500'/>
-            <Input className='pl-8 rounded-full' placeholder='Search...'/>
+            <Input className='pl-8 rounded-full' placeholder='Search...' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
             </div>
-            <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
           </div>
           <div className='flex flex-col gap-3 mt-5 overflow-y-auto custom-scroll-bar'>
             {isLoading ? (
@@ -127,8 +134,8 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
               <Skeleton className='h-[60px] w-full mt-3'/>
             </div>
             </>):(
-              Array.isArray(feedbacks) && feedbacks.length > 0 ? (
-                feedbacks?.map((feedback) => (
+              filteredFeedbacks.length > 0 ? (
+                filteredFeedbacks?.map((feedback) => (
                   <div key={feedback.id} className='flex flex-col p-2 sm:p-4 shadow-lg rounded-lg'>
                   <div className='flex justify-between'>
                   <div className='flex gap-3'>
@@ -138,7 +145,7 @@ const Feedbacks = ({ session }: {session?: Session | null}) => {
                     <p className='text-xs lg:text-sm font-medium text-zinc-600'>{feedback.user.email}</p>
                   </div>
                   </div>
-                  <p className='text-xs text-zinc-500 mt-3 text-end'>January 2, 2022</p>
+                  <p className='text-xs text-zinc-500 mt-3 text-end'>{format(new Date(feedback.createdAt), 'MMMM d, yyyy')}</p>
                   </div>
                   <h1 className='text-xs sm:text-sm mt-3 text-zinc-600'>{feedback.feedback}
                   </h1>

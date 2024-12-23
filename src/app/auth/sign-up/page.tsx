@@ -32,6 +32,8 @@ interface ErrorData {
 
 const SignUpPage = () => {
 
+  localStorage.setItem("reloaded", "false");
+
   const router = useRouter()
 
   const { toast } = useToast()

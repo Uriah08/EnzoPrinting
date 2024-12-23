@@ -14,10 +14,44 @@ import { useGetHighlightProductQuery, useGetProductQuery, useHighlightProductMut
 import { Skeleton } from '@/components/ui/skeleton'
 import { useToast } from '@/hooks/use-toast'
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+const categories = [
+  "all",
+  "mug",
+  "shirt",
+  "paper",
+  "book",
+  "id",
+  "keychain",
+  "sticker",
+  "bundle",
+  "other"
+]
+
 const Products = ({ session }: {session?: Session | null}) => {
 
   const { toast } = useToast()
-  const { data } = useGetProductQuery();
+  const { data, isLoading: productLoading } = useGetProductQuery();
 
   const { data: highlight, isLoading } = useGetHighlightProductQuery()
 
@@ -46,6 +80,38 @@ const Products = ({ session }: {session?: Session | null}) => {
               })
       }
   }
+
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const [open, setOpen] = React.useState(false)
+  const [category, setCategory] = React.useState("all")
+  const [sortOrder, setSortOrder] = React.useState("newest");
+
+  const filteredProducts = products
+  .filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+  .filter((product) => category === "all" || product.category === category)
+  .filter((product) => {
+    if (sortOrder === "highlight") {
+      return highlights.some((highlightProduct) => highlightProduct.id === product.id);
+    }
+    return true;
+  })
+  .sort((a, b) => {
+    if (sortOrder === "newest") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    if (sortOrder === "oldest") {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    }
+    if (sortOrder === "priceLowHigh") {
+      return Number(a.price) - Number(b.price);
+    }
+    if (sortOrder === "priceHighLow") {
+      return Number(b.price) - Number(a.price);
+    }
+    return 0;
+  });
 
   return (
     <div className='flex flex-col w-full gap-3 sm:gap-5 h-full overflow-x-hidden'>
@@ -79,13 +145,58 @@ const Products = ({ session }: {session?: Session | null}) => {
         <div className='w-full flex justify-between items-center'>
           <div className='w-fit flex items-center relative'>
             <Search size={20} className='absolute left-2 text-zinc-500'/>
-            <Input className='pl-8 rounded-full' placeholder='Search...'/>
+            <Input className='pl-8 rounded-full' placeholder='Search...' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
             </div>
-            <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
+            <DropdownMenu open={open} onOpenChange={setOpen}>
+              <DropdownMenuTrigger>
+              <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[200px]">
+              <DropdownMenuLabel>Filter</DropdownMenuLabel>
+              <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => setSortOrder("newest")}>Newest</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortOrder("oldest")}>Oldest</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortOrder("highlight")}>Highlighted</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setSortOrder("priceLowHigh")}>Price: Low to High</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortOrder("priceHighLow")}>Price: High to Low</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="p-0">
+              <Command>
+              <CommandInput
+                    placeholder="Filter category..."
+                    autoFocus={true}
+                    className="h-9"
+                  />
+                  <CommandList>
+                  <CommandEmpty>No category found.</CommandEmpty>
+                  <CommandGroup>
+                    {categories.map((item) => (
+                      <CommandItem
+                      key={item}
+                      value={item}
+                      onSelect={(value) => {
+                        setCategory(value)
+                        setOpen(false)
+                      }}
+                    >
+                      {item}
+                    </CommandItem>
+                    ))}
+                  </CommandGroup>
+                  </CommandList>
+              </Command>
+              </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        <GetProduct/>
+        <GetProduct products={filteredProducts} isLoading={productLoading}/>
         </div>
-        <div className='xl:w-1/3 h-full xl:h-full p-3 sm:p-5 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col'>
+        <div className='xl:w-1/3 h-full p-3 sm:p-5 bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col overflow-y-auto custom-scroll-bar'>
           <div className='flex justify-between items-center gap-3'>
           <h1 className='text-sm sm:text-base font-semibold text-zinc-700'>Manage Products</h1>
           <Dialog>
