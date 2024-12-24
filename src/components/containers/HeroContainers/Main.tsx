@@ -18,12 +18,12 @@ const Main = () => {
           <DemoCardsDrag/>
         </div>
         <div className='z-40 hidden absolute w-full lg:flex justify-between items-end mt-48'>
-            <Image src={"/paper.svg"} width={160} height={300} alt='product' className='clip-shadow lg:w-[120px] xl:w-[160px]'/>
-            <Image src={"/mug.svg"} width={330} height={300} alt='product' className='clip-shadow lg:w-[200px] xl:w-[330px]'/>
-            <Image src={"/box.svg"} width={100} height={300} alt='product' className='clip-shadow lg:w-[50px] xl:w-[100px]'/>
-            <Image src={"/keychain.svg"} width={200} height={300} alt='product' className='clip-shadow lg:w-[100px] xl:w-[200px]'/>
-            <Image src={"/shirt.svg"} width={300} height={300} alt='product' className='clip-shadow lg:w-[200px] xl:w-[300px]'/>
-            <Image src={"/box2.svg"} width={180} height={300} alt='product' className='clip-shadow lg:w-[150px] xl:w-[180px]'/>
+            <Image src={"/paper-optimized.svg"} width={160} height={300} alt='product' className='clip-shadow lg:w-[120px] xl:w-[160px]'/>
+            <Image src={"/mug-optimized.svg"} width={300} height={300} alt='product' className='clip-shadow lg:w-[200px] xl:w-[330px]'/>
+            <Image src={"/box-optimized.svg"} width={100} height={300} alt='product' className='clip-shadow lg:w-[50px] xl:w-[100px]'/>
+            <Image src={"/keychain-optimized.svg"} width={200} height={300} alt='product' className='clip-shadow lg:w-[100px] xl:w-[200px]'/>
+            <Image src={"/optimized-shirt-compressed.svg"} width={300} height={200} alt='product' className='clip-shadow lg:w-[200px] xl:w-[300px]'/>
+            <Image src={"/box2-optimized.svg"} width={180} height={300} alt='product' className='clip-shadow lg:w-[150px] xl:w-[180px]'/>
         </div>
     </div>
   )
