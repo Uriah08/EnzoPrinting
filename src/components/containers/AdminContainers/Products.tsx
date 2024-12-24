@@ -163,7 +163,7 @@ const Products = ({ session }: {session?: Session | null}) => {
               <DropdownMenuSeparator />
               <DropdownMenuSub>
               <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent sideOffset={-130} className="p-0">
+              <DropdownMenuSubContent sideOffset={-180} className="p-0">
               <Command>
               <CommandInput
                     placeholder="Filter category..."

@@ -197,7 +197,7 @@ const ProductPage = () => {
             </div>
         <div className='w-full bg-[#f5f5f5] p-3 sm:p-5 shadow-lg rounded-lg relative'>
             <h1 className='text-sm sm:text-xl font-semibold text-zinc-600'>Products</h1>
-            <div className='w-full flex justify-between items-center mt-5'>
+            <div className='w-full flex justify-between items-center mt-5 gap-3'>
           <div className='w-fit flex items-center relative'>
             <Search size={20} className='absolute left-2 text-zinc-500'/>
             <Input className='pl-8 rounded-full' placeholder='Search...' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
@@ -217,7 +217,7 @@ const ProductPage = () => {
               <DropdownMenuSeparator />
               <DropdownMenuSub>
               <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent sideOffset={-130} className="p-0">
+              <DropdownMenuSubContent sideOffset={-180} className="p-0">
               <Command>
               <CommandInput
                     placeholder="Filter category..."
