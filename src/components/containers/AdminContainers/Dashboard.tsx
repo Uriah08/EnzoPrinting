@@ -8,6 +8,7 @@ import { BarChartX } from '@/components/charts/bar-chart-x'
 import { BarChartSticks } from '@/components/charts/bar-chart-x-sticks'
 import { RadialBarAdmin } from '@/components/charts/radial-chart'
 import { useGetAdminDashboardQuery, useGetHighlightProductQuery } from '@/store/api'
+import GenerateReport from '@/components/charts/generateReport'
 
 const Dashboard = ({ session }: {session?: Session | null}) => {
 
@@ -130,7 +131,8 @@ const Dashboard = ({ session }: {session?: Session | null}) => {
           <BarChartSticks chartData={finalDailySummary}/>
         </div>
         <div className='lg:w-1/3 h-full bg-[#f5f5f5] rounded-lg shadow-lg p-3 sm:p-5 overflow-y-auto custom-scroll-bar'>
-        <div className='flex-1 bg-main p-5 rounded-lg flex flex-col gap-5 shadow-lg'>
+        <GenerateReport data={data?.data}/>
+        <div className='flex-1 bg-main p-5 mt-3 sm:mt-5 rounded-lg flex flex-col gap-5 shadow-lg'>
             <div className='flex gap-3 items-center'>
               <Clock size={32} className='p-[6px] ml-1 shadow-md rounded-md text-main bg-[#f5f5f5]' />
               <h1 className='text-[#f5f5f5] text-xl font-semibold'>Time</h1>
