@@ -36,7 +36,7 @@ export function DemoCardsDrag() {
  
 const CARDS_DEMO = [
   {
-    src: "/paper-optimized.svg",
+    src: "/papermax.svg",
     alt: "Example image",
     rotate: "6deg",
     top: "50%",
