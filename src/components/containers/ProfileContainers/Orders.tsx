@@ -16,6 +16,7 @@ const Orders = ({ session, status }: {session?: Session | null, status: string})
 
   const { data, isLoading: userOrderLoading } = useGetUserOrderQuery(session?.user?.id ?? '', {
     skip: status !== "authenticated" || !session?.user?.id,
+    pollingInterval: 5000,
   })
 
   const [updateOrderReceived, { isLoading: orderReceived}] = useUpdateOrderReceivedMutation()

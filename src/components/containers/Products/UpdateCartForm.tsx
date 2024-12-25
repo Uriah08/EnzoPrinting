@@ -126,7 +126,7 @@ const UpdateCartForm = ({cart}: CartProps) => {
                             <button type="button" onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))} className='size-6 flex items-center justify-center text-[#f5f5f5] rounded-sm bg-main hover:bg-main2'>-</button>
                         </div>
                         </div>
-                        <h1 className='self-end'><span className='text-lg font-semibold'>Total:</span> ₱ {Number(cart.product.price || 0) * Number(cart.quantity)}.00</h1>
+                        <h1 className='self-end'><span className='text-lg font-semibold'>Total:</span> ₱ {Number(cart.product.price || 0) * Number(quantity)}.00</h1>
                     </div>
             </div>
             <DialogClose asChild>
