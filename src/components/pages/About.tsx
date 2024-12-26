@@ -8,14 +8,14 @@ const About = () => {
       <div className='max-w-[1200px] w-full h-full p-3 sm:p-10 flex flex-col lg:flex-row'>
         <div className='w-full max-w-[500px] lg:w-1/2 mt-32 pr-10'>
           <h1 className='text-lg sm:text-2xl font-semibold'>How we started?</h1>
-          <p className='mt-10 text-zinc-600 font-light text-xs sm:text-base'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit perferendis eveniet dolor, amet quia iusto exercitationem porro autem eaque rem laborum, fuga magnam non asperiores enim obcaecati vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita iste incidunt, aspernatur quam temporibus, dicta accusantium delectus officiis!</p>
+          <p className='mt-10 text-zinc-600 font-light text-xs sm:text-base'>Our journey began with a humble computer shop, offering basic services to our community. Driven by a passion for helping others and an eye for opportunities, we gradually expanded into printing, recognizing the growing demand for quality print services. Over the years, through hard work, dedication, and unwavering support from our loyal customers, we transformed our small shop into a trusted printing business. Today, we take pride in being a reliable part of our community, delivering top-notch printing solutions and building lasting relationships.</p>
           <div className='flex gap-3 mt-5'>
-            <a target='_blank' href='#' className='cursor-pointer w-10 h-10 group rounded-full border border-main duration-200 transition-all hover:bg-main flex justify-center items-center'>
+            <a target='_blank' href='https://web.facebook.com/enzo.tshirtprinting?mibextid=ZbWKwL&_rdc=1&_rdr#' className='cursor-pointer w-10 h-10 group rounded-full border border-main duration-200 transition-all hover:bg-main flex justify-center items-center'>
               <svg width="13" height="24" viewBox="0 0 13 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.75 13.6429H11.6071L12.75 9.07143H8.75V6.78571C8.75 5.60857 8.75 4.5 11.0357 4.5H12.75V0.66C12.3774 0.610857 10.9706 0.5 9.48486 0.5C6.382 0.5 4.17857 2.39371 4.17857 5.87143V9.07143H0.75V13.6429H4.17857V23.3571H8.75V13.6429Z" fill="#1A90F1" className='duration-200 transition-all group-hover:fill-[#f3f3f3]'/>
               </svg>
             </a> 
-            <a target='_blank' href='#' className='cursor-pointer w-10 h-10 rounded-full border border-main duration-200 transition-all group hover:bg-main flex justify-center items-center'>
+            <a target='_blank' href='https://www.tiktok.com/@personalized.souvenir' className='cursor-pointer w-10 h-10 rounded-full border border-main duration-200 transition-all group hover:bg-main flex justify-center items-center'>
               <svg width="19" height="23" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.074 3.48543C14.2459 2.52079 13.7894 1.28219 13.7895 0H10.0453V15.326C10.017 16.1556 9.67391 16.9415 9.08838 17.518C8.50286 18.0945 7.72069 18.4164 6.90689 18.4159C5.18622 18.4159 3.75638 16.9822 3.75638 15.2024C3.75638 13.0766 5.76786 11.4822 7.83992 12.1372V8.23156C3.65944 7.66301 0 10.9754 0 15.2024C0 19.3182 3.34439 22.2474 6.89477 22.2474C10.6996 22.2474 13.7895 19.0957 13.7895 15.2024V7.42818C15.3078 8.54036 17.1307 9.13709 19 9.13381V5.31467C19 5.31467 16.7219 5.42591 15.074 3.48543Z" fill="#1A90F1" className='duration-200 transition-all group-hover:fill-[#f3f3f3]'/>
               </svg>
@@ -23,7 +23,7 @@ const About = () => {
           </div>
         </div>
         <div className='w-full lg:w-1/2 mt-10 sm:mt-32 flex justify-end lg:justify-start'>
-          <Image src={"/about.png"} alt='about' height={500} width={500}/>
+          <Image src={"/AboutCover.jpg"} alt='about' height={500} width={500}/>
         </div>
       </div>
       <div className='flex justify-between flex-wrap w-full max-w-[1200px] px-3 sm:px-10 gap-5 mt-10 mb-20'>

@@ -38,14 +38,14 @@ import { quoteSchema } from "@/schema";
 import { Textarea } from '@/components/ui/textarea';
 
 import { useToast } from '@/hooks/use-toast'
-import { useCreateQuoteMutation } from '@/store/api';
+import { useCreateQuoteMutation, useSendQuoteMutation } from '@/store/api';
 
 const images = [
-  "/products/mugsample1.jpg",
-  "/products/mugsample1.jpg",
-  "/products/mugsample1.jpg",
-  "/products/mugsample1.jpg",
-  "/products/mugsample1.jpg",
+  "/quotes/quote1.png",
+  "/quotes/quote2.png",
+  "/quotes/quote3.png",
+  "/quotes/quote4.png",
+  "/quotes/quote5.png",
 ];
 
 const categories = [
@@ -65,6 +65,7 @@ const QuoteModal = () => {
   const { toast } = useToast()
 
   const [createQuote, {isLoading} ] = useCreateQuoteMutation()
+  const [sendQuote] = useSendQuoteMutation()
 
   const form = useForm<z.infer<typeof quoteSchema>>({
     resolver: zodResolver(quoteSchema),
@@ -79,7 +80,7 @@ const QuoteModal = () => {
 
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
     try {
-
+      await sendQuote(values).unwrap()
       const response = await createQuote(values).unwrap()
 
       if(!response.success){

@@ -94,7 +94,7 @@ const AdminPage = () => {
           <Users size={32} className='p-[6px] text-main bg-[#f5f5f5] rounded-sm'/>
           <h1 className='text-[#f5f5f5] font-medium mt-3'>Need Help?</h1>
           <h1 className='text-sm text-[#f5f5f5]'>lorenz08.flores@gmail.com</h1>
-          <button className='text-main bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm'>Contact Me</button>
+          <a target='_blank' href='https://mail.google.com/mail/u/0/#inbox?compose=DmwnWtDkxPZLVxkXrHRmGxnqsLbNPKqpJGKCxHSvMdJlvrrgqLCBHrFFbZqbxDjMvPfBmMgQQQwV' className='text-main text-center bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm cursor-pointer'>Contact Me</a>
         </div>
       </div>
       </div>

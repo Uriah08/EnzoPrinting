@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react'
 
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import LoadingSpinner from '@/components/ui/loading'
 import Image from 'next/image'
 
-import { ArrowLeftRight, ChevronLeft, ShoppingBag, User, Users } from 'lucide-react'
+import { ArrowLeftRight, ChevronLeft, LogOutIcon, ShoppingBag, User, Users } from 'lucide-react'
 import Profile from '@/components/containers/ProfileContainers/Profile'
 import Orders from '@/components/containers/ProfileContainers/Orders'
 import History from '@/components/containers/ProfileContainers/History'
@@ -43,6 +43,11 @@ const ProfilePage = () => {
     setOpenSidebar(false)
   }
 
+  const handleSignOut = () => {
+        localStorage.setItem("reloaded", "false");
+        signOut();
+      }
+
   return (
     <div className='w-screen flex h-full overflow-y-auto'>
       <div className={`fixed h-full z-20 transition-all duration-500 ease-in-out ${openSidebar ? 'left-0':'-left-[294px] sm:-left-[337px]'}`}>
@@ -56,6 +61,11 @@ const ProfilePage = () => {
               ))}
           </div>
         </div>
+        <div className='flex flex-col gap-5'>
+        <div onClick={handleSignOut} className={`cursor-pointer group flex items-center gap-3 p-[5px] duration-200 transition-all hover:shadow-xl`}>
+          <LogOutIcon size={32} className={`p-[6px] ml-1 shadow-md rounded-md duration-200 transition-all group-hover:bg-main group-hover:text-[#f5f5f5]`}/>
+          <h1 className={`text-zinc-800 duration-200 transition-all text-sm sm:text-base group-hover:`}>Sign Out</h1>
+        </div>
         <div className='bg-main p-3 w-full flex flex-col rounded-lg relative'>
           <button onClick={handleSidebar} className='absolute -right-[72px] cursor-pointer bg-main rounded-e-lg'>
             <ChevronLeft size={32} className={`px-[6px] text-[#f5f5f5] duration-200 transition-all rounded-e-lg ${!openSidebar ? 'rotate-180': 'rotate-0'}`}/>
@@ -63,7 +73,9 @@ const ProfilePage = () => {
           <Users size={32} className='p-[6px] text-main bg-[#f5f5f5] rounded-sm'/>
           <h1 className='text-[#f5f5f5] font-medium mt-3'>Need Help?</h1>
           <h1 className='text-sm text-[#f5f5f5]'>lorenz08.flores@gmail.com</h1>
-          <button className='text-main bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm'>Contact Me</button>
+          <a target='_blank' href='https://mail.google.com/mail/u/0/#inbox?compose=DmwnWtDkxPZLVxkXrHRmGxnqsLbNPKqpJGKCxHSvMdJlvrrgqLCBHrFFbZqbxDjMvPfBmMgQQQwV' className='text-main text-center bg-[#f5f5f5] rounded-md mt-5 py-1 font-medium text-sm cursor-pointer'>Contact Me</a>
+
+        </div>
         </div>
       </div>
       </div>

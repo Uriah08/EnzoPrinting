@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { Quote } from '@prisma/client';
+
 type Product = {
     status: string;
     id: string;
@@ -119,6 +121,10 @@ interface GetUserDashboardResponse {
             order: number;
           }>;
     }
+  }
+
+  interface QuoteResponse {
+    quotes: Quote[];
   }
 
 export const api = createApi({
@@ -288,6 +294,24 @@ export const api = createApi({
             }),
             invalidatesTags: ['Quote']
         }),
+        sendQuote: build.mutation({
+            query: (quoteData) => ({
+                url: '/api/send',
+                method: 'POST',
+                body: quoteData,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }),
+            invalidatesTags: ['Quote']
+        }),
+        getQuotes: build.query<QuoteResponse, void>({
+            query: () => ({
+                url: '/api/quote',
+                method: 'GET'
+            }),
+            providesTags: ['Quote']
+        }),
         getItemsPurchase: build.query<PurchaseResponse, string>({
             query: (transaction) => ({
                 url: `/api/purchase/transaction/${transaction}`,
@@ -374,6 +398,8 @@ export const {
     useDeleteAllCartMutation,
     usePurchaseMutation,
     useCreateQuoteMutation,
+    useSendQuoteMutation,
+    useGetQuotesQuery,
     useGetItemsPurchaseQuery,
     useUpdateItemStatusMutation,
     useLazyGetOrderQuery,

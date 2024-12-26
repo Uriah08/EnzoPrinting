@@ -64,7 +64,7 @@ export function PieCharts({ ToDo, InProgress, Finished, Cancelled }: PurchaseSta
     ];
   }, [ToDo, Finished, InProgress, Cancelled]);
 
-  const totalVisitors = ToDo + InProgress + Finished + Cancelled
+  const totalVisitors = (ToDo || 0) + (InProgress || 0) + (Finished || 0) + (Cancelled || 0)
 
   return (
     <Card className="flex flex-col bg-[#f5f5f5] border-none shadow-none">

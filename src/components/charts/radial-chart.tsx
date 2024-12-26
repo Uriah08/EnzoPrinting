@@ -27,7 +27,7 @@ const chartConfig = {
 
 export function RadialBarAdmin({ Finished, Cancelled }: { Finished: number; Cancelled: number }) {
   const chartData = [{ desktop: Finished, mobile: Cancelled }]
-  const totalVisitors = Finished + Cancelled
+  const totalVisitors = (Finished || 0) + (Cancelled || 0)
 
   return (
     <Card className="flex flex-col bg-[#f5f5f5] border-none shadow-none">

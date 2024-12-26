@@ -50,11 +50,14 @@ const Service = () => {
           <Image src={"/about.png"} alt='about' height={500} width={500} className=''/>
         </div>
         <div className='w-full max-w-[500px] lg:w-1/2 mt-32 pr-10'>
-          <h1 className='text-lg sm:text-2xl font-semibold'>Lorem ipsum dolor sit amet consectetur adipisicing</h1>
-          <p className='mt-10 text-zinc-600 font-light sm:text-base text-xs'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit perferendis eveniet dolor, amet quia iusto exercitationem porro autem eaque rem laborum, fuga magnam non asperiores enim obcaecati vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita iste incidunt, aspernatur quam temporibus, dicta accusantium delectus officiis!</p>
-          <p className='mt-3 text-zinc-600 font-light sm:text-base text-xs'>- Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium eos</p>
-          <p className='mt-3 text-zinc-600 font-light sm:text-base text-xs'>- Lorem ipsum dolor Accusantium eos</p>
-          <p className='mt-3 text-zinc-600 font-light sm:text-base text-xs'>- Lorem ipsum dolor sit amet consectetur</p>
+          <h1 className='text-lg sm:text-2xl font-semibold'>Why Choose Us</h1>
+          <p className='mt-10 text-zinc-600 font-light sm:text-base text-xs'>At our printing business, we specialize in delivering high-quality printing solutions tailored to your needs. Whether it&apos;s business cards, flyers, banners, or customized product labels, we ensure each piece is crafted with precision and care. Our state-of-the-art equipment and skilled team are dedicated to providing vibrant, professional prints that bring your ideas to life. Whatever your project, we’re here to help you make a lasting impression.</p>
+          <p className='mt-3 text-zinc-600 font-light sm:text-sm text-xs'><span className='font-medium'>
+            Customizable Design</span> - Tailored to match your unique ideas and branding.</p>
+          <p className='mt-3 text-zinc-600 font-light sm:text-sm text-xs'><span className='font-medium'>
+            Quality Printing</span> - Crisp, vibrant, and professional results every time.</p>
+          <p className='mt-3 text-zinc-600 font-light sm:text-sm text-xs'><span className='font-medium'>
+            Affordable Rates</span> - High-quality services that fit your budget.</p>
         </div>
       </div>
       <div className='bg-main rounded-full py-2 px-3 sm:px-5 mt-20 sm:mx-0 mx-3'>
@@ -86,7 +89,7 @@ const Service = () => {
         </div>
         <div className='flex sm:flex-row flex-col mb-10 gap-3 justify-between items-center w-full max-w-[1200px] p-5'>
             <h1 className='font-light sm:text-base text-xs text-center'>Keep updated on our <span className='text-main'>available services</span>. Check them</h1>
-            <button className='text-[#f3f3f3] bg-main py-2 px-3 sm:px-4 sm:text-base text-xs rounded-full duration-200 transition-all hover:bg-main2'>Check</button>
+            <a target='_blank' href='https://web.facebook.com/enzo.tshirtprinting/about' className='text-[#f3f3f3] bg-main py-2 px-3 sm:px-4 sm:text-base text-xs rounded-full duration-200 transition-all hover:bg-main2 cursor-pointer'>Check</a>
         </div>
     </section>
   );
