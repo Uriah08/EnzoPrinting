@@ -94,7 +94,7 @@ const Product = () => {
                 )}
             </div>
         </div>
-        <a className='text-[#f3f3f3] bg-main py-2 px-3 sm:px-4 sm:text-base text-xs rounded-full duration-200 transition-all hover:bg-main2 cursor-pointer'>View More Products</a>
+        <Link href={'/product'} className='text-[#f3f3f3] bg-main py-2 px-3 sm:px-4 sm:text-base text-xs rounded-full duration-200 transition-all hover:bg-main2 cursor-pointer'>View More Products</Link>
         <div className='max-w-[1200px] flex flex-col w-full h-full sm:p-10 mb-20'>
             <h1 className='text-lg sm:text-2xl font-semibold px-3 text-center mt-10'><span className='text-main'>Dedicated Testimonials</span> from our Customers.</h1>
             <div className='flex flex-col'>
