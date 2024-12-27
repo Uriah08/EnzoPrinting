@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/
 import Image from 'next/image';
 import { motion } from "framer-motion";
 
-import { Anvil, Check, ChevronsUpDown, Clock, GalleryVerticalEnd, Paintbrush, User, Mail, Phone } from "lucide-react";
+import { Check, ChevronsUpDown, Clock, GalleryVerticalEnd, Paintbrush, User, Mail, Phone, Contact } from "lucide-react";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -80,13 +80,12 @@ const QuoteModal = () => {
 
   async function onSubmit(values: z.infer<typeof quoteSchema>) {
     try {
-      await sendQuote(values).unwrap()
       const response = await createQuote(values).unwrap()
 
       if(!response.success){
         throw new Error(response.message || 'Failed to send a quote')
       }
-
+      await sendQuote(values).unwrap()
       form.reset()
 
       toast({
@@ -166,9 +165,9 @@ const QuoteModal = () => {
                 </span>
               </div>
               <div className="flex  items-center justify-center">
-                <Anvil className="mr-1 text-neutral-700 h-4 w-4" />
+                <Contact className="mr-1 text-neutral-700 h-4 w-4" />
                 <span className="text-neutral-700 text-xs sm:text-sm">
-                Quality Printings
+                Direct Contact
                 </span>
               </div>
             </div>

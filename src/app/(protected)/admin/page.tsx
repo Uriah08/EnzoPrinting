@@ -7,13 +7,13 @@ import { useRouter } from 'next/navigation'
 import LoadingSpinner from '@/components/ui/loading'
 import Image from 'next/image'
 
-import { ArrowLeftRight, ChevronLeft, Gauge, MessageSquareDot, ScrollText, Shirt, ShoppingBag, Users } from 'lucide-react'
+import { ArrowLeftRight, ChevronLeft, Gauge, MessageSquareDot, Shirt, ShoppingBag, Users } from 'lucide-react'
 import Dashboard from '@/components/containers/AdminContainers/Dashboard'
 import Orders from '@/components/containers/AdminContainers/Orders'
 import Products from '@/components/containers/AdminContainers/Products'
 import Transactions from '@/components/containers/AdminContainers/Transactions'
 import Feedbacks from '@/components/containers/AdminContainers/Feedbacks'
-import Quotes from '@/components/containers/AdminContainers/Quotes'
+// import Quotes from '@/components/containers/AdminContainers/Quotes'
 
 const AdminPage = () => {
   const { data: session, status} = useSession()
@@ -55,10 +55,10 @@ const AdminPage = () => {
       icon: Shirt,
       label: 'Products',
     },
-    {
-      icon: ScrollText,
-      label: 'Quotes',
-    },
+    // {
+    //   icon: ScrollText,
+    //   label: 'Quotes',
+    // },
     {
       icon: ArrowLeftRight,
       label: 'Transactions',
@@ -102,7 +102,7 @@ const AdminPage = () => {
         {active === 'Dashboard' && <Dashboard session={session}/>}
         {active === 'Orders' && <Orders session={session}/>}
         {active === 'Products' && <Products session={session}/>}
-        {active === 'Quotes' && <Quotes session={session}/>}
+        {/* {active === 'Quotes' && <Quotes session={session}/>} */}
         {active === 'Transactions' && <Transactions session={session}/>}
         {active === 'Feedbacks' && <Feedbacks session={session}/>}
       </div>
