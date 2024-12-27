@@ -53,7 +53,7 @@ const Transactions = ({ session }: {session?: Session | null}) => {
   }, [cancelledLoading, cancelledData, active])
   
   return (
-    <div className='flex flex-col w-full h-[100vh] gap-3 sm:gap-5 overflow-x-hidden relative'>
+    <div className='flex flex-col w-full h-[100vh] gap-3 sm:gap-5 overflow-x-hidden relative custom-scroll-bar'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
         <div className='flex-col'>
         <div className='flex gap-1 sm:gap-3 items-center'>
