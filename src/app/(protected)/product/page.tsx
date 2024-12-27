@@ -341,9 +341,9 @@ const ProductPage = () => {
                                             </Link>
                                         ) : (
                                             <div className='flex w-full justify-end gap-3 mt-5'>
-                                                <DialogClose asChild>
+                                                {/* <DialogClose asChild>
                                                 <Button type="button" className='bg-[#f5f5f5] hover:bg-[#dddcdc] text-black'>Check Out</Button>
-                                                </DialogClose>
+                                                </DialogClose> */}
                                                 <DialogClose asChild>
                                                 <Button type='submit' disabled={cartLoading} className='text-[#f5f5f5] bg-main hover:bg-main2'>{cartLoading ? 'Loading...':'Add to Cart'}</Button>
                                                 </DialogClose>
