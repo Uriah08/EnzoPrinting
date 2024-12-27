@@ -5,25 +5,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '../ui/button'
-import { useGetHighlightProductQuery } from '@/store/api'
+import { useGetHighlightProductQuery, useGetFeedbackQuery } from '@/store/api'
 import { Skeleton } from '../ui/skeleton'
 
-const testimonials = [
-    {
-        image:"/products/mugsample1.jpg",
-        name:"John Doe",
-        title:"Customer",
-        description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque auctor, libero vel tristique consectetur, ipsum nunc condimentum velit, at eleifend enim ipsum id nisi. Donec vel est vel justo tincidunt pulvinar."
-    },
-    {
-        image:"/about.png",
-        name:"Jane Doe",
-        title:"Customer",
-        description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque auctor, libero vel tristique consectetur, ipsum nunc condimentum velit, at eleifend enim ipsum id nisi. Donec vel est vel justo tincidunt pulvinar."
-    },
-]
-
 const Product = () => {
+
+    const { data: feedbackData } = useGetFeedbackQuery();
+    const feedbacks = feedbackData?.feedback || [];
 
     const { data, isLoading } = useGetHighlightProductQuery()
     const products = data?.product || []
@@ -34,13 +22,13 @@ const Product = () => {
 
     const handleNext = () => {
         stopAutoplay();
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % feedbacks.length);
     };
 
     const handlePrev = () => {
         stopAutoplay();
         setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+            prevIndex === 0 ? feedbacks.length - 1 : prevIndex - 1
         );
     };
 
@@ -53,13 +41,14 @@ const Product = () => {
 
     useEffect(() => {
         intervalRef.current = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % feedbacks.length);
         }, 5000);
 
         return () => stopAutoplay();
-    }, []);
+    }, [feedbacks.length]);
 
-    const { image, name, title, description } = testimonials[currentIndex];
+    const { user, feedback } = feedbacks[currentIndex] || {};
+    const { name, image } = user || {};
 
   return (
     <section id='product' className='bg-white h-full w-full flex flex-col items-center justify-center'>
@@ -105,6 +94,7 @@ const Product = () => {
                 )}
             </div>
         </div>
+        <a className='text-[#f3f3f3] bg-main py-2 px-3 sm:px-4 sm:text-base text-xs rounded-full duration-200 transition-all hover:bg-main2 cursor-pointer'>View More Products</a>
         <div className='max-w-[1200px] flex flex-col w-full h-full sm:p-10 mb-20'>
             <h1 className='text-lg sm:text-2xl font-semibold px-3 text-center mt-10'><span className='text-main'>Dedicated Testimonials</span> from our Customers.</h1>
             <div className='flex flex-col'>
@@ -112,11 +102,11 @@ const Product = () => {
                 <Image src={"/quote.svg"} width={50} height={50} alt='side' className='absolute right-[10%]'/>
                     <Image src={"/sidepic1.svg"} width={200} height={200} alt='side' className='absolute left-[20%]'/>
                     <div className='w-full flex flex-col items-center z-10'>
-                    <Image src={image} width={50} height={50} alt='profile' className='rounded-full w-[50px] h-[50px]'/>
+                    <Image src={image || '/profile.png'} width={50} height={50} alt='profile' className='rounded-full w-[50px] h-[50px]'/>
                     <h1 className='text-[#f4f4f4] font-semibold mt-3'>{name}</h1>
-                    <h2 className='text-[#eeeeee] sm:text-base text-sm'>{title}</h2>
+                    <h2 className='text-[#eeeeee] sm:text-base text-sm'>Customer</h2>
                     <p className='text-xs sm:text-sm px-10 text-[#f4f4f4] font-light text-center mt-5 w-full max-w-[800px]'>
-                        &quot;{description}&quot;
+                        &quot;{feedback}&quot;
                     </p>
                     <div className='flex w-full justify-between absolute top-1/2 -translate-y-1/2'>
                         <ChevronLeft onClick={handlePrev} className='text-[#f4f4f4] cursor-pointer' size={40}/>
