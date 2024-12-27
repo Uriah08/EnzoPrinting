@@ -3,56 +3,87 @@ import { prisma } from '@/lib/db';
 import { format } from 'date-fns';
 
 export async function GET(req: Request) {
-    const url = new URL(req.url)
-    const id = url.pathname.split("/").pop();
-    try {
-        const pendingPurchases = await prisma.purchase.findMany({
-            where: {
-                userId: id,
-                received: false,
-            },
-            select: {
-                items: true,
-            }
-        });
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop();
 
-        const purchases = await prisma.purchase.findMany({
-            where: {
-                userId: id,
-            },
-            select: {
-                items: true,
-                cartTotal: true,
-                createdAt: true
-            }
-        });
+  try {
+    // Run all queries concurrently using Promise.all
+    const [
+      pendingPurchases,
+      purchases,
+      cartCount,
+    ] = await Promise.all([
+      prisma.purchase.findMany({
+        where: {
+          userId: id,
+          received: false,
+        },
+        select: {
+          items: true,
+        },
+      }),
+      prisma.purchase.findMany({
+        where: {
+          userId: id,
+        },
+        select: {
+          items: true,
+          cartTotal: true,
+          createdAt: true,
+        },
+      }),
+      prisma.cart.count({
+        where: {
+          userId: id,
+        },
+      }),
+    ]);
 
-        const cart = await prisma.cart.count({
-            where: {
-                userId: id
-            }
-        })
+    // Calculate pending items count
+    const pendingItemsCount = pendingPurchases.reduce(
+      (total, purchase) => total + purchase.items.length,
+      0
+    );
 
-        const pendingItemsCount = pendingPurchases.reduce((total, purchase) => total + purchase.items.length, 0);
-        const cartItemCount = purchases.reduce((total, purchase) => total + purchase.items.length, 0);
-        const total = purchases.reduce((total, purchase) => total + parseFloat(purchase.cartTotal), 0);
+    // Calculate cart item count
+    const cartItemCount = purchases.reduce(
+      (total, purchase) => total + purchase.items.length,
+      0
+    );
 
-        const dailySummaryMap = new Map<string, number>();
+    // Calculate total cart value
+    const total = purchases.reduce(
+      (total, purchase) => total + parseFloat(purchase.cartTotal),
+      0
+    );
 
-        purchases.forEach(purchase => {
-        const formattedDate = format(purchase.createdAt, 'yyyy-MM-dd');
-        const currentTotal = dailySummaryMap.get(formattedDate) || 0;
-        dailySummaryMap.set(formattedDate, currentTotal + parseFloat(purchase.cartTotal));
-        });
+    // Create daily summary
+    const dailySummaryMap = new Map<string, number>();
+    purchases.forEach((purchase) => {
+      const formattedDate = format(purchase.createdAt, 'yyyy-MM-dd');
+      const currentTotal = dailySummaryMap.get(formattedDate) || 0;
+      dailySummaryMap.set(formattedDate, currentTotal + parseFloat(purchase.cartTotal));
+    });
 
-        const dailySummary = Array.from(dailySummaryMap, ([date, order]) => ({
-        date,
-        order
-        }));
-        
-        return NextResponse.json({ data: { cartItemCount, pendingItemsCount, total, cart, dailySummary }, message: 'Get User Dashboard', success: true}, { status: 200 });
-    } catch (error) {
-        console.error('Error in route handler:', error);
-        return NextResponse.json({ message: 'Internal Server Error', success: false}, { status: 500 });
-    };
+    const dailySummary = Array.from(dailySummaryMap, ([date, order]) => ({
+      date,
+      order,
+    }));
+
+    // Return response
+    return NextResponse.json(
+      {
+        data: { cartItemCount, pendingItemsCount, total, cart: cartCount, dailySummary },
+        message: 'Get User Dashboard',
+        success: true,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error in route handler:', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error', success: false },
+      { status: 500 }
+    );
+  }
 }

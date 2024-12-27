@@ -6,7 +6,7 @@ import { signOut, useSession } from 'next-auth/react'
 import LoadingSpinner from '@/components/ui/loading'
 import Image from 'next/image'
 
-import { ArrowLeftRight, ChevronLeft, LogOutIcon, ShoppingBag, User, Users } from 'lucide-react'
+import { ArrowLeftRight, ChevronLeft, LogOutIcon, ShoppingBag, User, Users} from 'lucide-react'
 import Profile from '@/components/containers/ProfileContainers/Profile'
 import Orders from '@/components/containers/ProfileContainers/Orders'
 import History from '@/components/containers/ProfileContainers/History'
@@ -63,7 +63,7 @@ const ProfilePage = () => {
         </div>
         <div className='flex flex-col gap-5'>
         <div onClick={handleSignOut} className={`cursor-pointer group flex items-center gap-3 p-[5px] duration-200 transition-all hover:shadow-xl`}>
-          <LogOutIcon size={32} className={`p-[6px] ml-1 shadow-md rounded-md duration-200 transition-all group-hover:bg-main group-hover:text-[#f5f5f5]`}/>
+          <LogOutIcon size={32} className={`p-[6px] ml-1 shadow-md rounded-md duration-200 transition-all group-hover:bg-main text-[#858585] group-hover:text-[#f5f5f5]`}/>
           <h1 className={`text-zinc-800 duration-200 transition-all text-sm sm:text-base group-hover:`}>Sign Out</h1>
         </div>
         <div className='bg-main p-3 w-full flex flex-col rounded-lg relative'>

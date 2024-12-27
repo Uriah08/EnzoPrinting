@@ -3,9 +3,9 @@
 import { useGetCartQuery, useDeleteCartMutation, useDeleteAllCartMutation, usePurchaseMutation } from '@/store/api';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import LoadingSpinner from '@/components/ui/loading';
@@ -165,6 +165,11 @@ const CartPage = () => {
             })
         }
     };
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const filteredProducts = data?.cart.filter((product) =>
+        product?.product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ) || [];
     
 
     if(status === "loading") {
@@ -210,9 +215,9 @@ const CartPage = () => {
             <div className='w-full flex justify-between items-center my-5'>
                 <div className='w-fit flex items-center relative'>
                     <Search size={20} className='absolute left-2 text-zinc-500'/>
-                    <Input className='pl-8 rounded-full' placeholder='Search...'/>
+                    <Input className='pl-8 rounded-full' placeholder='Search...' value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}/>
                 </div>
-                <Filter size={32} className='p-[6px] bg-main text-[#f5f5f5] rounded-lg'/>
             </div>
             <div className='flex flex-col gap-3'>
             {yourCartLoading ? (
@@ -223,12 +228,10 @@ const CartPage = () => {
                 <Skeleton className='w-full h-[200px] rounded-lg'/>
                 </>
             ) : (
-                data?.cart.length === 0 ? (
-                    <div className='w-full h-[50dvh] flex justify-center items-center'>
+                filteredProducts.length === 0 ? (
                         <h1 className='text-xl font-semibold text-zinc-400 text-center'>No Cart Found</h1>
-                    </div>
                 ) : (
-                    data?.cart.map((cart) => (
+                    filteredProducts.map((cart) => (
                         <div key={cart.id} className='flex sm:flex-row flex-col gap-3 rounded-lg shadow-lg overflow-hidden relative w-full'>
                         <Image src={cart.product?.image || '/noimg.png'} width={500} height={500} alt='cart image' className='sm:max-w-32 w-full sm:w-fit  object-cover'/>
                         <div className='flex xl:flex-row flex-col gap-3 w-full'>
