@@ -5,13 +5,17 @@ import React from 'react'
 import { Album, ShoppingBag, HandCoins, LogOut, ShoppingCart } from 'lucide-react'
 import { WaveChart } from '@/components/charts/wave-chart'
 import { signOut } from 'next-auth/react'
-import { useGetUserDashboardQuery } from '@/store/api'
+import { useGetUserDashboardQuery, useGetCartQuery } from '@/store/api'
 
 const Profile = ({ session, status }: {session?: Session | null, status: string}) => {
     
   const { data, isLoading } = useGetUserDashboardQuery(session?.user.id ?? '', {
     skip: status !== "authenticated" || !session?.user?.id,
   })
+
+  const { data: cartData, isLoading: yourCartLoading } = useGetCartQuery(session?.user?.id ?? '', {
+          skip: status !== "authenticated" || !session?.user?.id,
+        });
 
   const { cartItemCount, pendingItemsCount, total, cart, dailySummary } = data?.data || {}
 
@@ -34,14 +38,18 @@ const Profile = ({ session, status }: {session?: Session | null, status: string}
         <h1 className='font-semibold text-sm sm:text-lg text-zinc-800'>{session?.user.name ? session.user.name.split(' ')[0][0].toUpperCase() + session.user.name.split(' ')[0].slice(1).toLowerCase() : ''}&apos;s Profile</h1>
         </div>
         {session && 
-          <div className='cursor-pointer lg:ml-8 xl:ml-14 flex gap-5 items-center'>
-          <Link href={'/profile'} className='flex gap-3'>
+          <div className='lg:ml-8 xl:ml-14 flex gap-3 sm:gap-5 items-center'>
+          <Link href={'/profile'} className='flex gap-3 cursor-pointer'>
           <div className='flex flex-col text-end'>
                                 <p className='text-base font-medium text-zinc-800 sm:block hidden'>{session.user.name}</p>
                                 <p className='text-sm font-medium text-zinc-600 sm:block hidden'>{session.user.email}</p>
                             </div>
               <Image src={session.user.image ? session.user.image : '/profile.png'} width={700} height={700} alt='profile' className='size-[45px] rounded-full'/>
           </Link>
+          <Link href={'/cart'} className='relative cursor-pointer'>   
+                    <ShoppingCart size={35} className='text-zinc-500'/>
+                    <h1 className={`bg-red-500 size-5 rounded-full top-0 absolute -right-[5px] flex items-center justify-center text-white text-xs ${!cartData?.cart?.length || yourCartLoading || cartData?.cart?.length === 0 ? 'hidden' : ''}`}>{cartData?.cart?.length || 0}</h1>
+                </Link>
           </div>
         }
       </div>
