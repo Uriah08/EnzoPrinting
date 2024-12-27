@@ -51,6 +51,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { PhotoView } from 'react-photo-view'
 
 const categories = [
     "all",
@@ -263,7 +264,9 @@ const ProductPage = () => {
                     ) : (
                         filteredProducts.map((product) => (
                             <div key={product.id} className='flex flex-col h-fit p-1 sm:p-3 border border-zinc-300 gap-4'>
+                              <PhotoView src={product.image}>
                                 <Image src={product.image} width={500} height={500} alt='image' className='h-20 lg:h-72 sm:h-32 object-cover w-full object-center'/>
+                                </PhotoView>
                                 <h1 className='px-2 py-1 rounded-full bg-main text-[#f5f5f5] text-xs w-fit'>{product.category}</h1>
                                 <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
                                     <h1 className='text-sm lg:text-xl font-semibold'>{product.name}</h1>

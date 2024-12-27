@@ -25,6 +25,9 @@ import {
 import { PersistGate } from "redux-persist/integration/react";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
+import { PhotoProvider } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
+
 import { SessionProvider } from "next-auth/react";
 
 /* REDUX PERSISTENCE */
@@ -98,7 +101,9 @@ export default function StoreProvider({
     <Provider store={storeRef.current}>
       <PersistGate loading={null} persistor={persistor}>
         <SessionProvider>
+          <PhotoProvider>
           {children}
+          </PhotoProvider>
         </SessionProvider>
       </PersistGate>
     </Provider>
