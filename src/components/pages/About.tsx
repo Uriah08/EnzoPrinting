@@ -23,7 +23,7 @@ const About = () => {
           </div>
         </div>
         <div className='w-full lg:w-1/2 mt-10 sm:mt-32 flex justify-end lg:justify-start'>
-          <Image src={"/AboutCover.jpg"} alt='about' height={500} width={500}/>
+          <Image src={"/AboutCover.jpg"} alt='about' height={500} width={500} className='w-[500px] object-cover'/>
         </div>
       </div>
       <div className='flex justify-between flex-wrap w-full max-w-[1200px] px-3 sm:px-10 gap-5 mt-10 mb-20'>
