@@ -2,7 +2,7 @@
 
 import { Session } from 'next-auth'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -113,6 +113,23 @@ const Products = ({ session }: {session?: Session | null}) => {
     return 0;
   });
 
+  const [sideOffset, setSideOffset] = useState(0);
+  
+          React.useEffect(() => {
+            const handleResize = () => {
+              if (window.innerWidth < 768) {
+                setSideOffset(-190);
+              } else {
+                setSideOffset(0);
+              }
+            };
+        
+            handleResize();
+            window.addEventListener("resize", handleResize);
+        
+            return () => window.removeEventListener("resize", handleResize);
+          }, []);
+
   return (
     <div className='flex flex-col w-full gap-3 sm:gap-5 h-full overflow-x-hidden'>
       <div className='flex justify-between w-full bg-[#f5f5f5] py-3 px-5 rounded-lg shadow-lg'>
@@ -163,7 +180,7 @@ const Products = ({ session }: {session?: Session | null}) => {
               <DropdownMenuSeparator />
               <DropdownMenuSub>
               <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent sideOffset={-180} className="p-0">
+              <DropdownMenuSubContent sideOffset={sideOffset} className="p-0">
               <Command>
               <CommandInput
                     placeholder="Filter category..."

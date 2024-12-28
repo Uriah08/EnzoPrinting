@@ -155,6 +155,22 @@ const ProductPage = () => {
           }
           return 0;
         });
+        const [sideOffset, setSideOffset] = useState(0);
+
+        React.useEffect(() => {
+          const handleResize = () => {
+            if (window.innerWidth < 768) {
+              setSideOffset(-190);
+            } else {
+              setSideOffset(0);
+            }
+          };
+      
+          handleResize();
+          window.addEventListener("resize", handleResize);
+      
+          return () => window.removeEventListener("resize", handleResize);
+        }, []);
       
 
     if (status === 'loading') return <LoadingSpinner/>
@@ -218,7 +234,7 @@ const ProductPage = () => {
               <DropdownMenuSeparator />
               <DropdownMenuSub>
               <DropdownMenuSubTrigger>Category</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent sideOffset={-180} className="p-0">
+              <DropdownMenuSubContent sideOffset={sideOffset} className="p-0">
               <Command>
               <CommandInput
                     placeholder="Filter category..."
