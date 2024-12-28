@@ -5,7 +5,9 @@ export const publicRoutes = [
     '/product',
     '/api/product',
     '/api/product/highlight',
-    '/api/feedback'
+    '/api/feedback',
+    '/api/send',
+    '/api/quote'
 ]
 
 export const authRoutes = [

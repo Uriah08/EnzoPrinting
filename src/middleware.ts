@@ -44,9 +44,9 @@ export default auth((req) => {
 
     if (!isLoggedIn && !isPublicRoute) {
         if (nextUrl.pathname === "/auth/sign-in") {
-            return NextResponse.next(); // Prevent redirect loop
+            return NextResponse.next();
         } else if (nextUrl.pathname === "/auth/sign-up") {
-            return NextResponse.next(); // Prevent redirect loop
+            return NextResponse.next();
         } else
         return NextResponse.redirect(new URL("/auth/sign-in", nextUrl));
     }
