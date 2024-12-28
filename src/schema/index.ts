@@ -35,9 +35,9 @@ export const registerSchema = z.object({
         id
       }
     })
-
     return user
   }
+
 
   export const passwordMatch = async (password: string, userPassword: string) => {
     return await bcryptjs.compare(password, userPassword)
